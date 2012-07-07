@@ -21,8 +21,6 @@
 
 namespace Zend\ModuleManager\Feature;
 
-use Zend\ModuleManager\ModuleManagerInterface;
-
 /**
  * @category   Zend
  * @package    Zend_ModuleManager
@@ -30,13 +28,13 @@ use Zend\ModuleManager\ModuleManagerInterface;
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface InitProviderInterface
+interface ViewHelperProviderInterface
 {
     /**
-     * Initialize workflow
+     * Expected to return \Zend\ServiceManager\Configuration object or array to
+     * seed such an object.
      *
-     * @param  ModuleManagerInterface $manager
-     * @return void
+     * @return array|\Zend\ServiceManager\Configuration
      */
-    public function init(ModuleManagerInterface $manager);
+    public function getViewHelperConfiguration();
 }
