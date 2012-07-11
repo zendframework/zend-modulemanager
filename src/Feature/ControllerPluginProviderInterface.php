@@ -8,15 +8,20 @@
  * @package   Zend_ModuleManager
  */
 
-namespace Zend\ModuleManager\Exception;
+namespace Zend\ModuleManager\Feature;
 
 /**
- * Runtime Exception
- * 
  * @category   Zend
  * @package    Zend_ModuleManager
- * @subpackage Exception
+ * @subpackage Feature
  */
-class RuntimeException extends \RuntimeException implements ExceptionInterface
+interface ControllerPluginProviderInterface
 {
+    /**
+     * Expected to return \Zend\ServiceManager\Configuration object or array to
+     * seed such an object.
+     *
+     * @return array|\Zend\ServiceManager\Configuration
+     */
+    public function getControllerPluginConfiguration();
 }
