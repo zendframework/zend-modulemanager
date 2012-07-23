@@ -10,21 +10,18 @@
 
 namespace Zend\ModuleManager\Feature;
 
-use Zend\EventManager\EventInterface;
-
 /**
- * Boostrap listener provider interface
- *
  * @category   Zend
  * @package    Zend_ModuleManager
  * @subpackage Feature
  */
-interface BootstrapListenerInterface
+interface ControllerProviderInterface
 {
     /**
-     * Listen to the bootstrap event
+     * Expected to return \Zend\ServiceManager\Configuration object or array to
+     * seed such an object.
      *
-     * @return array
+     * @return array|\Zend\ServiceManager\Configuration
      */
-    public function onBootstrap(EventInterface $e);
+    public function getControllerConfig();
 }
