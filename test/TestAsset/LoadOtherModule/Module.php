@@ -8,12 +8,19 @@
  * @package   Zend_ModuleManager
  */
 
-namespace Zend\ModuleManager\Exception;
+namespace LoadOtherModule;
 
-/**
- * @category Zend
- * @package  Zend_ModuleManager
- */
-interface ExceptionInterface
+use Zend\Config\Config;
+
+class Module
 {
+    public function init($moduleManager)
+    {
+        $moduleManager->loadModule('BarModule');
+    }
+
+    public function getConfig()
+    {
+        return array('loaded' => 'oh, yeah baby!');
+    }
 }
