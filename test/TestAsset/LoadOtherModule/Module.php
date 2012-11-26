@@ -8,14 +8,18 @@
  * @package   Zend_ModuleManager
  */
 
-namespace BafModule;
+namespace LoadOtherModule;
 
-use Zend\Config\Config;
 
 class Module
 {
+    public function init($moduleManager)
+    {
+        $moduleManager->loadModule('BarModule');
+    }
+
     public function getConfig()
     {
-        return new Config(include __DIR__ . '/configs/config.php');
+        return array('loaded' => 'oh, yeah baby!');
     }
 }

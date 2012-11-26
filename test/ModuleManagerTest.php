@@ -1,32 +1,22 @@
 <?php
 /**
- * Zend Framework
+ * Zend Framework (http://framework.zend.com/)
  *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://framework.zend.com/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@zend.com so we can send you a copy immediately.
- *
- * @category   Zend
- * @package    Zend_ModuleManager
- * @subpackage UnitTest
- * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @link      http://github.com/zendframework/zf2 for the canonical source repository
+ * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @package   Zend_ModuleManager
  */
 
 namespace ZendTest\ModuleManager;
 
 use PHPUnit_Framework_TestCase as TestCase;
+use stdClass;
 use Zend\EventManager\EventManager;
 use Zend\Loader\AutoloaderFactory;
-use Zend\Loader\ModuleAutoloader;
 use Zend\ModuleManager\Listener\ListenerOptions;
 use Zend\ModuleManager\Listener\DefaultListenerAggregate;
+use Zend\ModuleManager\ModuleEvent;
 use Zend\ModuleManager\ModuleManager;
 use InvalidArgumentException;
 
@@ -49,7 +39,7 @@ class ModuleManagerTest extends TestCase
         $this->includePath = get_include_path();
 
         $this->defaultListeners = new DefaultListenerAggregate(
-            new ListenerOptions(array( 
+            new ListenerOptions(array(
                 'module_paths'         => array(
                     realpath(__DIR__ . '/TestAsset'),
                 ),
@@ -60,7 +50,7 @@ class ModuleManagerTest extends TestCase
     public function tearDown()
     {
         $file = glob($this->tmpdir . DIRECTORY_SEPARATOR . '*');
-        @unlink($file[0]); // change this if there's ever > 1 file 
+        @unlink($file[0]); // change this if there's ever > 1 file
         @rmdir($this->tmpdir);
         // Restore original autoloaders
         AutoloaderFactory::unregisterAutoloaders();
@@ -78,7 +68,7 @@ class ModuleManagerTest extends TestCase
         // Restore original include_path
         set_include_path($this->includePath);
     }
-    
+
     public function testEventManagerIdentifiers()
     {
         $moduleManager = new ModuleManager(array());
@@ -141,5 +131,34 @@ class ModuleManagerTest extends TestCase
         $this->setExpectedException('RuntimeException');
         $moduleManager = new ModuleManager(array('NotFoundModule'));
         $moduleManager->loadModules();
+    }
+
+    public function testCanLoadModuleDuringTheLoadModuleEvent()
+    {
+        $configListener = $this->defaultListeners->getConfigListener();
+        $moduleManager  = new ModuleManager(array('LoadOtherModule', 'BarModule'));
+        $moduleManager->getEventManager()->attachAggregate($this->defaultListeners);
+        $moduleManager->loadModules();
+
+        $config = $configListener->getMergedConfig();
+        $this->assertTrue(isset($config['loaded']));
+        $this->assertSame('oh, yeah baby!', $config['loaded']);
+    }
+
+    public function testModuleIsMarkedAsLoadedWhenLoadModuleEventIsTriggered()
+    {
+        $test          = new stdClass;
+        $moduleManager = new ModuleManager(array('BarModule'));
+        $events        = $moduleManager->getEventManager();
+        $events->attachAggregate($this->defaultListeners);
+        $events->attach(ModuleEvent::EVENT_LOAD_MODULE, function ($e) use ($test) {
+            $test->modules = $e->getTarget()->getLoadedModules(false);
+        });
+
+        $moduleManager->loadModules();
+
+        $this->assertTrue(isset($test->modules));
+        $this->assertArrayHasKey('BarModule', $test->modules);
+        $this->assertInstanceOf('BarModule\Module', $test->modules['BarModule']);
     }
 }

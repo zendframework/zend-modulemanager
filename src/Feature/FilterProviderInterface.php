@@ -8,17 +8,20 @@
  * @package   Zend_ModuleManager
  */
 
-namespace Zend\ModuleManager\Listener\Exception;
-
-use Zend\ModuleManager\Exception;
+namespace Zend\ModuleManager\Feature;
 
 /**
- * Runtime Exception
- *
  * @category   Zend
  * @package    Zend_ModuleManager
- * @subpackage Listener
+ * @subpackage Feature
  */
-class RuntimeException extends Exception\RuntimeException implements ExceptionInterface
+interface FilterProviderInterface
 {
+    /**
+     * Expected to return \Zend\ServiceManager\Config object or array to
+     * seed such an object.
+     *
+     * @return array|\Zend\ServiceManager\Config
+     */
+    public function getFilterConfig();
 }

@@ -1,28 +1,15 @@
 <?php
 /**
- * Zend Framework
+ * Zend Framework (http://framework.zend.com/)
  *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://framework.zend.com/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@zend.com so we can send you a copy immediately.
- *
- * @category   Zend
- * @package    Zend_ModuleManager
- * @subpackage UnitTest
- * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @link      http://github.com/zendframework/zf2 for the canonical source repository
+ * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @package   Zend_ModuleManager
  */
 
 namespace ZendTest\ModuleManager\Listener;
 
-use BadMethodCallException;
-use InvalidArgumentException;
 use PHPUnit_Framework_TestCase as TestCase;
 use Zend\Config\Config;
 use Zend\ModuleManager\Listener\ListenerOptions;
@@ -103,5 +90,32 @@ class ListenerOptionsTest extends TestCase
         $this->setExpectedException('InvalidArgumentException');
         $options = new ListenerOptions;
         $options->setConfigGlobPaths('asd');
+    }
+
+    public function testSetConfigStaticPathsThrowsInvalidArgumentException()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $options = new ListenerOptions;
+        $options->setConfigStaticPaths('asd');
+    }
+
+    public function testSetExtraConfigAcceptsArrayOrTraverable()
+    {
+        $array = array(__DIR__);
+        $traversable = new Config($array);
+        $options = new ListenerOptions;
+
+        $this->assertSame($options, $options->setExtraConfig($array));
+        $this->assertSame($array, $options->getExtraConfig());
+
+        $this->assertSame($options, $options->setExtraConfig($traversable));
+        $this->assertSame($traversable, $options->getExtraConfig());
+    }
+
+    public function testSetExtraConfigThrowsInvalidArgumentException()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $options = new ListenerOptions;
+        $options->setExtraConfig('asd');
     }
 }
