@@ -15,7 +15,7 @@ namespace Zend\ModuleManager\Feature;
  * @package    Zend_ModuleManager
  * @subpackage Feature
  */
-interface ServiceProviderInterface
+interface ViewHelperProviderInterface
 {
     /**
      * Expected to return \Zend\ServiceManager\Config object or array to
@@ -23,5 +23,5 @@ interface ServiceProviderInterface
      *
      * @return array|\Zend\ServiceManager\Config
      */
-    public function getServiceConfig();
+    public function getViewHelperConfig();
 }

@@ -15,13 +15,13 @@ namespace Zend\ModuleManager\Feature;
  * @package    Zend_ModuleManager
  * @subpackage Feature
  */
-interface ServiceProviderInterface
+interface ControllerProviderInterface
 {
     /**
-     * Expected to return \Zend\ServiceManager\Config object or array to
-     * seed such an object.
+     * Expected to return \Zend\ServiceManager\Config object or array to seed
+     * such an object.
      *
      * @return array|\Zend\ServiceManager\Config
      */
-    public function getServiceConfig();
+    public function getControllerConfig();
 }
