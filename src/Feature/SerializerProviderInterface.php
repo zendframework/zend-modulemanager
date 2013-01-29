@@ -9,13 +9,10 @@
 
 namespace Zend\ModuleManager\Feature;
 
-interface ViewHelperProviderInterface
+interface SerializerProviderInterface
 {
     /**
-     * Expected to return \Zend\ServiceManager\Config object or array to
-     * seed such an object.
-     *
-     * @return array|\Zend\ServiceManager\Config
+     * @return array
      */
-    public function getViewHelperConfig();
+    public function getSerializerConfig();
 }
