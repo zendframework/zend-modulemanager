@@ -9,13 +9,12 @@
 
 namespace Zend\ModuleManager\Feature;
 
-interface ViewHelperProviderInterface
+interface DependencyIndicatorInterface
 {
     /**
-     * Expected to return \Zend\ServiceManager\Config object or array to
-     * seed such an object.
+     * Expected to return an array of modules on which the current one depends on
      *
-     * @return array|\Zend\ServiceManager\Config
+     * @return array
      */
-    public function getViewHelperConfig();
+    public function getModuleDependencies();
 }

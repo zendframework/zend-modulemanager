@@ -9,7 +9,7 @@
 
 namespace Zend\ModuleManager\Feature;
 
-interface ViewHelperProviderInterface
+interface RouteProviderInterface
 {
     /**
      * Expected to return \Zend\ServiceManager\Config object or array to
@@ -17,5 +17,5 @@ interface ViewHelperProviderInterface
      *
      * @return array|\Zend\ServiceManager\Config
      */
-    public function getViewHelperConfig();
+    public function getRouteConfig();
 }
