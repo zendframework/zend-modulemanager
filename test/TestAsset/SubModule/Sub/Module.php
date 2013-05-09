@@ -8,14 +8,9 @@
  * @package   Zend_ModuleManager
  */
 
-namespace BamModule;
-
-use Zend\Config\Config;
+namespace SubModule\Sub;
 
 class Module
 {
-    public function getConfig()
-    {
-        return new Config(include __DIR__ . '/configs/config.php');
-    }
+
 }
