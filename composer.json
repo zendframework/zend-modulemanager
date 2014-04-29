@@ -6,6 +6,7 @@
         "zf2",
         "modulemanager"
     ],
+    "homepage": "https://github.com/zendframework/zend-module-manager",
     "autoload": {
         "psr-4": {
             "Zend\\ModuleManager\\": "src/"
@@ -39,7 +40,6 @@
             "dev-develop": "2.4-dev"
         }
     },
-    "homepage": "https://github.com/zendframework/zend-module-manager",
     "autoload-dev": {
         "psr-4": {
             "ZendTest\\ModuleManager\\": "test/"
