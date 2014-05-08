@@ -9,7 +9,7 @@
 
 namespace Zend\ModuleManager\Feature;
 
-interface TranslatorLoaderProviderInterface
+interface TranslatorPluginProviderInterface
 {
     /**
      * Expected to return \Zend\ServiceManager\Config object or array to
@@ -17,5 +17,5 @@ interface TranslatorLoaderProviderInterface
      *
      * @return array|\Zend\ServiceManager\Config
      */
-    public function getTranslatorLoaderConfig();
+    public function getTranslatorPluginConfig();
 }
