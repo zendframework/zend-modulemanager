@@ -9,12 +9,13 @@
 
 namespace Zend\ModuleManager\Feature;
 
-interface DependencyIndicatorInterface
+interface LogWriterProviderInterface
 {
     /**
-     * Expected to return an array of modules on which the current one depends on
+     * Expected to return \Zend\ServiceManager\Config object or array to
+     * seed such an object.
      *
-     * @return array
+     * @return array|\Zend\ServiceManager\Config
      */
-    public function getModuleDependencies();
+    public function getLogWriterConfig();
 }
