@@ -7,14 +7,15 @@
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
-namespace BooModule;
+namespace Zend\ModuleManager\Feature;
 
-use Zend\Config\Config;
-
-class Module
+interface LogWriterProviderInterface
 {
-    public function getConfig()
-    {
-        return new Config(include __DIR__ . '/configs/config.php');
-    }
+    /**
+     * Expected to return \Zend\ServiceManager\Config object or array to
+     * seed such an object.
+     *
+     * @return array|\Zend\ServiceManager\Config
+     */
+    public function getLogWriterConfig();
 }
