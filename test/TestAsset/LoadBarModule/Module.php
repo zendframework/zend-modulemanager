@@ -7,14 +7,22 @@
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
-namespace BooModule;
+namespace LoadBarModule;
 
-use Zend\Config\Config;
+use Zend\ModuleManager\ModuleManager;
 
 class Module
 {
+    public function init(ModuleManager $moduleManager)
+    {
+        $moduleManager->loadModule('LoadFooModule');
+    }
+
     public function getConfig()
     {
-        return new Config(include __DIR__ . '/configs/config.php');
+        return array(
+            'bar' => 'bar',
+            'foo' => 'bar',
+        );
     }
 }
