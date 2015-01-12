@@ -22,6 +22,7 @@
         "zendframework/zend-config": "self.version",
         "zendframework/zend-console": "self.version",
         "zendframework/zend-loader": "self.version",
+        "zendframework/zend-mvc": "self.version",
         "zendframework/zend-servicemanager": "self.version"
     },
     "suggest": {
