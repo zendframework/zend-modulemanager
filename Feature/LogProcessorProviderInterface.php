@@ -9,12 +9,13 @@
 
 namespace Zend\ModuleManager\Feature;
 
-interface ConfigProviderInterface
+interface LogProcessorProviderInterface
 {
     /**
-     * Returns configuration to merge with application configuration
+     * Expected to return \Zend\ServiceManager\Config object or array to
+     * seed such an object.
      *
-     * @return array|\Traversable
+     * @return array|\Zend\ServiceManager\Config
      */
-    public function getConfig();
+    public function getLogProcessorConfig();
 }
