@@ -14,14 +14,14 @@
     },
     "require": {
         "php": ">=5.3.23",
-        "zendframework/zend-eventmanager": "self.version",
-        "zendframework/zend-stdlib": "self.version"
+        "zendframework/zend-eventmanager": "~2.4",
+        "zendframework/zend-stdlib": "~2.4"
     },
     "require-dev": {
-        "zendframework/zend-config": "self.version",
-        "zendframework/zend-console": "self.version",
-        "zendframework/zend-loader": "self.version",
-        "zendframework/zend-servicemanager": "self.version",
+        "zendframework/zend-config": "~2.4",
+        "zendframework/zend-console": "~2.4",
+        "zendframework/zend-loader": "~2.4",
+        "zendframework/zend-servicemanager": "~2.4",
         "fabpot/php-cs-fixer": "1.7.*",
         "satooshi/php-coveralls": "dev-master",
         "phpunit/PHPUnit": "~4.0"
