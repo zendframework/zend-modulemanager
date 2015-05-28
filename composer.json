@@ -6,7 +6,7 @@
         "zf2",
         "modulemanager"
     ],
-    "homepage": "https://github.com/zendframework/zend-module-manager",
+    "homepage": "https://github.com/zendframework/zend-modulemanager",
     "autoload": {
         "psr-4": {
             "Zend\\ModuleManager\\": "src/"
