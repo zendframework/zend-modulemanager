@@ -46,7 +46,6 @@ class DefaultListenerAggregateTest extends AbstractListenerTestCase
         $events = $this->getEventsFromEventManager($moduleManager->getEventManager());
         $expectedEvents = [
             'loadModules' => [
-                'Zend\Loader\ModuleAutoloader',
                 'config-pre' => 'Zend\ModuleManager\Listener\ConfigListener',
                 'config-post' => 'Zend\ModuleManager\Listener\ConfigListener',
                 'Zend\ModuleManager\ModuleManager',
@@ -55,7 +54,6 @@ class DefaultListenerAggregateTest extends AbstractListenerTestCase
                 'Zend\ModuleManager\Listener\ModuleResolverListener',
             ],
             'loadModule' => [
-                'Zend\ModuleManager\Listener\AutoloaderListener',
                 'Zend\ModuleManager\Listener\ModuleDependencyCheckerListener',
                 'Zend\ModuleManager\Listener\InitTrigger',
                 'Zend\ModuleManager\Listener\OnBootstrapListener',
@@ -91,5 +89,48 @@ class DefaultListenerAggregateTest extends AbstractListenerTestCase
 
         $listenerAggregate->detach($events);
         $this->assertEquals(1, count($this->getEventsFromEventManager($events)));
+    }
+
+    public function testDefaultListenerAggregateAddsAutoloadingListenersIfZendLoaderIsEnabled()
+    {
+        $moduleManager = new ModuleManager(['ListenerTestModule']);
+        $defaultListeners = new DefaultListenerAggregate(new ListenerOptions([
+            'use_zend_loader' => true,
+        ]));
+        $defaultListeners->attach($moduleManager->getEventManager());
+
+        $events = $this->getEventsFromEventManager($moduleManager->getEventManager());
+        $expectedEvents = [
+            'loadModules' => [
+                'Zend\Loader\ModuleAutoloader',
+                'config-pre' => 'Zend\ModuleManager\Listener\ConfigListener',
+                'config-post' => 'Zend\ModuleManager\Listener\ConfigListener',
+                'Zend\ModuleManager\ModuleManager',
+            ],
+            'loadModule.resolve' => [
+                'Zend\ModuleManager\Listener\ModuleResolverListener',
+            ],
+            'loadModule' => [
+                'Zend\ModuleManager\Listener\AutoloaderListener',
+                'Zend\ModuleManager\Listener\ModuleDependencyCheckerListener',
+                'Zend\ModuleManager\Listener\InitTrigger',
+                'Zend\ModuleManager\Listener\OnBootstrapListener',
+                'Zend\ModuleManager\Listener\ConfigListener',
+            ],
+        ];
+        foreach ($expectedEvents as $event => $expectedListeners) {
+            $this->assertContains($event, $events);
+            $count     = 0;
+            foreach ($this->getListenersForEvent($event, $moduleManager->getEventManager()) as $listener) {
+                if (is_array($listener)) {
+                    $listener = $listener[0];
+                }
+                $listenerClass = get_class($listener);
+                $this->assertContains($listenerClass, $expectedListeners);
+                $count += 1;
+            }
+
+            $this->assertSame(count($expectedListeners), $count);
+        }
     }
 }

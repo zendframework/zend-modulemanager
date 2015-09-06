@@ -40,17 +40,22 @@ class DefaultListenerAggregate extends AbstractListener implements
     {
         $options                     = $this->getOptions();
         $configListener              = $this->getConfigListener();
-        $moduleLoaderListener        = new ModuleLoaderListener($options);
 
-        // High priority, we assume module autoloading (for FooNamespace\Module
-        // classes) should be available before anything else
-        $moduleLoaderListener->attach($events);
-        $this->listeners[] = $moduleLoaderListener;
+        if ($options->getUseZendLoader()) {
+            $moduleLoaderListener = new ModuleLoaderListener($options);
+
+            // High priority, we assume module autoloading (for FooNamespace\Module
+            // classes) should be available before anything else
+            $moduleLoaderListener->attach($events);
+            $this->listeners[] = $moduleLoaderListener;
+        }
         $this->listeners[] = $events->attach(ModuleEvent::EVENT_LOAD_MODULE_RESOLVE, new ModuleResolverListener);
 
-        // High priority, because most other loadModule listeners will assume
-        // the module's classes are available via autoloading
-        $this->listeners[] = $events->attach(ModuleEvent::EVENT_LOAD_MODULE, new AutoloaderListener($options), 9000);
+        if ($options->getUseZendLoader()) {
+            // High priority, because most other loadModule listeners will assume
+            // the module's classes are available via autoloading
+            $this->listeners[] = $events->attach(ModuleEvent::EVENT_LOAD_MODULE, new AutoloaderListener($options), 9000);
+        }
 
         if ($options->getCheckDependencies()) {
             $this->listeners[] = $events->attach(ModuleEvent::EVENT_LOAD_MODULE, new ModuleDependencyCheckerListener, 8000);
