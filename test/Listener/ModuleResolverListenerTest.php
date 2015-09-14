@@ -61,6 +61,12 @@ class ModuleResolverListenerTest extends TestCase
 
         $e->setModuleName('ListenerTestModule');
         $this->assertInstanceOf('ListenerTestModule\Module', $moduleResolver($e));
+    }
+
+    public function testModuleResolverListenerReturnFalseIfCannotResolveModuleClasses()
+    {
+        $moduleResolver = new ModuleResolverListener;
+        $e = new ModuleEvent;
 
         $e->setModuleName('DoesNotExist');
         $this->assertFalse($moduleResolver($e));
