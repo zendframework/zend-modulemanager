@@ -73,6 +73,7 @@ class ModuleResolverListenerTest extends TestCase
             // Description => [module name, expectedInstanceOf]
             'Append Module' => ['ListenerTestModule', ListenerTestModule\Module::class],
             'FQCN Module' => [ListenerTestModule\Module::class, ListenerTestModule\Module::class],
+            'FQCN Arbitrary' => [ListenerTestModule\FooModule::class, ListenerTestModule\FooModule::class],
         ];
     }
 
