@@ -9,6 +9,7 @@
 
 namespace ZendTest\ModuleManager\Listener;
 
+use ListenerTestModule;
 use PHPUnit_Framework_TestCase as TestCase;
 use Zend\Loader\AutoloaderFactory;
 use Zend\Loader\ModuleAutoloader;
@@ -54,13 +55,24 @@ class ModuleResolverListenerTest extends TestCase
         set_include_path($this->includePath);
     }
 
-    public function testModuleResolverListenerCanResolveModuleClasses()
+    /**
+     * @dataProvider validModuleNameProvider
+     */
+    public function testModuleResolverListenerCanResolveModuleClasses($moduleName, $expectedInstanceOf)
     {
         $moduleResolver = new ModuleResolverListener;
         $e = new ModuleEvent;
 
-        $e->setModuleName('ListenerTestModule');
-        $this->assertInstanceOf('ListenerTestModule\Module', $moduleResolver($e));
+        $e->setModuleName($moduleName);
+        $this->assertInstanceOf($expectedInstanceOf, $moduleResolver($e));
+    }
+
+    public function validModuleNameProvider()
+    {
+        return [
+            // Description => [module name, expectedInstanceOf]
+            'Append Module' => ['ListenerTestModule', ListenerTestModule\Module::class],
+        ];
     }
 
     public function testModuleResolverListenerReturnFalseIfCannotResolveModuleClasses()
