@@ -25,15 +25,16 @@ class MockApplication implements ApplicationInterface
         $this->events = $events;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getEventManager()
     {
         return $this->events;
     }
 
     /**
-     * Get the locator object
-     *
-     * @return \Zend\ServiceManager\ServiceLocatorInterface
+     * {@inheritDoc}
      */
     public function getServiceManager()
     {
@@ -47,9 +48,7 @@ class MockApplication implements ApplicationInterface
     }
 
     /**
-     * Get the request object
-     *
-     * @return Request
+     * {@inheritDoc}
      */
     public function getRequest()
     {
@@ -57,9 +56,7 @@ class MockApplication implements ApplicationInterface
     }
 
     /**
-     * Get the response object
-     *
-     * @return Response
+     * {@inheritDoc}
      */
     public function getResponse()
     {
@@ -67,9 +64,7 @@ class MockApplication implements ApplicationInterface
     }
 
     /**
-     * Run the application
-     *
-     * @return \Zend\Http\Response
+     * {@inheritDoc}
      */
     public function run()
     {
