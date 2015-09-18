@@ -180,11 +180,11 @@ class ModuleManager implements ModuleManagerInterface
 
     /**
      * Load a module with the name
-     * @param  \Zend\EventManager\EventInterface $event
+     * @param  ModuleEvent $event
      * @return mixed                            module instance
      * @throws Exception\RuntimeException
      */
-    protected function loadModuleByName($event)
+    protected function loadModuleByName(ModuleEvent $event)
     {
         $result = $this->getEventManager()->trigger(ModuleEvent::EVENT_LOAD_MODULE_RESOLVE, $this, $event, function ($r) {
             return (is_object($r));
