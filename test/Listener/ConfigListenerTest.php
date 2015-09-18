@@ -11,62 +11,21 @@ namespace ZendTest\ModuleManager\Listener;
 
 use ArrayObject;
 use InvalidArgumentException;
-use PHPUnit_Framework_TestCase as TestCase;
-use Zend\Loader\AutoloaderFactory;
-use Zend\Loader\ModuleAutoloader;
 use Zend\ModuleManager\Listener\ConfigListener;
 use Zend\ModuleManager\Listener\ModuleResolverListener;
 use Zend\ModuleManager\Listener\ListenerOptions;
 use Zend\ModuleManager\ModuleManager;
 use Zend\ModuleManager\ModuleEvent;
+use ZendTest\ModuleManager\SetUpCacheDirTrait;
 
-class ConfigListenerTest extends TestCase
+class ConfigListenerTest extends AbstractListenerTestCase
 {
+    use SetUpCacheDirTrait;
+
     public function setUp()
     {
-        $this->tmpdir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'zend_module_cache_dir';
-        @mkdir($this->tmpdir);
-        $this->configCache = $this->tmpdir . DIRECTORY_SEPARATOR . 'config.cache.php';
-        // Store original autoloaders
-        $this->loaders = spl_autoload_functions();
-        if (!is_array($this->loaders)) {
-            // spl_autoload_functions does not return empty array when no
-            // autoloaders registered...
-            $this->loaders = [];
-        }
-
-        // Store original include_path
-        $this->includePath = get_include_path();
-
-        $autoloader = new ModuleAutoloader([
-            dirname(__DIR__) . '/TestAsset',
-        ]);
-        $autoloader->register();
-
         $this->moduleManager = new ModuleManager([]);
         $this->moduleManager->getEventManager()->attach(ModuleEvent::EVENT_LOAD_MODULE_RESOLVE, new ModuleResolverListener, 1000);
-    }
-
-    public function tearDown()
-    {
-        $file = glob($this->tmpdir . DIRECTORY_SEPARATOR . '*');
-        @unlink($file[0]); // change this if there's ever > 1 file
-        @rmdir($this->tmpdir);
-        // Restore original autoloaders
-        AutoloaderFactory::unregisterAutoloaders();
-        $loaders = spl_autoload_functions();
-        if (is_array($loaders)) {
-            foreach ($loaders as $loader) {
-                spl_autoload_unregister($loader);
-            }
-        }
-
-        foreach ($this->loaders as $loader) {
-            spl_autoload_register($loader);
-        }
-
-        // Restore original include_path
-        set_include_path($this->includePath);
     }
 
     public function testMultipleConfigsAreMerged()

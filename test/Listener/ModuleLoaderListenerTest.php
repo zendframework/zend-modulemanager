@@ -9,29 +9,21 @@
 
 namespace ZendTest\ModuleManager\Listener;
 
-use PHPUnit_Framework_TestCase as TestCase;
 use Zend\ModuleManager\Listener\ModuleResolverListener;
 use Zend\ModuleManager\Listener\ModuleLoaderListener;
 use Zend\ModuleManager\Listener\ListenerOptions;
 use Zend\ModuleManager\ModuleManager;
 use Zend\ModuleManager\ModuleEvent;
+use ZendTest\ModuleManager\SetUpCacheDirTrait;
 
-class ModuleLoaderListenerTest extends TestCase
+class ModuleLoaderListenerTest extends AbstractListenerTestCase
 {
+    use SetUpCacheDirTrait;
+
     public function setUp()
     {
-        $this->tmpdir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'zend_module_cache_dir';
-        @mkdir($this->tmpdir);
-
         $this->moduleManager = new ModuleManager([]);
         $this->moduleManager->getEventManager()->attach(ModuleEvent::EVENT_LOAD_MODULE_RESOLVE, new ModuleResolverListener, 1000);
-    }
-
-    public function tearDown()
-    {
-        $file = glob($this->tmpdir . DIRECTORY_SEPARATOR . '*');
-        @unlink($file[0]); // change this if there's ever > 1 file
-        @rmdir($this->tmpdir);
     }
 
     public function testModuleLoaderListenerFunctionsAsAggregateListenerEnabledCache()

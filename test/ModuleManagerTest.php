@@ -12,7 +12,6 @@ namespace ZendTest\ModuleManager;
 use PHPUnit_Framework_TestCase as TestCase;
 use stdClass;
 use Zend\EventManager\EventManager;
-use Zend\Loader\AutoloaderFactory;
 use Zend\ModuleManager\Listener\ListenerOptions;
 use Zend\ModuleManager\Listener\DefaultListenerAggregate;
 use Zend\ModuleManager\ModuleEvent;
@@ -21,25 +20,8 @@ use InvalidArgumentException;
 
 class ModuleManagerTest extends TestCase
 {
-    /**
-     * @var string
-     */
-    protected $tmpdir;
-
-    /**
-     * @var string
-     */
-    protected $configCache;
-
-    /**
-     * @var array
-     */
-    protected $loaders;
-
-    /**
-     * @var string
-     */
-    protected $includePath;
+    use ResetAutoloadFunctionsTrait;
+    use SetUpCacheDirTrait;
 
     /**
      * @var DefaultListenerAggregate
@@ -48,20 +30,6 @@ class ModuleManagerTest extends TestCase
 
     public function setUp()
     {
-        $this->tmpdir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'zend_module_cache_dir';
-        @mkdir($this->tmpdir);
-        $this->configCache = $this->tmpdir . DIRECTORY_SEPARATOR . 'config.cache.php';
-        // Store original autoloaders
-        $this->loaders = spl_autoload_functions();
-        if (!is_array($this->loaders)) {
-            // spl_autoload_functions does not return empty array when no
-            // autoloaders registered...
-            $this->loaders = [];
-        }
-
-        // Store original include_path
-        $this->includePath = get_include_path();
-
         $this->defaultListeners = new DefaultListenerAggregate(
             new ListenerOptions([
                 'module_paths'         => [
@@ -69,28 +37,6 @@ class ModuleManagerTest extends TestCase
                 ],
             ])
         );
-    }
-
-    public function tearDown()
-    {
-        $file = glob($this->tmpdir . DIRECTORY_SEPARATOR . '*');
-        @unlink($file[0]); // change this if there's ever > 1 file
-        @rmdir($this->tmpdir);
-        // Restore original autoloaders
-        AutoloaderFactory::unregisterAutoloaders();
-        $loaders = spl_autoload_functions();
-        if (is_array($loaders)) {
-            foreach ($loaders as $loader) {
-                spl_autoload_unregister($loader);
-            }
-        }
-
-        foreach ($this->loaders as $loader) {
-            spl_autoload_register($loader);
-        }
-
-        // Restore original include_path
-        set_include_path($this->includePath);
     }
 
     public function testEventManagerIdentifiers()

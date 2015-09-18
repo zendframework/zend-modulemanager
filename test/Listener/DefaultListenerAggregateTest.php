@@ -9,27 +9,14 @@
 
 namespace ZendTest\ModuleManager\Listener;
 
-use PHPUnit_Framework_TestCase as TestCase;
-use Zend\Loader\AutoloaderFactory;
 use Zend\ModuleManager\Listener\ListenerOptions;
 use Zend\ModuleManager\Listener\DefaultListenerAggregate;
 use Zend\ModuleManager\ModuleManager;
 
-class DefaultListenerAggregateTest extends TestCase
+class DefaultListenerAggregateTest extends AbstractListenerTestCase
 {
     public function setUp()
     {
-        // Store original autoloaders
-        $this->loaders = spl_autoload_functions();
-        if (!is_array($this->loaders)) {
-            // spl_autoload_functions does not return empty array when no
-            // autoloaders registered...
-            $this->loaders = [];
-        }
-
-        // Store original include_path
-        $this->includePath = get_include_path();
-
         $this->defaultListeners = new DefaultListenerAggregate(
             new ListenerOptions([
                 'module_paths'         => [
@@ -37,25 +24,6 @@ class DefaultListenerAggregateTest extends TestCase
                 ],
             ])
         );
-    }
-
-    public function tearDown()
-    {
-        // Restore original autoloaders
-        AutoloaderFactory::unregisterAutoloaders();
-        $loaders = spl_autoload_functions();
-        if (is_array($loaders)) {
-            foreach ($loaders as $loader) {
-                spl_autoload_unregister($loader);
-            }
-        }
-
-        foreach ($this->loaders as $loader) {
-            spl_autoload_register($loader);
-        }
-
-        // Restore original include_path
-        set_include_path($this->includePath);
     }
 
     public function testDefaultListenerAggregateCanAttachItself()

@@ -9,11 +9,8 @@
 
 namespace ZendTest\ModuleManager\Listener;
 
-use PHPUnit_Framework_TestCase as TestCase;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\SharedEventManager;
-use Zend\Loader\AutoloaderFactory;
-use Zend\Loader\ModuleAutoloader;
 use Zend\ModuleManager\Listener\LocatorRegistrationListener;
 use Zend\ModuleManager\Listener\ModuleResolverListener;
 use Zend\ModuleManager\ModuleManager;
@@ -24,28 +21,12 @@ use ZendTest\ModuleManager\TestAsset\MockApplication;
 
 require_once dirname(__DIR__) . '/TestAsset/ListenerTestModule/src/Foo/Bar.php';
 
-class LocatorRegistrationListenerTest extends TestCase
+class LocatorRegistrationListenerTest extends AbstractListenerTestCase
 {
     public $module;
 
     public function setUp()
     {
-        // Store original autoloaders
-        $this->loaders = spl_autoload_functions();
-        if (!is_array($this->loaders)) {
-            // spl_autoload_functions does not return empty array when no
-            // autoloaders registered...
-            $this->loaders = [];
-        }
-
-        // Store original include_path
-        $this->includePath = get_include_path();
-
-        $autoloader = new ModuleAutoloader([
-            dirname(__DIR__) . '/TestAsset',
-        ]);
-        $autoloader->register();
-
         $this->sharedEvents = new SharedEventManager();
 
         $this->moduleManager = new ModuleManager(['ListenerTestModule']);
@@ -60,25 +41,6 @@ class LocatorRegistrationListenerTest extends TestCase
         $this->serviceManager = new ServiceManager();
         $this->serviceManager->setService('ModuleManager', $this->moduleManager);
         $this->application->setServiceManager($this->serviceManager);
-    }
-
-    public function tearDown()
-    {
-        // Restore original autoloaders
-        AutoloaderFactory::unregisterAutoloaders();
-        $loaders = spl_autoload_functions();
-        if (is_array($loaders)) {
-            foreach ($loaders as $loader) {
-                spl_autoload_unregister($loader);
-            }
-        }
-
-        foreach ($this->loaders as $loader) {
-            spl_autoload_register($loader);
-        }
-
-        // Restore original include_path
-        set_include_path($this->includePath);
     }
 
     public function testModuleClassIsRegisteredWithDiAndInjectedWithSharedInstances()
