@@ -23,7 +23,6 @@ require_once dirname(__DIR__) . '/TestAsset/ListenerTestModule/src/Foo/Bar.php';
 
 class LocatorRegistrationListenerTest extends AbstractListenerTestCase
 {
-    public $module;
 
     public function setUp()
     {
@@ -45,8 +44,9 @@ class LocatorRegistrationListenerTest extends AbstractListenerTestCase
 
     public function testModuleClassIsRegisteredWithDiAndInjectedWithSharedInstances()
     {
+        $module = null;
         $locator         = $this->serviceManager;
-        $locator->setFactory('Foo\Bar', function ($s) {
+        $locator->setFactory('Foo\Bar', function (ServiceLocatorInterface $s) {
             $module   = $s->get('ListenerTestModule\Module');
             $manager  = $s->get('Zend\ModuleManager\ModuleManager');
             $instance = new \Foo\Bar($module, $manager);
@@ -55,8 +55,8 @@ class LocatorRegistrationListenerTest extends AbstractListenerTestCase
 
         $locatorRegistrationListener = new LocatorRegistrationListener;
         $this->moduleManager->getEventManager()->attachAggregate($locatorRegistrationListener);
-        $this->moduleManager->getEventManager()->attach(ModuleEvent::EVENT_LOAD_MODULE, function ($e) {
-            $this->module = $e->getModule();
+        $this->moduleManager->getEventManager()->attach(ModuleEvent::EVENT_LOAD_MODULE, function (ModuleEvent $e) use (&$module) {
+            $module = $e->getModule();
         }, -1000);
         $this->moduleManager->loadModules();
 
@@ -78,7 +78,7 @@ class LocatorRegistrationListenerTest extends AbstractListenerTestCase
         if (!$foo) {
             $this->fail($message);
         }
-        $this->assertSame($this->module, $foo->module);
+        $this->assertSame($module, $foo->module);
 
         $this->assertInstanceOf('Zend\ModuleManager\ModuleManager', $sharedInstance2);
         $this->assertSame($this->moduleManager, $locator->get('Foo\Bar')->moduleManager);
