@@ -10,9 +10,11 @@
 namespace LoadOtherModule;
 
 
+use Zend\ModuleManager\ModuleManager;
+
 class Module
 {
-    public function init($moduleManager)
+    public function init(ModuleManager $moduleManager)
     {
         $moduleManager->loadModule('BarModule');
         $moduleManager->loadModule('BazModule');

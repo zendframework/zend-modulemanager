@@ -16,6 +16,11 @@ use Zend\ModuleManager\ModuleEvent;
 
 class AutoloaderListenerTest extends AbstractListenerTestCase
 {
+    /**
+     * @var ModuleManager
+     */
+    protected $moduleManager;
+
     public function setUp()
     {
         $this->moduleManager = new ModuleManager([]);

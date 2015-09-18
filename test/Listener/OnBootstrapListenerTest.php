@@ -20,6 +20,16 @@ use ZendTest\ModuleManager\TestAsset\MockApplication;
 
 class OnBootstrapListenerTest extends AbstractListenerTestCase
 {
+    /**
+     * @var Application
+     */
+    protected $application;
+
+    /**
+     * @var ModuleManager
+     */
+    protected $moduleManager;
+
     public function setUp()
     {
         $sharedEvents = new SharedEventManager();

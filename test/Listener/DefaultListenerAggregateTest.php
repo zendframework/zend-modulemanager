@@ -15,6 +15,11 @@ use Zend\ModuleManager\ModuleManager;
 
 class DefaultListenerAggregateTest extends AbstractListenerTestCase
 {
+    /**
+     * @var DefaultListenerAggregate
+     */
+    protected $defaultListeners;
+
     public function setUp()
     {
         $this->defaultListeners = new DefaultListenerAggregate(

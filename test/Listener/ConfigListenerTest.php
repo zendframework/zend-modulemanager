@@ -22,6 +22,11 @@ class ConfigListenerTest extends AbstractListenerTestCase
 {
     use SetUpCacheDirTrait;
 
+    /**
+     * @var ModuleManager
+     */
+    protected $moduleManager;
+
     public function setUp()
     {
         $this->moduleManager = new ModuleManager([]);

@@ -20,6 +20,21 @@ use Zend\ServiceManager\ServiceManager;
 
 class ServiceListenerTest extends TestCase
 {
+    /**
+     * @var ConfigListener
+     */
+    protected $configListener;
+
+    /**
+     * @var ModuleEvent
+     */
+    protected $event;
+
+    /**
+     * @var ServiceListener
+     */
+    protected $listener;
+
     protected $serviceManagerProps = [
         'invokableClasses',
         'factories',
@@ -30,6 +45,11 @@ class ServiceListenerTest extends TestCase
         'initializers',
         'peeringServiceManagers',
     ];
+
+    /**
+     * @var ServiceManager
+     */
+    protected $services;
 
     public function setUp()
     {

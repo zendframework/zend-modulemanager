@@ -16,6 +16,7 @@ use Zend\ModuleManager\Listener\ModuleResolverListener;
 use Zend\ModuleManager\ModuleManager;
 use Zend\ModuleManager\ModuleEvent;
 use Zend\Mvc\Application;
+use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\ServiceManager;
 use ZendTest\ModuleManager\TestAsset\MockApplication;
 
@@ -23,6 +24,25 @@ require_once dirname(__DIR__) . '/TestAsset/ListenerTestModule/src/Foo/Bar.php';
 
 class LocatorRegistrationListenerTest extends AbstractListenerTestCase
 {
+    /**
+     * @var Application
+     */
+    protected $application;
+
+    /**
+     * @var ModuleManager
+     */
+    protected $moduleManager;
+
+    /**
+     * @var ServiceManager
+     */
+    protected $serviceManager;
+
+    /**
+     * @var SharedEventManager
+     */
+    protected $sharedEvents;
 
     public function setUp()
     {
