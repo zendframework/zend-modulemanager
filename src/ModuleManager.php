@@ -112,7 +112,7 @@ class ModuleManager implements ModuleManagerInterface
             return $this;
         }
 
-        $this->getEventManager()->trigger(ModuleEvent::EVENT_LOAD_MODULES, $this, $this->getEvent());
+        $this->getEventManager()->trigger(ModuleEvent::EVENT_LOAD_MODULES, $this->getEvent());
 
         /**
          * Having a dedicated .post event abstracts the complexity of priorities from the user.
@@ -120,7 +120,7 @@ class ModuleManager implements ModuleManagerInterface
          * things like config merging are complete without having to worry if
          * they set a low enough priority.
          */
-        $this->getEventManager()->trigger(ModuleEvent::EVENT_LOAD_MODULES_POST, $this, $this->getEvent());
+        $this->getEventManager()->trigger(ModuleEvent::EVENT_LOAD_MODULES_POST, $this->getEvent());
 
         return $this;
     }
@@ -171,7 +171,7 @@ class ModuleManager implements ModuleManagerInterface
         $event->setModule($module);
 
         $this->loadedModules[$moduleName] = $module;
-        $this->getEventManager()->trigger(ModuleEvent::EVENT_LOAD_MODULE, $this, $event);
+        $this->getEventManager()->trigger(ModuleEvent::EVENT_LOAD_MODULE, $event);
 
         $this->loadFinished--;
 
@@ -186,7 +186,7 @@ class ModuleManager implements ModuleManagerInterface
      */
     protected function loadModuleByName($event)
     {
-        $result = $this->getEventManager()->trigger(ModuleEvent::EVENT_LOAD_MODULE_RESOLVE, $this, $event, function ($r) {
+        $result = $this->getEventManager()->trigger(ModuleEvent::EVENT_LOAD_MODULE_RESOLVE, $event, function ($r) {
             return (is_object($r));
         });
 
@@ -271,7 +271,7 @@ class ModuleManager implements ModuleManagerInterface
     public function getEvent()
     {
         if (!$this->event instanceof ModuleEvent) {
-            $this->setEvent(new ModuleEvent);
+            $this->setEvent(new ModuleEvent(null, $this));
         }
         return $this->event;
     }
