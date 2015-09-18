@@ -20,6 +20,10 @@ use Zend\ModuleManager\Listener\ListenerOptions;
 use Zend\ModuleManager\ModuleManager;
 use Zend\ModuleManager\ModuleEvent;
 
+/**
+ * @covers Zend\ModuleManager\Listener\AbstractListener
+ * @covers Zend\ModuleManager\Listener\ConfigListener
+ */
 class ConfigListenerTest extends TestCase
 {
     public function setUp()

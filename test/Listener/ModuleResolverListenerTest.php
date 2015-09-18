@@ -15,6 +15,10 @@ use Zend\Loader\ModuleAutoloader;
 use Zend\ModuleManager\Listener\ModuleResolverListener;
 use Zend\ModuleManager\ModuleEvent;
 
+/**
+ * @covers Zend\ModuleManager\Listener\AbstractListener
+ * @covers Zend\ModuleManager\Listener\ModuleResolverListener
+ */
 class ModuleResolverListenerTest extends TestCase
 {
     public function setUp()

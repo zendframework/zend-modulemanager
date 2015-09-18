@@ -16,6 +16,10 @@ use Zend\ModuleManager\Listener\ListenerOptions;
 use Zend\ModuleManager\ModuleManager;
 use Zend\ModuleManager\ModuleEvent;
 
+/**
+ * @covers Zend\ModuleManager\Listener\AbstractListener
+ * @covers Zend\ModuleManager\Listener\ModuleLoaderListener
+ */
 class ModuleLoaderListenerTest extends TestCase
 {
     public function setUp()

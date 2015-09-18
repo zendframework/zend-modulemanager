@@ -24,6 +24,10 @@ use ZendTest\ModuleManager\TestAsset\MockApplication;
 
 require_once dirname(__DIR__) . '/TestAsset/ListenerTestModule/src/Foo/Bar.php';
 
+/**
+ * @covers Zend\ModuleManager\Listener\AbstractListener
+ * @covers Zend\ModuleManager\Listener\LocatorRegistrationListener
+ */
 class LocatorRegistrationListenerTest extends TestCase
 {
     public $module;
