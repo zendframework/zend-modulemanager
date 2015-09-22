@@ -211,4 +211,23 @@ class ModuleManagerTest extends TestCase
         $this->setExpectedException('Zend\ModuleManager\Exception\RuntimeException');
         $moduleManager->loadModules();
     }
+
+    public function testSettingEventInjectsModuleManagerAsTarget()
+    {
+        $moduleManager = new ModuleManager([]);
+        $event = new ModuleEvent();
+
+        $moduleManager->setEvent($event);
+
+        $this->assertSame($event, $moduleManager->getEvent());
+        $this->assertSame($moduleManager, $event->getTarget());
+    }
+
+    public function testGetEventWillLazyLoadOneWithTargetSetToModuleManager()
+    {
+        $moduleManager = new ModuleManager([]);
+        $event = $moduleManager->getEvent();
+        $this->assertInstanceOf(ModuleEvent::class, $event);
+        $this->assertSame($moduleManager, $event->getTarget());
+    }
 }
