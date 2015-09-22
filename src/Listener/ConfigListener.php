@@ -165,7 +165,7 @@ class ConfigListener extends AbstractListener implements
     {
         // Trigger MERGE_CONFIG event. This is a hook to allow the merged application config to be
         // modified before it is cached (In particular, allows the removal of config keys)
-        $e->getTarget()->getEventManager()->trigger(ModuleEvent::EVENT_MERGE_CONFIG, $e->getTarget(), $e);
+        $e->getTarget()->getEventManager()->trigger(ModuleEvent::EVENT_MERGE_CONFIG, $e);
 
         // If enabled, update the config cache
         if (
