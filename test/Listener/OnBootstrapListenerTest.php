@@ -18,6 +18,10 @@ use Zend\ModuleManager\ModuleEvent;
 use Zend\Mvc\Application;
 use ZendTest\ModuleManager\TestAsset\MockApplication;
 
+/**
+ * @covers Zend\ModuleManager\Listener\AbstractListener
+ * @covers Zend\ModuleManager\Listener\OnBootstrapListener
+ */
 class OnBootstrapListenerTest extends AbstractListenerTestCase
 {
     /**

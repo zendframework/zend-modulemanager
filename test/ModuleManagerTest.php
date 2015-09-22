@@ -18,6 +18,9 @@ use Zend\ModuleManager\ModuleEvent;
 use Zend\ModuleManager\ModuleManager;
 use InvalidArgumentException;
 
+/**
+ * @covers Zend\ModuleManager\ModuleManager
+ */
 class ModuleManagerTest extends TestCase
 {
     use ResetAutoloadFunctionsTrait;

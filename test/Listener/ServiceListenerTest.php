@@ -18,6 +18,9 @@ use Zend\ModuleManager\ModuleEvent;
 use Zend\ServiceManager\Config as ServiceConfig;
 use Zend\ServiceManager\ServiceManager;
 
+/**
+ * @covers Zend\ModuleManager\Listener\ServiceListener
+ */
 class ServiceListenerTest extends TestCase
 {
     /**
