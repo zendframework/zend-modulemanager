@@ -9,12 +9,12 @@
 
 namespace Zend\ModuleManager\Listener;
 
-use Zend\EventManager\Event;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
 use Zend\ModuleManager\Feature\LocatorRegisteredInterface;
 use Zend\ModuleManager\ModuleEvent;
 use Zend\ModuleManager\ModuleManager;
+use Zend\Mvc\MvcEvent;
 
 /**
  * Locator registration listener
@@ -54,10 +54,10 @@ class LocatorRegistrationListener extends AbstractListener implements
      *
      * Once all the modules are loaded, loop
      *
-     * @param  Event $e
+     * @param  ModuleEvent $e
      * @return void
      */
-    public function onLoadModules(Event $e)
+    public function onLoadModules(ModuleEvent $e)
     {
         $moduleManager = $e->getTarget();
         $events        = $moduleManager->getEventManager()->getSharedManager();
@@ -67,7 +67,7 @@ class LocatorRegistrationListener extends AbstractListener implements
         }
 
         // Shared instance for module manager
-        $events->attach('Zend\Mvc\Application', ModuleManager::EVENT_BOOTSTRAP, function ($e) use ($moduleManager) {
+        $events->attach('Zend\Mvc\Application', ModuleManager::EVENT_BOOTSTRAP, function (MvcEvent $e) use ($moduleManager) {
             $moduleClassName = get_class($moduleManager);
             $moduleClassNameArray = explode('\\', $moduleClassName);
             $moduleClassNameAlias = end($moduleClassNameArray);
@@ -94,10 +94,10 @@ class LocatorRegistrationListener extends AbstractListener implements
      *
      * @TODO: Check the application / locator / etc a bit better to make sure
      * the env looks how we're expecting it to?
-     * @param Event $e
+     * @param MvcEvent $e
      * @return void
      */
-    public function onBootstrap(Event $e)
+    public function onBootstrap(MvcEvent $e)
     {
         $application = $e->getApplication();
         $services    = $application->getServiceManager();

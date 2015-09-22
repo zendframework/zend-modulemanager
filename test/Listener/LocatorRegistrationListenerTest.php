@@ -9,43 +9,43 @@
 
 namespace ZendTest\ModuleManager\Listener;
 
-use PHPUnit_Framework_TestCase as TestCase;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\SharedEventManager;
-use Zend\Loader\AutoloaderFactory;
-use Zend\Loader\ModuleAutoloader;
 use Zend\ModuleManager\Listener\LocatorRegistrationListener;
 use Zend\ModuleManager\Listener\ModuleResolverListener;
 use Zend\ModuleManager\ModuleManager;
 use Zend\ModuleManager\ModuleEvent;
 use Zend\Mvc\Application;
+use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\ServiceManager;
 use ZendTest\ModuleManager\TestAsset\MockApplication;
 
 require_once dirname(__DIR__) . '/TestAsset/ListenerTestModule/src/Foo/Bar.php';
 
-class LocatorRegistrationListenerTest extends TestCase
+class LocatorRegistrationListenerTest extends AbstractListenerTestCase
 {
-    public $module;
+    /**
+     * @var Application
+     */
+    protected $application;
+
+    /**
+     * @var ModuleManager
+     */
+    protected $moduleManager;
+
+    /**
+     * @var ServiceManager
+     */
+    protected $serviceManager;
+
+    /**
+     * @var SharedEventManager
+     */
+    protected $sharedEvents;
 
     public function setUp()
     {
-        // Store original autoloaders
-        $this->loaders = spl_autoload_functions();
-        if (!is_array($this->loaders)) {
-            // spl_autoload_functions does not return empty array when no
-            // autoloaders registered...
-            $this->loaders = [];
-        }
-
-        // Store original include_path
-        $this->includePath = get_include_path();
-
-        $autoloader = new ModuleAutoloader([
-            dirname(__DIR__) . '/TestAsset',
-        ]);
-        $autoloader->register();
-
         $this->sharedEvents = new SharedEventManager();
 
         $this->moduleManager = new ModuleManager(['ListenerTestModule']);
@@ -62,29 +62,11 @@ class LocatorRegistrationListenerTest extends TestCase
         $this->application->setServiceManager($this->serviceManager);
     }
 
-    public function tearDown()
-    {
-        // Restore original autoloaders
-        AutoloaderFactory::unregisterAutoloaders();
-        $loaders = spl_autoload_functions();
-        if (is_array($loaders)) {
-            foreach ($loaders as $loader) {
-                spl_autoload_unregister($loader);
-            }
-        }
-
-        foreach ($this->loaders as $loader) {
-            spl_autoload_register($loader);
-        }
-
-        // Restore original include_path
-        set_include_path($this->includePath);
-    }
-
     public function testModuleClassIsRegisteredWithDiAndInjectedWithSharedInstances()
     {
+        $module = null;
         $locator         = $this->serviceManager;
-        $locator->setFactory('Foo\Bar', function ($s) {
+        $locator->setFactory('Foo\Bar', function (ServiceLocatorInterface $s) {
             $module   = $s->get('ListenerTestModule\Module');
             $manager  = $s->get('Zend\ModuleManager\ModuleManager');
             $instance = new \Foo\Bar($module, $manager);
@@ -93,8 +75,8 @@ class LocatorRegistrationListenerTest extends TestCase
 
         $locatorRegistrationListener = new LocatorRegistrationListener;
         $this->moduleManager->getEventManager()->attachAggregate($locatorRegistrationListener);
-        $this->moduleManager->getEventManager()->attach(ModuleEvent::EVENT_LOAD_MODULE, function ($e) {
-            $this->module = $e->getModule();
+        $this->moduleManager->getEventManager()->attach(ModuleEvent::EVENT_LOAD_MODULE, function (ModuleEvent $e) use (&$module) {
+            $module = $e->getModule();
         }, -1000);
         $this->moduleManager->loadModules();
 
@@ -116,7 +98,7 @@ class LocatorRegistrationListenerTest extends TestCase
         if (!$foo) {
             $this->fail($message);
         }
-        $this->assertSame($this->module, $foo->module);
+        $this->assertSame($module, $foo->module);
 
         $this->assertInstanceOf('Zend\ModuleManager\ModuleManager', $sharedInstance2);
         $this->assertSame($this->moduleManager, $locator->get('Foo\Bar')->moduleManager);
