@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 2.5.3 - 2015-09-22
+
+### Added
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Fixed a condition where the `ModuleEvent` target was not properly populated
+  with the `ModuleManager` as the target.
+
 ## 2.5.2 - 2015-09-22
 
 ### Added
