@@ -9,51 +9,11 @@
 
 namespace ZendTest\ModuleManager\Listener;
 
-use PHPUnit_Framework_TestCase as TestCase;
-use Zend\Loader\AutoloaderFactory;
-use Zend\Loader\ModuleAutoloader;
 use Zend\ModuleManager\Listener\ModuleResolverListener;
 use Zend\ModuleManager\ModuleEvent;
 
-class ModuleResolverListenerTest extends TestCase
+class ModuleResolverListenerTest extends AbstractListenerTestCase
 {
-    public function setUp()
-    {
-        $this->loaders = spl_autoload_functions();
-        if (!is_array($this->loaders)) {
-            // spl_autoload_functions does not return empty array when no
-            // autoloaders registered...
-            $this->loaders = [];
-        }
-
-        // Store original include_path
-        $this->includePath = get_include_path();
-
-        $autoloader = new ModuleAutoloader([
-            dirname(__DIR__) . '/TestAsset',
-        ]);
-        $autoloader->register();
-    }
-
-    public function tearDown()
-    {
-        // Restore original autoloaders
-        AutoloaderFactory::unregisterAutoloaders();
-        $loaders = spl_autoload_functions();
-        if (is_array($loaders)) {
-            foreach ($loaders as $loader) {
-                spl_autoload_unregister($loader);
-            }
-        }
-
-        foreach ($this->loaders as $loader) {
-            spl_autoload_register($loader);
-        }
-
-        // Restore original include_path
-        set_include_path($this->includePath);
-    }
-
     public function testModuleResolverListenerCanResolveModuleClasses()
     {
         $moduleResolver = new ModuleResolverListener;
