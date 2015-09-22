@@ -68,6 +68,11 @@ class ListenerOptions extends AbstractOptions
     protected $moduleMapCacheKey;
 
     /**
+     * @var bool
+     */
+    protected $useZendLoader = true;
+
+    /**
      * Get an array of paths where modules reside
      *
      * @return array
@@ -378,6 +383,27 @@ class ListenerOptions extends AbstractOptions
     {
         $this->checkDependencies = (bool) $checkDependencies;
 
+        return $this;
+    }
+
+    public function getUseZendLoader()
+    {
+        return $this->useZendLoader;
+    }
+
+    /**
+     * Set if the module manager should use Zend\Loader
+     *
+     * Setting this option to false will disable ModuleAutoloader, requiring
+     * other means of autoloading to be used. Eg Composer.
+     * AutoloaderProvider feature will be disabled as well
+     *
+     * @param  bool $flag
+     * @return ListenerOptions
+     */
+    public function setUseZendLoader($flag)
+    {
+        $this->useZendLoader = (bool) $flag;
         return $this;
     }
 
