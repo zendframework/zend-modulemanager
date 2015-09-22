@@ -13,6 +13,9 @@ use PHPUnit_Framework_TestCase as TestCase;
 use Zend\Config\Config;
 use Zend\ModuleManager\Listener\ListenerOptions;
 
+/**
+ * @covers Zend\ModuleManager\Listener\ListenerOptions
+ */
 class ListenerOptionsTest extends TestCase
 {
     public function testCanConfigureWithArrayInConstructor()

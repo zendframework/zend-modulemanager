@@ -16,6 +16,10 @@ use Zend\ModuleManager\ModuleManager;
 use Zend\ModuleManager\ModuleEvent;
 use ZendTest\ModuleManager\SetUpCacheDirTrait;
 
+/**
+ * @covers Zend\ModuleManager\Listener\AbstractListener
+ * @covers Zend\ModuleManager\Listener\ModuleLoaderListener
+ */
 class ModuleLoaderListenerTest extends AbstractListenerTestCase
 {
     use SetUpCacheDirTrait;

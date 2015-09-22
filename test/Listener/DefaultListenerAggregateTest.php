@@ -13,6 +13,10 @@ use Zend\ModuleManager\Listener\ListenerOptions;
 use Zend\ModuleManager\Listener\DefaultListenerAggregate;
 use Zend\ModuleManager\ModuleManager;
 
+/**
+ * @covers Zend\ModuleManager\Listener\AbstractListener
+ * @covers Zend\ModuleManager\Listener\DefaultListenerAggregate
+ */
 class DefaultListenerAggregateTest extends AbstractListenerTestCase
 {
     /**

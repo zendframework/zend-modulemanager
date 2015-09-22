@@ -14,6 +14,9 @@ use Zend\ModuleManager\Listener\ModuleDependencyCheckerListener;
 use Zend\ModuleManager\ModuleManager;
 use Zend\ModuleManager\ModuleEvent;
 
+/**
+ * @covers Zend\ModuleManager\Listener\ModuleDependencyCheckerListener
+ */
 class ModuleDependencyCheckerListenerTest extends TestCase
 {
     /**
