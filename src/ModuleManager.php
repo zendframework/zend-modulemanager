@@ -271,7 +271,7 @@ class ModuleManager implements ModuleManagerInterface
     public function getEvent()
     {
         if (!$this->event instanceof ModuleEvent) {
-            $this->setEvent(new ModuleEvent(null, $this));
+            $this->setEvent(new ModuleEvent());
         }
         return $this->event;
     }
@@ -284,6 +284,7 @@ class ModuleManager implements ModuleManagerInterface
      */
     public function setEvent(ModuleEvent $event)
     {
+        $event->setTarget($this);
         $this->event = $event;
         return $this;
     }
