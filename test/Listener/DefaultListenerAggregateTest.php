@@ -9,11 +9,10 @@
 
 namespace ZendTest\ModuleManager\Listener;
 
-use ReflectionProperty;
-use Zend\EventManager\EventManager;
 use Zend\ModuleManager\Listener\ListenerOptions;
 use Zend\ModuleManager\Listener\DefaultListenerAggregate;
 use Zend\ModuleManager\ModuleManager;
+use ZendTest\ModuleManager\EventManagerIntrospectionTrait;
 
 /**
  * @covers Zend\ModuleManager\Listener\AbstractListener
@@ -21,6 +20,8 @@ use Zend\ModuleManager\ModuleManager;
  */
 class DefaultListenerAggregateTest extends AbstractListenerTestCase
 {
+    use EventManagerIntrospectionTrait;
+
     /**
      * @var DefaultListenerAggregate
      */
@@ -35,38 +36,6 @@ class DefaultListenerAggregateTest extends AbstractListenerTestCase
                 ],
             ])
         );
-    }
-
-    public function getEventsFromEventManager(EventManager $events)
-    {
-        $r = new ReflectionProperty($events, 'events');
-        $r->setAccessible(true);
-        $listeners = $r->getValue($events);
-        return array_keys($listeners);
-    }
-
-    public function getListenersForEvent($event, EventManager $events)
-    {
-        $r = new ReflectionProperty($events, 'events');
-        $r->setAccessible(true);
-        $listeners = $r->getValue($events);
-
-        if (! isset($listeners[$event])) {
-            return [];
-        }
-
-        return $this->traverseListeners($listeners[$event]);
-    }
-
-    public function traverseListeners(array $queue)
-    {
-        krsort($queue, SORT_NUMERIC);
-
-        foreach ($queue as $priority => $listeners) {
-            foreach ($listeners as $listener) {
-                yield $listener;
-            }
-        }
     }
 
     public function testDefaultListenerAggregateCanAttachItself()

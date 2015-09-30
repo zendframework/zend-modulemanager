@@ -9,13 +9,12 @@
 
 namespace ZendTest\ModuleManager\Listener;
 
-use ReflectionProperty;
-use Zend\EventManager\EventManager;
 use Zend\ModuleManager\Listener\ModuleResolverListener;
 use Zend\ModuleManager\Listener\ModuleLoaderListener;
 use Zend\ModuleManager\Listener\ListenerOptions;
 use Zend\ModuleManager\ModuleManager;
 use Zend\ModuleManager\ModuleEvent;
+use ZendTest\ModuleManager\EventManagerIntrospectionTrait;
 use ZendTest\ModuleManager\SetUpCacheDirTrait;
 
 /**
@@ -24,6 +23,7 @@ use ZendTest\ModuleManager\SetUpCacheDirTrait;
  */
 class ModuleLoaderListenerTest extends AbstractListenerTestCase
 {
+    use EventManagerIntrospectionTrait;
     use SetUpCacheDirTrait;
 
     /**
@@ -35,29 +35,6 @@ class ModuleLoaderListenerTest extends AbstractListenerTestCase
     {
         $this->moduleManager = new ModuleManager([]);
         $this->moduleManager->getEventManager()->attach(ModuleEvent::EVENT_LOAD_MODULE_RESOLVE, new ModuleResolverListener, 1000);
-    }
-
-    public function getListenersForEvent($event, EventManager $events)
-    {
-        $r = new ReflectionProperty($events, 'events');
-        $r->setAccessible(true);
-        $listeners = $r->getValue($events);
-        if (! isset($listeners[$event])) {
-            return $this->traverseListeners([]);
-        }
-
-        return $this->traverseListeners($listeners[$event]);
-    }
-
-    public function traverseListeners(array $queue)
-    {
-        krsort($queue, SORT_NUMERIC);
-
-        foreach ($queue as $priority => $listeners) {
-            foreach ($listeners as $listener) {
-                yield $listener;
-            }
-        }
     }
 
     public function testModuleLoaderListenerFunctionsAsAggregateListenerEnabledCache()

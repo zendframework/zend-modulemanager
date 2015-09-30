@@ -11,13 +11,12 @@ namespace ZendTest\ModuleManager\Listener;
 
 use ArrayObject;
 use InvalidArgumentException;
-use ReflectionProperty;
-use Zend\EventManager\EventManager;
 use Zend\ModuleManager\Listener\ConfigListener;
 use Zend\ModuleManager\Listener\ModuleResolverListener;
 use Zend\ModuleManager\Listener\ListenerOptions;
 use Zend\ModuleManager\ModuleManager;
 use Zend\ModuleManager\ModuleEvent;
+use ZendTest\ModuleManager\EventManagerIntrospectionTrait;
 use ZendTest\ModuleManager\SetUpCacheDirTrait;
 
 /**
@@ -26,6 +25,7 @@ use ZendTest\ModuleManager\SetUpCacheDirTrait;
  */
 class ConfigListenerTest extends AbstractListenerTestCase
 {
+    use EventManagerIntrospectionTrait;
     use SetUpCacheDirTrait;
 
     /**
@@ -37,14 +37,6 @@ class ConfigListenerTest extends AbstractListenerTestCase
     {
         $this->moduleManager = new ModuleManager([]);
         $this->moduleManager->getEventManager()->attach(ModuleEvent::EVENT_LOAD_MODULE_RESOLVE, new ModuleResolverListener, 1000);
-    }
-
-    public function getEventsFromEventManager(EventManager $events)
-    {
-        $r = new ReflectionProperty($events, 'events');
-        $r->setAccessible(true);
-        $listeners = $r->getValue($events);
-        return array_keys($listeners);
     }
 
     public function testMultipleConfigsAreMerged()
