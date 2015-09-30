@@ -102,9 +102,10 @@ class ServiceListener implements ServiceListenerInterface
 
     /**
      * @param  EventManagerInterface $events
+     * @param  int $priority
      * @return ServiceListener
      */
-    public function attach(EventManagerInterface $events)
+    public function attach(EventManagerInterface $events, $priority = 1)
     {
         $this->listeners[] = $events->attach(ModuleEvent::EVENT_LOAD_MODULE, [$this, 'onLoadModule']);
         $this->listeners[] = $events->attach(ModuleEvent::EVENT_LOAD_MODULES_POST, [$this, 'onLoadModulesPost']);

@@ -26,11 +26,8 @@ abstract class AbstractListener
      */
     public function __construct(ListenerOptions $options = null)
     {
-        if (null === $options) {
-            $this->setOptions(new ListenerOptions);
-        } else {
-            $this->setOptions($options);
-        }
+        $options = $options ?: new ListenerOptions;
+        $this->setOptions($options);
     }
 
     /**

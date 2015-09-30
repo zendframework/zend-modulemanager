@@ -16,6 +16,7 @@ use Zend\ModuleManager\Listener\ModuleResolverListener;
 use Zend\ModuleManager\Listener\ListenerOptions;
 use Zend\ModuleManager\ModuleManager;
 use Zend\ModuleManager\ModuleEvent;
+use ZendTest\ModuleManager\EventManagerIntrospectionTrait;
 use ZendTest\ModuleManager\SetUpCacheDirTrait;
 
 /**
@@ -24,6 +25,7 @@ use ZendTest\ModuleManager\SetUpCacheDirTrait;
  */
 class ConfigListenerTest extends AbstractListenerTestCase
 {
+    use EventManagerIntrospectionTrait;
     use SetUpCacheDirTrait;
 
     /**
@@ -150,7 +152,7 @@ class ConfigListenerTest extends AbstractListenerTestCase
         $moduleManager = $this->moduleManager;
         $moduleManager->setModules(['SomeModule']);
 
-        $moduleManager->getEventManager()->attachAggregate($configListener);
+        $configListener->attach($moduleManager->getEventManager());
 
         $moduleManager->loadModules();
         $configObjectCheck = $configListener->getMergedConfig();
@@ -180,7 +182,7 @@ class ConfigListenerTest extends AbstractListenerTestCase
         $moduleManager = $this->moduleManager;
         $moduleManager->setModules(['SomeModule']);
 
-        $moduleManager->getEventManager()->attachAggregate($configListener);
+        $configListener->attach($moduleManager->getEventManager());
 
         $moduleManager->loadModules();
         $configObjectCheck = $configListener->getMergedConfig();
@@ -210,7 +212,7 @@ class ConfigListenerTest extends AbstractListenerTestCase
         $moduleManager = $this->moduleManager;
         $moduleManager->setModules(['SomeModule']);
 
-        $moduleManager->getEventManager()->attachAggregate($configListener);
+        $configListener->attach($moduleManager->getEventManager());
 
         $moduleManager->loadModules();
         $configObjectFromGlob = $configListener->getMergedConfig();
@@ -220,7 +222,7 @@ class ConfigListenerTest extends AbstractListenerTestCase
         $moduleManager = new ModuleManager(['SomeModule']);
         $moduleManager->getEventManager()->attach(ModuleEvent::EVENT_LOAD_MODULE_RESOLVE, new ModuleResolverListener, 1000);
 
-        $moduleManager->getEventManager()->attachAggregate($configListener);
+        $configListener->attach($moduleManager->getEventManager());
 
         $moduleManager->loadModules();
 
@@ -250,7 +252,7 @@ class ConfigListenerTest extends AbstractListenerTestCase
         $moduleManager = $this->moduleManager;
         $moduleManager->setModules(['SomeModule']);
 
-        $moduleManager->getEventManager()->attachAggregate($configListener);
+        $configListener->attach($moduleManager->getEventManager());
 
         $moduleManager->loadModules();
         $configObjectFromGlob = $configListener->getMergedConfig();
@@ -260,7 +262,7 @@ class ConfigListenerTest extends AbstractListenerTestCase
         $moduleManager = new ModuleManager(['SomeModule']);
         $moduleManager->getEventManager()->attach(ModuleEvent::EVENT_LOAD_MODULE_RESOLVE, new ModuleResolverListener, 1000);
 
-        $moduleManager->getEventManager()->attachAggregate($configListener);
+        $configListener->attach($moduleManager->getEventManager());
 
         $moduleManager->loadModules();
 
@@ -286,7 +288,7 @@ class ConfigListenerTest extends AbstractListenerTestCase
         $moduleManager = $this->moduleManager;
         $moduleManager->setModules(['SomeModule']);
 
-        $moduleManager->getEventManager()->attachAggregate($configListener);
+        $configListener->attach($moduleManager->getEventManager());
         $moduleManager->loadModules();
 
         // Test as object
@@ -308,7 +310,7 @@ class ConfigListenerTest extends AbstractListenerTestCase
         $moduleManager = $this->moduleManager;
         $moduleManager->setModules(['SomeModule']);
 
-        $moduleManager->getEventManager()->attachAggregate($configListener);
+        $configListener->attach($moduleManager->getEventManager());
         $moduleManager->loadModules();
 
         // Test as object
@@ -330,7 +332,7 @@ class ConfigListenerTest extends AbstractListenerTestCase
             __DIR__ . '/_files/good/merge2.php',
         ]);
 
-        $moduleManager->getEventManager()->attachAggregate($configListener);
+        $configListener->attach($moduleManager->getEventManager());
         $moduleManager->loadModules();
 
         $mergedConfig = $configListener->getMergedConfig(false);
@@ -343,12 +345,13 @@ class ConfigListenerTest extends AbstractListenerTestCase
         $configListener = new ConfigListener;
 
         $moduleManager = $this->moduleManager;
-        $this->assertEquals(2, count($moduleManager->getEventManager()->getEvents()));
+        $events        = $moduleManager->getEventManager();
+        $this->assertEquals(2, count($this->getEventsFromEventManager($events)));
 
-        $configListener->attach($moduleManager->getEventManager());
-        $this->assertEquals(4, count($moduleManager->getEventManager()->getEvents()));
+        $configListener->attach($events);
+        $this->assertEquals(4, count($this->getEventsFromEventManager($events)));
 
-        $configListener->detach($moduleManager->getEventManager());
-        $this->assertEquals(2, count($moduleManager->getEventManager()->getEvents()));
+        $configListener->detach($events);
+        $this->assertEquals(2, count($this->getEventsFromEventManager($events)));
     }
 }

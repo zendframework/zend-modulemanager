@@ -14,6 +14,7 @@ use Zend\ModuleManager\Listener\ModuleLoaderListener;
 use Zend\ModuleManager\Listener\ListenerOptions;
 use Zend\ModuleManager\ModuleManager;
 use Zend\ModuleManager\ModuleEvent;
+use ZendTest\ModuleManager\EventManagerIntrospectionTrait;
 use ZendTest\ModuleManager\SetUpCacheDirTrait;
 
 /**
@@ -22,6 +23,7 @@ use ZendTest\ModuleManager\SetUpCacheDirTrait;
  */
 class ModuleLoaderListenerTest extends AbstractListenerTestCase
 {
+    use EventManagerIntrospectionTrait;
     use SetUpCacheDirTrait;
 
     /**
@@ -46,12 +48,18 @@ class ModuleLoaderListenerTest extends AbstractListenerTestCase
         $moduleLoaderListener = new ModuleLoaderListener($options);
 
         $moduleManager = $this->moduleManager;
-        $this->assertEquals(1, count($moduleManager->getEventManager()->getListeners(ModuleEvent::EVENT_LOAD_MODULES)));
-        $this->assertEquals(0, count($moduleManager->getEventManager()->getListeners(ModuleEvent::EVENT_LOAD_MODULES_POST)));
+        $events        = $moduleManager->getEventManager();
 
-        $moduleLoaderListener->attach($moduleManager->getEventManager());
-        $this->assertEquals(2, count($moduleManager->getEventManager()->getListeners(ModuleEvent::EVENT_LOAD_MODULES)));
-        $this->assertEquals(1, count($moduleManager->getEventManager()->getListeners(ModuleEvent::EVENT_LOAD_MODULES_POST)));
+        $listeners     = iterator_to_array($this->getListenersForEvent(ModuleEvent::EVENT_LOAD_MODULES, $events));
+        $this->assertCount(1, $listeners);
+        $listeners     = iterator_to_array($this->getListenersForEvent(ModuleEvent::EVENT_LOAD_MODULES_POST, $events));
+        $this->assertCount(0, $listeners);
+
+        $moduleLoaderListener->attach($events);
+        $listeners     = iterator_to_array($this->getListenersForEvent(ModuleEvent::EVENT_LOAD_MODULES, $events));
+        $this->assertCount(2, $listeners);
+        $listeners     = iterator_to_array($this->getListenersForEvent(ModuleEvent::EVENT_LOAD_MODULES_POST, $events));
+        $this->assertCount(1, $listeners);
     }
 
     public function testModuleLoaderListenerFunctionsAsAggregateListenerDisabledCache()
@@ -63,12 +71,18 @@ class ModuleLoaderListenerTest extends AbstractListenerTestCase
         $moduleLoaderListener = new ModuleLoaderListener($options);
 
         $moduleManager = $this->moduleManager;
-        $this->assertEquals(1, count($moduleManager->getEventManager()->getListeners(ModuleEvent::EVENT_LOAD_MODULES)));
-        $this->assertEquals(0, count($moduleManager->getEventManager()->getListeners(ModuleEvent::EVENT_LOAD_MODULES_POST)));
+        $events        = $moduleManager->getEventManager();
 
-        $moduleLoaderListener->attach($moduleManager->getEventManager());
-        $this->assertEquals(2, count($moduleManager->getEventManager()->getListeners(ModuleEvent::EVENT_LOAD_MODULES)));
-        $this->assertEquals(0, count($moduleManager->getEventManager()->getListeners(ModuleEvent::EVENT_LOAD_MODULES_POST)));
+        $listeners     = iterator_to_array($this->getListenersForEvent(ModuleEvent::EVENT_LOAD_MODULES, $events));
+        $this->assertCount(1, $listeners);
+        $listeners     = iterator_to_array($this->getListenersForEvent(ModuleEvent::EVENT_LOAD_MODULES_POST, $events));
+        $this->assertCount(0, $listeners);
+
+        $moduleLoaderListener->attach($events);
+        $listeners     = iterator_to_array($this->getListenersForEvent(ModuleEvent::EVENT_LOAD_MODULES, $events));
+        $this->assertCount(2, $listeners);
+        $listeners     = iterator_to_array($this->getListenersForEvent(ModuleEvent::EVENT_LOAD_MODULES_POST, $events));
+        $this->assertCount(0, $listeners);
     }
 
     public function testModuleLoaderListenerFunctionsAsAggregateListenerHasCache()
@@ -79,16 +93,22 @@ class ModuleLoaderListenerTest extends AbstractListenerTestCase
             'module_map_cache_enabled' => true,
         ]);
 
-        file_put_contents($options->getModuleMapCacheFile(), '<?php return array();');
+        file_put_contents($options->getModuleMapCacheFile(), '<' . '?php return array();');
 
         $moduleLoaderListener = new ModuleLoaderListener($options);
 
         $moduleManager = $this->moduleManager;
-        $this->assertEquals(1, count($moduleManager->getEventManager()->getListeners(ModuleEvent::EVENT_LOAD_MODULES)));
-        $this->assertEquals(0, count($moduleManager->getEventManager()->getListeners(ModuleEvent::EVENT_LOAD_MODULES_POST)));
+        $events        = $moduleManager->getEventManager();
 
-        $moduleLoaderListener->attach($moduleManager->getEventManager());
-        $this->assertEquals(2, count($moduleManager->getEventManager()->getListeners(ModuleEvent::EVENT_LOAD_MODULES)));
-        $this->assertEquals(0, count($moduleManager->getEventManager()->getListeners(ModuleEvent::EVENT_LOAD_MODULES_POST)));
+        $listeners     = iterator_to_array($this->getListenersForEvent(ModuleEvent::EVENT_LOAD_MODULES, $events));
+        $this->assertCount(1, $listeners);
+        $listeners     = iterator_to_array($this->getListenersForEvent(ModuleEvent::EVENT_LOAD_MODULES_POST, $events));
+        $this->assertCount(0, $listeners);
+
+        $moduleLoaderListener->attach($events);
+        $listeners     = iterator_to_array($this->getListenersForEvent(ModuleEvent::EVENT_LOAD_MODULES, $events));
+        $this->assertCount(2, $listeners);
+        $listeners     = iterator_to_array($this->getListenersForEvent(ModuleEvent::EVENT_LOAD_MODULES_POST, $events));
+        $this->assertCount(0, $listeners);
     }
 }
