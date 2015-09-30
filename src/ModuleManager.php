@@ -85,7 +85,7 @@ class ModuleManager implements ModuleManagerInterface
 
         foreach ($this->getModules() as $moduleName => $module) {
             if (is_object($module)) {
-                if (!is_string($moduleName)) {
+                if (! is_string($moduleName)) {
                     throw new Exception\RuntimeException(sprintf(
                         'Module (%s) must have a key identifier.',
                         get_class($module)
@@ -93,6 +93,7 @@ class ModuleManager implements ModuleManagerInterface
                 }
                 $module = [$moduleName => $module];
             }
+
             $this->loadModule($module);
         }
 
@@ -112,7 +113,11 @@ class ModuleManager implements ModuleManagerInterface
             return $this;
         }
 
-        $this->getEventManager()->trigger(ModuleEvent::EVENT_LOAD_MODULES, $this->getEvent());
+        $events = $this->getEventManager();
+        $event  = $this->getEvent();
+        $event->setName(ModuleEvent::EVENT_LOAD_MODULES);
+
+        $events->triggerEvent($event);
 
         /**
          * Having a dedicated .post event abstracts the complexity of priorities from the user.
@@ -120,7 +125,8 @@ class ModuleManager implements ModuleManagerInterface
          * things like config merging are complete without having to worry if
          * they set a low enough priority.
          */
-        $this->getEventManager()->trigger(ModuleEvent::EVENT_LOAD_MODULES_POST, $this->getEvent());
+        $event->setName(ModuleEvent::EVENT_LOAD_MODULES_POST);
+        $events->triggerEvent($event);
 
         return $this;
     }
@@ -169,9 +175,10 @@ class ModuleManager implements ModuleManagerInterface
             $module = $this->loadModuleByName($event);
         }
         $event->setModule($module);
+        $event->setName(ModuleEvent::EVENT_LOAD_MODULE);
 
         $this->loadedModules[$moduleName] = $module;
-        $this->getEventManager()->trigger(ModuleEvent::EVENT_LOAD_MODULE, $event);
+        $this->getEventManager()->triggerEvent($event);
 
         $this->loadFinished--;
 
@@ -186,9 +193,10 @@ class ModuleManager implements ModuleManagerInterface
      */
     protected function loadModuleByName(ModuleEvent $event)
     {
-        $result = $this->getEventManager()->trigger(ModuleEvent::EVENT_LOAD_MODULE_RESOLVE, $event, function ($r) {
+        $event->setName(ModuleEvent::EVENT_LOAD_MODULE_RESOLVE);
+        $result = $this->getEventManager()->triggerEventUntil(function ($r) {
             return (is_object($r));
-        });
+        }, $event);
 
         $module = $result->last();
         if (!is_object($module)) {
@@ -303,7 +311,7 @@ class ModuleManager implements ModuleManagerInterface
             'module_manager',
         ]);
         $this->events = $events;
-        $this->attachDefaultListeners();
+        $this->attachDefaultListeners($events);
         return $this;
     }
 
@@ -325,11 +333,11 @@ class ModuleManager implements ModuleManagerInterface
     /**
      * Register the default event listeners
      *
+     * @param EventManagerInterface $events
      * @return ModuleManager
      */
-    protected function attachDefaultListeners()
+    protected function attachDefaultListeners($events)
     {
-        $events = $this->getEventManager();
         $events->attach(ModuleEvent::EVENT_LOAD_MODULES, [$this, 'onLoadModules']);
     }
 }

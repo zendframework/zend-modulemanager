@@ -28,8 +28,9 @@ class AutoloaderListenerTest extends AbstractListenerTestCase
     public function setUp()
     {
         $this->moduleManager = new ModuleManager([]);
-        $this->moduleManager->getEventManager()->attach(ModuleEvent::EVENT_LOAD_MODULE_RESOLVE, new ModuleResolverListener, 1000);
-        $this->moduleManager->getEventManager()->attach(ModuleEvent::EVENT_LOAD_MODULE, new AutoloaderListener, 2000);
+        $events = $this->moduleManager->getEventManager();
+        $events->attach(ModuleEvent::EVENT_LOAD_MODULE_RESOLVE, new ModuleResolverListener, 1000);
+        $events->attach(ModuleEvent::EVENT_LOAD_MODULE, new AutoloaderListener, 2000);
     }
 
     public function testAutoloadersRegisteredByAutoloaderListener()

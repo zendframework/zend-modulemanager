@@ -9,6 +9,8 @@
 
 namespace ZendTest\ModuleManager\Listener;
 
+use ReflectionProperty;
+use Zend\EventManager\EventManager;
 use Zend\ModuleManager\Listener\ListenerOptions;
 use Zend\ModuleManager\Listener\DefaultListenerAggregate;
 use Zend\ModuleManager\ModuleManager;
@@ -35,12 +37,44 @@ class DefaultListenerAggregateTest extends AbstractListenerTestCase
         );
     }
 
+    public function getEventsFromEventManager(EventManager $events)
+    {
+        $r = new ReflectionProperty($events, 'events');
+        $r->setAccessible(true);
+        $listeners = $r->getValue($events);
+        return array_keys($listeners);
+    }
+
+    public function getListenersForEvent($event, EventManager $events)
+    {
+        $r = new ReflectionProperty($events, 'events');
+        $r->setAccessible(true);
+        $listeners = $r->getValue($events);
+
+        if (! isset($listeners[$event])) {
+            return [];
+        }
+
+        return $this->traverseListeners($listeners[$event]);
+    }
+
+    public function traverseListeners(array $queue)
+    {
+        krsort($queue, SORT_NUMERIC);
+
+        foreach ($queue as $priority => $listeners) {
+            foreach ($listeners as $listener) {
+                yield $listener;
+            }
+        }
+    }
+
     public function testDefaultListenerAggregateCanAttachItself()
     {
         $moduleManager = new ModuleManager(['ListenerTestModule']);
-        $moduleManager->getEventManager()->attachAggregate(new DefaultListenerAggregate);
+        (new DefaultListenerAggregate)->attach($moduleManager->getEventManager());
 
-        $events = $moduleManager->getEventManager()->getEvents();
+        $events = $this->getEventsFromEventManager($moduleManager->getEventManager());
         $expectedEvents = [
             'loadModules' => [
                 'Zend\Loader\ModuleAutoloader',
@@ -63,16 +97,17 @@ class DefaultListenerAggregateTest extends AbstractListenerTestCase
         ];
         foreach ($expectedEvents as $event => $expectedListeners) {
             $this->assertContains($event, $events);
-            $listeners = $moduleManager->getEventManager()->getListeners($event);
-            $this->assertSame(count($expectedListeners), count($listeners));
-            foreach ($listeners as $listener) {
-                $callback = $listener->getCallback();
-                if (is_array($callback)) {
-                    $callback = $callback[0];
+            $count     = 0;
+            foreach ($this->getListenersForEvent($event, $moduleManager->getEventManager()) as $listener) {
+                if (is_array($listener)) {
+                    $listener = $listener[0];
                 }
-                $listenerClass = get_class($callback);
+                $listenerClass = get_class($listener);
                 $this->assertContains($listenerClass, $expectedListeners);
+                $count += 1;
             }
+
+            $this->assertSame(count($expectedListeners), $count);
         }
     }
 
@@ -80,13 +115,14 @@ class DefaultListenerAggregateTest extends AbstractListenerTestCase
     {
         $listenerAggregate = new DefaultListenerAggregate;
         $moduleManager     = new ModuleManager(['ListenerTestModule']);
+        $events            = $moduleManager->getEventManager();
 
-        $this->assertEquals(1, count($moduleManager->getEventManager()->getEvents()));
+        $this->assertEquals(1, count($this->getEventsFromEventManager($events)));
 
-        $listenerAggregate->attach($moduleManager->getEventManager());
-        $this->assertEquals(4, count($moduleManager->getEventManager()->getEvents()));
+        $listenerAggregate->attach($events);
+        $this->assertEquals(4, count($this->getEventsFromEventManager($events)));
 
-        $listenerAggregate->detach($moduleManager->getEventManager());
-        $this->assertEquals(1, count($moduleManager->getEventManager()->getEvents()));
+        $listenerAggregate->detach($events);
+        $this->assertEquals(1, count($this->getEventsFromEventManager($events)));
     }
 }
