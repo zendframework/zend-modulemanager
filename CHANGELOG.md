@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 2.7.0 - TBD
+## 3.0.0 - TBD
 
 ### Added
 
@@ -18,7 +18,17 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#12](https://github.com/zendframework/zend-modulemanager/pull/12) updates the
+  code base to work with the v3.0 version of zend-eventmanager. Primarily, this
+  involved:
+  - Changing trigger calls to `triggerEvent()` and ensuring the event instance
+    is injected with the event name prior to trigger.
+  - Ensuring aggregates are attached using the `$aggregate->attach($events)`
+    signature instead of the `$events->attachAggregate($aggregate)` signature.
+  - Fixing tests to inject the event manager instance with the shared event
+    manager instance at instantiation, and remove calls to `setSharedManager()`.
+  - Adding test facilities to abstract obsolete `getEvent()` and
+    `getListeners()` calls on event manager instances.
 
 ## 2.6.2 - TBD
 
