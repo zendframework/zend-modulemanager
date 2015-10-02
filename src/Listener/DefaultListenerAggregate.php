@@ -73,10 +73,6 @@ class DefaultListenerAggregate extends AbstractListener implements
     public function detach(EventManagerInterface $events)
     {
         foreach ($this->listeners as $key => $listener) {
-            if ($listener === $this) {
-                continue;
-            }
-
             if ($listener instanceof ListenerAggregateInterface) {
                 $listener->detach($events);
                 unset($this->listeners[$key]);
