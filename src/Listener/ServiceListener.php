@@ -9,7 +9,6 @@
 
 namespace Zend\ModuleManager\Listener;
 
-use Interop\Container\ContainerInterface;
 use Traversable;
 use Zend\EventManager\EventManagerInterface;
 use Zend\ModuleManager\ModuleEvent;
