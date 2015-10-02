@@ -41,7 +41,6 @@ class DefaultListenerAggregate extends AbstractListener implements
         $options                     = $this->getOptions();
         $configListener              = $this->getConfigListener();
         $moduleLoaderListener        = new ModuleLoaderListener($options);
-        $locatorRegistrationListener = new LocatorRegistrationListener($options);
 
         // High priority, we assume module autoloading (for FooNamespace\Module
         // classes) should be available before anything else
@@ -59,9 +58,6 @@ class DefaultListenerAggregate extends AbstractListener implements
 
         $this->listeners[] = $events->attach(ModuleEvent::EVENT_LOAD_MODULE, new InitTrigger($options));
         $this->listeners[] = $events->attach(ModuleEvent::EVENT_LOAD_MODULE, new OnBootstrapListener($options));
-
-        $locatorRegistrationListener->attach($events);
-        $this->listeners[] = $locatorRegistrationListener;
 
         $configListener->attach($events);
         $this->listeners[] = $configListener;

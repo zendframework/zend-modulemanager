@@ -12,11 +12,13 @@ namespace ZendTest\ModuleManager\Listener;
 use ArrayObject;
 use PHPUnit_Framework_TestCase as TestCase;
 use stdClass;
+use Zend\ModuleManager\Feature\ServiceProviderInterface;
 use Zend\ModuleManager\Listener\ConfigListener;
 use Zend\ModuleManager\Listener\ServiceListener;
 use Zend\ModuleManager\ModuleEvent;
 use Zend\ServiceManager\Config as ServiceConfig;
 use Zend\ServiceManager\ServiceManager;
+use Zend\Stdlib\ArrayUtils;
 
 /**
  * @covers Zend\ModuleManager\Listener\ServiceListener
@@ -38,17 +40,6 @@ class ServiceListenerTest extends TestCase
      */
     protected $listener;
 
-    protected $serviceManagerProps = [
-        'invokableClasses',
-        'factories',
-        'abstractFactories',
-        'shared',
-        'instances',
-        'aliases',
-        'initializers',
-        'peeringServiceManagers',
-    ];
-
     /**
      * @var ServiceManager
      */
@@ -58,8 +49,13 @@ class ServiceListenerTest extends TestCase
     {
         $this->services = new ServiceManager();
         $this->listener = new ServiceListener($this->services);
-        $this->listener->addServiceManager($this->services, 'service_manager', 'Zend\ModuleManager\Feature\ServiceProviderInterface', 'getServiceConfig');
-        $this->event    = new ModuleEvent();
+        $this->listener->setApplicationServiceManager(
+            'service_manager',
+            ServiceProviderInterface::class,
+            'getServiceConfig'
+        );
+
+        $this->event          = new ModuleEvent();
         $this->configListener = new ConfigListener();
         $this->event->setConfigListener($this->configListener);
     }
@@ -70,9 +66,7 @@ class ServiceListenerTest extends TestCase
         $this->event->setModule($module);
         $this->listener->onLoadModule($this->event);
 
-        foreach ($this->serviceManagerProps as $prop) {
-            $this->assertAttributeEquals([], $prop, $this->services);
-        }
+        $this->assertEquals([], $this->listener->getServiceManagerConfig());
     }
 
     public function testInvalidReturnFromModuleDoesNothing()
@@ -81,20 +75,19 @@ class ServiceListenerTest extends TestCase
         $this->event->setModule($module);
         $this->listener->onLoadModule($this->event);
 
-        foreach ($this->serviceManagerProps as $prop) {
-            $this->assertAttributeEquals([], $prop, $this->services);
-        }
+        $this->assertEquals([], $this->listener->getServiceManagerConfig());
     }
 
     public function getServiceConfig()
     {
+        // @codingStandardsIgnoreStart
         return [
             'invokables' => [__CLASS__ => __CLASS__],
             'factories' => [
                 'foo' => function ($sm) { },
             ],
             'abstract_factories' => [
-                new \Zend\ServiceManager\Di\DiAbstractServiceFactory(new \Zend\Di\Di()),
+                new TestAsset\SampleAbstractFactory(),
             ],
             'shared' => [
                 'foo' => false,
@@ -104,26 +97,25 @@ class ServiceListenerTest extends TestCase
                 'bar' => 'foo',
             ],
         ];
+        // @codingStandardsIgnoreEnd
     }
 
-    public function assertServiceManagerIsConfigured()
+    public function assertServiceManagerConfiguration()
     {
+        $default = [
+            'abstract_factories' => [],
+            'aliases'            => [],
+            'delegators'         => [],
+            'factories'          => [],
+            'initializers'       => [],
+            'invokables'         => [],
+            'lazy_services'      => [],
+            'services'           => [],
+            'shared'             => [],
+        ];
+        $expected = ArrayUtils::merge($default, $this->getServiceConfig());
         $this->listener->onLoadModulesPost($this->event);
-        foreach ($this->getServiceConfig() as $prop => $expected) {
-            if ($prop == 'invokables') {
-                $prop = 'invokableClasses';
-                foreach ($expected as $key => $value) {
-                    $normalized = strtolower($key);
-                    $normalized = str_replace(['\\', '_'], '', $normalized);
-                    unset($expected[$key]);
-                    $expected[$normalized] = $value;
-                }
-            }
-            if ($prop == 'abstract_factories') {
-                $prop = 'abstractFactories';
-            }
-            $this->assertAttributeEquals($expected, $prop, $this->services, "$prop assertion failed");
-        }
+        $this->assertEquals($expected, $this->listener->getServiceManagerConfig());
     }
 
     public function testModuleReturningArrayConfiguresServiceManager()
@@ -132,7 +124,7 @@ class ServiceListenerTest extends TestCase
         $module = new TestAsset\ServiceProviderModule($config);
         $this->event->setModule($module);
         $this->listener->onLoadModule($this->event);
-        $this->assertServiceManagerIsConfigured();
+        $this->assertServiceManagerConfiguration();
     }
 
     public function testModuleReturningTraversableConfiguresServiceManager()
@@ -142,19 +134,31 @@ class ServiceListenerTest extends TestCase
         $module = new TestAsset\ServiceProviderModule($config);
         $this->event->setModule($module);
         $this->listener->onLoadModule($this->event);
-        $this->assertServiceManagerIsConfigured();
+        $this->assertServiceManagerConfiguration();
     }
 
     public function testModuleServiceConfigOverridesGlobalConfig()
     {
-        $this->listener = new ServiceListener($this->services, ['aliases' => ['foo' => 'bar']]);
-        $this->listener->addServiceManager($this->services, 'service_manager', 'Zend\ModuleManager\Feature\ServiceProviderInterface', 'getServiceConfig');
+        $defaultConfig = ['aliases' => ['foo' => 'bar']];
+        $this->listener = new ServiceListener($this->services, $defaultConfig);
+        $this->listener->setApplicationServiceManager(
+            'service_manager',
+            ServiceProviderInterface::class,
+            'getServiceConfig'
+        );
         $config = ['aliases' => ['foo' => 'baz']];
         $module = new TestAsset\ServiceProviderModule($config);
         $this->event->setModule($module);
+        $this->event->setModuleName(__NAMESPACE__ . '\TestAsset\ServiceProvider');
         $this->listener->onLoadModule($this->event);
         $this->listener->onLoadModulesPost($this->event);
-        $this->assertAttributeEquals($config['aliases'], 'aliases', $this->services, "aliases assertion failed - module config did not override main config");
+        $expected = ArrayUtils::merge($defaultConfig, $config);
+        $expected = (new ServiceConfig($expected))->toArray();
+        $this->assertEquals(
+            $expected,
+            $this->listener->getServiceManagerConfig(),
+            'Default configuration was not overridden'
+        );
     }
 
     public function testModuleReturningServiceConfigConfiguresServiceManager()
@@ -164,7 +168,7 @@ class ServiceListenerTest extends TestCase
         $module = new TestAsset\ServiceProviderModule($config);
         $this->event->setModule($module);
         $this->listener->onLoadModule($this->event);
-        $this->assertServiceManagerIsConfigured();
+        $this->assertServiceManagerConfiguration();
     }
 
     public function testMergedConfigContainingServiceManagerKeyWillConfigureServiceManagerPostLoadModules()
@@ -173,6 +177,6 @@ class ServiceListenerTest extends TestCase
         $configListener = new ConfigListener();
         $configListener->setMergedConfig($config);
         $this->event->setConfigListener($configListener);
-        $this->assertServiceManagerIsConfigured();
+        $this->assertServiceManagerConfiguration();
     }
 }

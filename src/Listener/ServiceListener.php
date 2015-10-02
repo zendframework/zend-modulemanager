@@ -9,15 +9,26 @@
 
 namespace Zend\ModuleManager\Listener;
 
+use Interop\Container\ContainerInterface;
 use Traversable;
 use Zend\EventManager\EventManagerInterface;
 use Zend\ModuleManager\ModuleEvent;
 use Zend\ServiceManager\Config as ServiceConfig;
+use Zend\ServiceManager\ConfigInterface as ServiceConfigInterface;
 use Zend\ServiceManager\ServiceManager;
 use Zend\Stdlib\ArrayUtils;
 
 class ServiceListener implements ServiceListenerInterface
 {
+    const IS_APP_MANAGER = '__APPLICATION_SERVICE_MANAGER__';
+
+    /**
+     * Configuration aggregated for the application service manager.
+     *
+     * @var array
+     */
+    protected $appServiceConfig = [];
+
     /**
      * @var \Zend\Stdlib\CallbackHandler[]
      */
@@ -31,9 +42,11 @@ class ServiceListener implements ServiceListenerInterface
     protected $defaultServiceManager;
 
     /**
+     * Default service configuration for the application service manager.
+     *
      * @var array
      */
-    protected $defaultServiceConfig;
+    protected $defaultServiceConfig = [];
 
     /**
      * @var array
@@ -44,48 +57,43 @@ class ServiceListener implements ServiceListenerInterface
      * @param ServiceManager $serviceManager
      * @param null|array $configuration
      */
-    public function __construct(ServiceManager $serviceManager, $configuration = null)
+    public function __construct(ServiceManager $serviceManager, array $configuration = [])
     {
         $this->defaultServiceManager = $serviceManager;
-
-        if ($configuration !== null) {
-            $this->setDefaultServiceConfig($configuration);
-        }
+        $this->setDefaultServiceConfig($configuration);
     }
 
     /**
      * @param  array $configuration
      * @return ServiceListener
      */
-    public function setDefaultServiceConfig($configuration)
+    public function setDefaultServiceConfig(array $configuration)
     {
-        $this->defaultServiceConfig  = $configuration;
-
+        $this->defaultServiceConfig = $configuration;
         return $this;
     }
 
     /**
-     * @param  ServiceManager|string $serviceManager  Service Manager instance or name
-     * @param  string                $key             Configuration key
-     * @param  string                $moduleInterface FQCN as string
-     * @param  string                $method          Method name
-     * @throws Exception\RuntimeException
-     * @return ServiceListener
+     * @inheritDoc
      */
     public function addServiceManager($serviceManager, $key, $moduleInterface, $method)
     {
-        if (is_string($serviceManager)) {
-            $smKey = $serviceManager;
-        } elseif ($serviceManager instanceof ServiceManager) {
-            $smKey = spl_object_hash($serviceManager);
-        } else {
+        if (! is_string($serviceManager)) {
             throw new Exception\RuntimeException(sprintf(
-                'Invalid service manager provided, expected ServiceManager or string, %s provided',
-                (string) $serviceManager
+                'Invalid service or plugin manager provided, expected string name, %s provided',
+                (is_object($serviceManager) ? get_class($serviceManager) : gettype($serviceManager))
             ));
         }
 
-        $this->serviceManagers[$smKey] = [
+        if ($serviceManager === self::IS_APP_MANAGER) {
+            throw new Exception\RuntimeException(sprintf(
+                'Usage of the service key "%s" is forbidden; please use %s::setApplicationServiceManager',
+                self::IS_APP_MANAGER,
+                __CLASS__
+            ));
+        }
+
+        $this->serviceManagers[$serviceManager] = [
             'service_manager'        => $serviceManager,
             'config_key'             => $key,
             'module_class_interface' => $moduleInterface,
@@ -93,11 +101,31 @@ class ServiceListener implements ServiceListenerInterface
             'configuration'          => [],
         ];
 
-        if ($key === 'service_manager' && $this->defaultServiceConfig) {
-            $this->serviceManagers[$smKey]['configuration']['default_config'] = $this->defaultServiceConfig;
-        }
-
         return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setApplicationServiceManager($key, $moduleInterface, $method)
+    {
+        $this->serviceManagers[self::IS_APP_MANAGER] = [
+            'service_manager'        => self::IS_APP_MANAGER,
+            'config_key'             => $key,
+            'module_class_interface' => $moduleInterface,
+            'module_class_method'    => $method,
+            'configuration'          => [ $this->defaultServiceConfig ],
+        ];
+    }
+
+    /**
+     * Retrieve configuration aggregated for the application service manager.
+     *
+     * @param array
+     */
+    public function getServiceManagerConfig()
+    {
+        return $this->appServiceConfig;
     }
 
     /**
@@ -145,23 +173,23 @@ class ServiceListener implements ServiceListenerInterface
         $module = $e->getModule();
 
         foreach ($this->serviceManagers as $key => $sm) {
-            if (!$module instanceof $sm['module_class_interface']
-                && !method_exists($module, $sm['module_class_method'])
+            if (! $module instanceof $sm['module_class_interface']
+                && ! method_exists($module, $sm['module_class_method'])
             ) {
                 continue;
             }
 
             $config = $module->{$sm['module_class_method']}();
 
-            if ($config instanceof ServiceConfig) {
-                $config = $this->serviceConfigToArray($config);
+            if ($config instanceof ServiceConfigInterface) {
+                $config = $config->toArray();
             }
 
             if ($config instanceof Traversable) {
                 $config = ArrayUtils::iteratorToArray($config);
             }
 
-            if (!is_array($config)) {
+            if (! is_array($config)) {
                 // If we don't have an array by this point, nothing left to do.
                 continue;
             }
@@ -190,6 +218,9 @@ class ServiceListener implements ServiceListenerInterface
         $configListener = $e->getConfigListener();
         $config         = $configListener->getMergedConfig(false);
 
+        $appServiceConfig = [];
+        $pluginManagers   = [];
+
         foreach ($this->serviceManagers as $key => $sm) {
             if (isset($config[$sm['config_key']])
                 && is_array($config[$sm['config_key']])
@@ -200,7 +231,7 @@ class ServiceListener implements ServiceListenerInterface
 
             // Merge all of the things!
             $smConfig = [];
-            foreach ($this->serviceManagers[$key]['configuration'] as $configs) {
+            foreach ($this->serviceManagers[$key]['configuration'] as $name => $configs) {
                 if (isset($configs['configuration_classes'])) {
                     foreach ($configs['configuration_classes'] as $class) {
                         $configs = ArrayUtils::merge($configs, $this->serviceConfigToArray($class));
@@ -209,19 +240,41 @@ class ServiceListener implements ServiceListenerInterface
                 $smConfig = ArrayUtils::merge($smConfig, $configs);
             }
 
-            if (!$sm['service_manager'] instanceof ServiceManager) {
-                $instance = $this->defaultServiceManager->get($sm['service_manager']);
-                if (!$instance instanceof ServiceManager) {
-                    throw new Exception\RuntimeException(sprintf(
-                        'Could not find a valid ServiceManager for %s',
-                        $sm['service_manager']
-                    ));
-                }
-                $sm['service_manager'] = $instance;
+            // If this is for the application service manager, we're done.
+            if ($key === self::IS_APP_MANAGER) {
+                $appServiceConfig = $smConfig;
+                continue;
             }
-            $serviceConfig = new ServiceConfig($smConfig);
-            $serviceConfig->configureServiceManager($sm['service_manager']);
+
+            // Create the plugin manager instance.
+            //
+            // Use the build method, so that we can pass the configuration, but
+            // also so we can prevent caching it in the SM instance itself.
+            $instance = $this->defaultServiceManager->build($sm['service_manager'], $smConfig);
+
+            if (! $instance instanceof ServiceManager) {
+                throw new Exception\RuntimeException(sprintf(
+                    'Instance returned for %s is not a valid service or plugin manager; received instance of %s',
+                    $sm['service_manager'],
+                    (is_object($instance) ? get_class($instance) : gettype($instance))
+                ));
+            }
+
+            // Map the configuration key (and class name, if it differs) to the instance.
+            $pluginManagers[$key] = $instance;
+            if ($key !== get_class($instance)) {
+                $pluginManagers[get_class($instance)] = $instance;
+            }
         }
+
+        // Register plugin managers as services in the application configuration.
+        if (! isset($appServiceConfig['services'])) {
+            $appServiceConfig['services'] = [];
+        }
+        $appServiceConfig['services'] = array_merge($appServiceConfig['services'], $pluginManagers);
+
+        // Set the application service manager configuration
+        $this->appServiceConfig = (new ServiceConfig($appServiceConfig))->toArray();
     }
 
     /**
@@ -241,21 +294,13 @@ class ServiceListener implements ServiceListenerInterface
             $config = new $class;
         }
 
-        if (!$config instanceof ServiceConfig) {
+        if (! $config instanceof ServiceConfig) {
             throw new Exception\RuntimeException(sprintf(
                 'Invalid service manager configuration class provided; received "%s", expected an instance of Zend\ServiceManager\Config',
                 (is_object($config) ? get_class($config) : (is_scalar($config) ? $config : gettype($config)))
             ));
         }
 
-        return [
-            'abstract_factories' => $config->getAbstractFactories(),
-            'aliases'            => $config->getAliases(),
-            'initializers'       => $config->getInitializers(),
-            'factories'          => $config->getFactories(),
-            'invokables'         => $config->getInvokables(),
-            'services'           => $config->getServices(),
-            'shared'             => $config->getShared(),
-        ];
+        return $config->toArray();
     }
 }
