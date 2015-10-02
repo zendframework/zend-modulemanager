@@ -18,6 +18,20 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
+- [#13](https://github.com/zendframework/zend-modulemanager/pull/13) updates the
+  code base to work with the v3.0 version of zend-servicemanager. Primarily, this
+  involved:
+  - Removing the LocatorRegistered feature and related listener since DI was
+    removed from the zend-servicemanager already.
+  - Adds the setApplicationServiceManager() and getServiceManagerConfig()
+    methods. The former is used to set the metadata for collecting application
+    service manager configuration; the latter returns the merged configuration.
+    These methods were added to both the interface and the implementation.
+  - Aggregated plugins are instantiated, and added as "services" configuration
+    for the service manager. When "pulled" from the service manager, the code
+    uses build() to ensure the service is not cached, and to allow passing
+    the configuration options.
+
 - [#12](https://github.com/zendframework/zend-modulemanager/pull/12) updates the
   code base to work with the v3.0 version of zend-eventmanager. Primarily, this
   involved:
