@@ -12,6 +12,8 @@ namespace ZendTest\ModuleManager\Listener;
 use ArrayObject;
 use PHPUnit_Framework_TestCase as TestCase;
 use stdClass;
+use Zend\EventManager\EventManager;
+use Zend\ModuleManager\Exception;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
 use Zend\ModuleManager\Listener\ConfigListener;
 use Zend\ModuleManager\Listener\ServiceListener;
@@ -19,16 +21,31 @@ use Zend\ModuleManager\ModuleEvent;
 use Zend\ServiceManager\Config as ServiceConfig;
 use Zend\ServiceManager\ServiceManager;
 use Zend\Stdlib\ArrayUtils;
+use ZendTest\ModuleManager\EventManagerIntrospectionTrait;
 
 /**
  * @covers Zend\ModuleManager\Listener\ServiceListener
  */
 class ServiceListenerTest extends TestCase
 {
+    use EventManagerIntrospectionTrait;
+
     /**
      * @var ConfigListener
      */
     protected $configListener;
+
+    protected $defaultServiceConfig = [
+        'abstract_factories' => [],
+        'aliases'            => [],
+        'delegators'         => [],
+        'factories'          => [],
+        'initializers'       => [],
+        'invokables'         => [],
+        'lazy_services'      => [],
+        'services'           => [],
+        'shared'             => [],
+    ];
 
     /**
      * @var ModuleEvent
@@ -102,18 +119,7 @@ class ServiceListenerTest extends TestCase
 
     public function assertServiceManagerConfiguration()
     {
-        $default = [
-            'abstract_factories' => [],
-            'aliases'            => [],
-            'delegators'         => [],
-            'factories'          => [],
-            'initializers'       => [],
-            'invokables'         => [],
-            'lazy_services'      => [],
-            'services'           => [],
-            'shared'             => [],
-        ];
-        $expected = ArrayUtils::merge($default, $this->getServiceConfig());
+        $expected = ArrayUtils::merge($this->defaultServiceConfig, $this->getServiceConfig());
         $this->listener->onLoadModulesPost($this->event);
         $this->assertEquals($expected, $this->listener->getServiceManagerConfig());
     }
@@ -178,5 +184,154 @@ class ServiceListenerTest extends TestCase
         $configListener->setMergedConfig($config);
         $this->event->setConfigListener($configListener);
         $this->assertServiceManagerConfiguration();
+    }
+
+    public function invalidServiceManagerTypes()
+    {
+        return [
+            'null'       => [null],
+            'true'       => [true],
+            'false'      => [false],
+            'zero'       => [0],
+            'int'        => [1],
+            'zero-float' => [0.0],
+            'float'      => [1.1],
+            'array'      => [['FooBar']],
+            'object'     => [(object) ['service_manager' => 'FooBar']],
+        ];
+    }
+
+    /**
+     * @dataProvider invalidServiceManagerTypes
+     */
+    public function testUsingNonStringServiceManagerWithAddServiceManagerRaisesException($serviceManager)
+    {
+        $this->setExpectedException(Exception\RuntimeException::class, 'expected string');
+        $this->listener->addServiceManager(
+            $serviceManager,
+            'service_manager',
+            ServiceProviderInterface::class,
+            'getServiceConfig'
+        );
+    }
+
+    public function testAddingApplicationServiceManagerViaAddServiceManagerRaisesException()
+    {
+        $this->setExpectedException(Exception\RuntimeException::class, ServiceListener::IS_APP_MANAGER);
+        $this->listener->addServiceManager(
+            ServiceListener::IS_APP_MANAGER,
+            'service_manager',
+            ServiceProviderInterface::class,
+            'getServiceConfig'
+        );
+    }
+
+    public function testCreatesPluginManagerBasedOnModuleImplementingSpecifiedProviderInterface()
+    {
+        $received = [];
+        $services = $this->services->withConfig(['factories' => [
+            'CustomPluginManager' => function ($services, $name, array $options = null) use (&$received) {
+                $received = $options;
+                return new TestAsset\CustomPluginManager($services, $options);
+            }
+        ]]);
+        $listener = new ServiceListener($services);
+
+        $listener->addServiceManager(
+            'CustomPluginManager',
+            'custom_plugins',
+            TestAsset\CustomPluginProviderInterface::class,
+            'getCustomPluginConfig'
+        );
+
+        $pluginConfig = $this->getServiceConfig();
+        $module = new TestAsset\CustomPluginProviderModule($pluginConfig);
+        $this->event->setModule($module);
+        $listener->onLoadModule($this->event);
+        $listener->onLoadModulesPost($this->event);
+        $this->assertEquals($pluginConfig, $received);
+
+        $serviceConfig = $listener->getServiceManagerConfig();
+        $this->assertArrayHasKey('services', $serviceConfig);
+        $this->assertArrayHasKey('CustomPluginManager', $serviceConfig['services']);
+        $this->assertInstanceOf(
+            TestAsset\CustomPluginManager::class,
+            $serviceConfig['services']['CustomPluginManager']
+        );
+    }
+
+    public function testCreatesPluginManagerBasedOnModuleDuckTypingSpecifiedProviderInterface()
+    {
+        $received = [];
+        $services = $this->services->withConfig(['factories' => [
+            'CustomPluginManager' => function ($services, $name, array $options = null) use (&$received) {
+                $received = $options;
+                return new TestAsset\CustomPluginManager($services, $options);
+            }
+        ]]);
+        $listener = new ServiceListener($services);
+
+        $listener->addServiceManager(
+            'CustomPluginManager',
+            'custom_plugins',
+            TestAsset\CustomPluginProviderInterface::class,
+            'getCustomPluginConfig'
+        );
+
+        $pluginConfig = $this->getServiceConfig();
+        $module = new TestAsset\CustomPluginDuckTypeProviderModule($pluginConfig);
+        $this->event->setModule($module);
+        $listener->onLoadModule($this->event);
+        $listener->onLoadModulesPost($this->event);
+        $this->assertEquals($pluginConfig, $received);
+
+        $serviceConfig = $listener->getServiceManagerConfig();
+        $this->assertArrayHasKey('services', $serviceConfig);
+        $this->assertArrayHasKey('CustomPluginManager', $serviceConfig['services']);
+        $this->assertInstanceOf(
+            TestAsset\CustomPluginManager::class,
+            $serviceConfig['services']['CustomPluginManager']
+        );
+    }
+
+    public function testAttachesListenersAtExpectedPriorities()
+    {
+        $events = new EventManager();
+        $this->listener->attach($events);
+        $this->assertListenerAtPriority(
+            [$this->listener, 'onLoadModule'],
+            1,
+            ModuleEvent::EVENT_LOAD_MODULE,
+            $events,
+            'onLoadModule not registered at expected priority'
+        );
+        $this->assertListenerAtPriority(
+            [$this->listener, 'onLoadModulesPost'],
+            1,
+            ModuleEvent::EVENT_LOAD_MODULES_POST,
+            $events,
+            'onLoadModulesPost not registered at expected priority'
+        );
+
+        return [
+            'listener' => $this->listener,
+            'events'   => $events,
+        ];
+    }
+
+    /**
+     * @depends testAttachesListenersAtExpectedPriorities
+     */
+    public function testCanDetachListeners(array $dependencies)
+    {
+        $listener = $dependencies['listener'];
+        $events   = $dependencies['events'];
+
+        $listener->detach($events);
+
+        $listeners = $this->getArrayOfListenersForEvent(ModuleEvent::EVENT_LOAD_MODULE, $events);
+        $this->assertCount(0, $listeners);
+        $listeners = $this->getArrayOfListenersForEvent(ModuleEvent::EVENT_LOAD_MODULES_POST, $events);
+        $this->assertCount(0, $listeners);
     }
 }
