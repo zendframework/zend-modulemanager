@@ -12,19 +12,13 @@
             "Zend\\ModuleManager\\": "src/"
         }
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/weierophinney/zend-config.git"
-        }
-    ],
     "require": {
         "php": ">=5.5",
         "zendframework/zend-eventmanager": "dev-develop as 2.7.0",
         "zendframework/zend-stdlib": "~2.7"
     },
     "require-dev": {
-        "zendframework/zend-config": "dev-feature/service-manager-v3 as 2.6.0",
+        "zendframework/zend-config": "dev-develop as 2.6.0",
         "zendframework/zend-console": "~2.5",
         "zendframework/zend-di": "~2.5",
         "zendframework/zend-loader": "~2.5",
