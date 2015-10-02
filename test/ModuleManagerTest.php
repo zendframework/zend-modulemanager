@@ -53,9 +53,6 @@ class ModuleManagerTest extends TestCase
         $this->assertEquals($expected, array_values($identifiers));
     }
 
-    /**
-     * @group fail
-     */
     public function testCanLoadSomeModule()
     {
         $configListener = $this->defaultListeners->getConfigListener();
