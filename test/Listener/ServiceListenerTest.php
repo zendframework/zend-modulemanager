@@ -20,7 +20,6 @@ use Zend\ModuleManager\Listener\ServiceListener;
 use Zend\ModuleManager\ModuleEvent;
 use Zend\ServiceManager\Config as ServiceConfig;
 use Zend\ServiceManager\ServiceManager;
-use Zend\Stdlib\ArrayUtils;
 use ZendTest\ModuleManager\EventManagerIntrospectionTrait;
 
 /**
@@ -83,7 +82,7 @@ class ServiceListenerTest extends TestCase
         $this->event->setModule($module);
         $this->listener->onLoadModule($this->event);
 
-        $this->assertEquals([], $this->listener->getServiceManagerConfig());
+        $this->assertSame($this->services, $this->listener->getConfiguredServiceManager());
     }
 
     public function testInvalidReturnFromModuleDoesNothing()
@@ -92,14 +91,16 @@ class ServiceListenerTest extends TestCase
         $this->event->setModule($module);
         $this->listener->onLoadModule($this->event);
 
-        $this->assertEquals([], $this->listener->getServiceManagerConfig());
+        $this->assertSame($this->services, $this->listener->getConfiguredServiceManager());
     }
 
     public function getServiceConfig()
     {
         // @codingStandardsIgnoreStart
         return [
-            'invokables' => [__CLASS__ => __CLASS__],
+            'invokables' => [
+                __CLASS__ => __CLASS__
+            ],
             'factories' => [
                 'foo' => function ($sm) { },
             ],
@@ -119,9 +120,16 @@ class ServiceListenerTest extends TestCase
 
     public function assertServiceManagerConfiguration()
     {
-        $expected = ArrayUtils::merge($this->defaultServiceConfig, $this->getServiceConfig());
         $this->listener->onLoadModulesPost($this->event);
-        $this->assertEquals($expected, $this->listener->getServiceManagerConfig());
+        $services = $this->listener->getConfiguredServiceManager();
+        $this->assertNotSame($this->services, $services);
+        $this->assertInstanceOf(ServiceManager::class, $services);
+
+        $this->assertTrue($services->has(__CLASS__));
+        $this->assertTrue($services->has('foo'));
+        $this->assertTrue($services->has('bar'));
+        $this->assertFalse($services->has('resolved-by-abstract'));
+        $this->assertTrue($services->has('resolved-by-abstract', true));
     }
 
     public function testModuleReturningArrayConfiguresServiceManager()
@@ -130,6 +138,7 @@ class ServiceListenerTest extends TestCase
         $module = new TestAsset\ServiceProviderModule($config);
         $this->event->setModule($module);
         $this->listener->onLoadModule($this->event);
+        $services = $this->listener->getConfiguredServiceManager();
         $this->assertServiceManagerConfiguration();
     }
 
@@ -145,7 +154,10 @@ class ServiceListenerTest extends TestCase
 
     public function testModuleServiceConfigOverridesGlobalConfig()
     {
-        $defaultConfig = ['aliases' => ['foo' => 'bar']];
+        $defaultConfig = ['aliases' => ['foo' => 'bar'], 'services' => [
+            'bar' => new stdClass(),
+            'baz' => new stdClass(),
+        ]];
         $this->listener = new ServiceListener($this->services, $defaultConfig);
         $this->listener->setApplicationServiceManager(
             'service_manager',
@@ -158,13 +170,13 @@ class ServiceListenerTest extends TestCase
         $this->event->setModuleName(__NAMESPACE__ . '\TestAsset\ServiceProvider');
         $this->listener->onLoadModule($this->event);
         $this->listener->onLoadModulesPost($this->event);
-        $expected = ArrayUtils::merge($defaultConfig, $config);
-        $expected = (new ServiceConfig($expected))->toArray();
-        $this->assertEquals(
-            $expected,
-            $this->listener->getServiceManagerConfig(),
-            'Default configuration was not overridden'
-        );
+
+        $services = $this->listener->getConfiguredServiceManager();
+        $this->assertNotSame($this->services, $services);
+        $this->assertTrue($services->has('config'));
+        $this->assertTrue($services->has('foo'));
+        $this->assertNotSame($services->get('foo'), $services->get('bar'));
+        $this->assertSame($services->get('foo'), $services->get('baz'));
     }
 
     public function testModuleReturningServiceConfigConfiguresServiceManager()
@@ -251,13 +263,11 @@ class ServiceListenerTest extends TestCase
         $listener->onLoadModulesPost($this->event);
         $this->assertEquals($pluginConfig, $received);
 
-        $serviceConfig = $listener->getServiceManagerConfig();
-        $this->assertArrayHasKey('services', $serviceConfig);
-        $this->assertArrayHasKey('CustomPluginManager', $serviceConfig['services']);
-        $this->assertInstanceOf(
-            TestAsset\CustomPluginManager::class,
-            $serviceConfig['services']['CustomPluginManager']
-        );
+        $configuredServices = $listener->getConfiguredServiceManager();
+        $this->assertNotSame($services, $configuredServices);
+        $this->assertTrue($configuredServices->has('CustomPluginManager'));
+        $plugins = $configuredServices->get('CustomPluginManager');
+        $this->assertInstanceOf(TestAsset\CustomPluginManager::class, $plugins);
     }
 
     public function testCreatesPluginManagerBasedOnModuleDuckTypingSpecifiedProviderInterface()
@@ -285,13 +295,11 @@ class ServiceListenerTest extends TestCase
         $listener->onLoadModulesPost($this->event);
         $this->assertEquals($pluginConfig, $received);
 
-        $serviceConfig = $listener->getServiceManagerConfig();
-        $this->assertArrayHasKey('services', $serviceConfig);
-        $this->assertArrayHasKey('CustomPluginManager', $serviceConfig['services']);
-        $this->assertInstanceOf(
-            TestAsset\CustomPluginManager::class,
-            $serviceConfig['services']['CustomPluginManager']
-        );
+        $configuredServices = $listener->getConfiguredServiceManager();
+        $this->assertNotSame($services, $configuredServices);
+        $this->assertTrue($configuredServices->has('CustomPluginManager'));
+        $plugins = $configuredServices->get('CustomPluginManager');
+        $this->assertInstanceOf(TestAsset\CustomPluginManager::class, $plugins);
     }
 
     public function testAttachesListenersAtExpectedPriorities()
