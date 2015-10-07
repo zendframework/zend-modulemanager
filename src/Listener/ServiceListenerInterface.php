@@ -41,14 +41,11 @@ interface ServiceListenerInterface extends ListenerAggregateInterface
     public function setApplicationServiceManager($key, $moduleInterface, $method);
 
     /**
-     * Retrieve the aggregated configuration for the application service manager.
+     * Retrieve the application service manager instance post-configuration.
      *
-     * The array returned must be valid for passing to the service manager's
-     * constructor or withConfig() method.
-     *
-     * @return array
+     * @return ServiceManager
      */
-    public function getServiceManagerConfig();
+    public function getConfiguredServiceManager();
 
     /**
      * @param  array $configuration
