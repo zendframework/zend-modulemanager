@@ -39,8 +39,8 @@ triggers this event, passing the newly created object to all listeners.
 After all modules have been loaded, the `mergeConfig` event is triggered. By default,
 `Zend\ModuleManager\Listener\ConfigLister` listens on this event at priority 1000, and merges all
 configuration. You may attach additional listeners to this event in order to manipulate the merged
-configuration. See \[the tutorial on manipulating merged
-configuration\](tutorials.config.advanced.manipulating-merged-configuration) for more information.
+configuration. See [the tutorial on manipulating merged
+configuration](tutorials.config.advanced.manipulating-merged-configuration) for more information.
 
 **loadModules.post (ModuleEvent::EVENT\_LOAD\_MODULES\_POST)**  
 This event is triggered by the module manager to allow any listeners to perform work after every
@@ -123,9 +123,9 @@ it is created and instantiated within the `Zend\Mvc\Service\ModuleManagerFactory
 injected with the current `ServiceManager` instance before being registered with the `ModuleManager`
 events.
 
-Additionally, this listener manages a variety of plugin managers, including \[view
-helpers\](zend.view.helpers), controllers
-&lt;zend.mvc.controllers&gt;, and \[controller plugins\](zend.mvc.controller-plugins). In each case,
+Additionally, this listener manages a variety of plugin managers, including [view
+helpers](zend.view.helpers), controllers
+&lt;zend.mvc.controllers&gt;, and [controller plugins](zend.mvc.controller-plugins). In each case,
 you may either specify configuration to define plugins, or provide configuration via a `Module`
 class. Configuration follows the same format as for the `ServiceManager`. The following table
 outlines the plugin managers that may be configured this way (including the `ServiceManager`), the
