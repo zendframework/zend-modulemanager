@@ -16,7 +16,7 @@ for you.
 In order for paths relative to your application directory to work, you must have the directive
 `chdir(dirname(__DIR__));` in your `public/index.php` file.
 
-**Registering module paths with the `DefaultListenerAggregate`**
+### Registering module paths with the `DefaultListenerAggregate`
 
 The following example will search for modules in three different `module_paths`. Two are local
 directories of this application and the third is a system-wide shared directory.
@@ -60,7 +60,7 @@ autoloader will return the first one it finds.
 Sometimes you may want to specify exactly where a module is instead of having
 `Zend\Loader\ModuleAutoloader` try to find it in the registered paths.
 
-**Registering a Non-Standard / Explicit Module Path**
+### Registering a Non-Standard / Explicit Module Path
 
 In this example, the autoloader will first check for `MyModule\Module` in
 `/path/to/mymoduledir-v1.2/Module.php`. If it's not found, then it will fall back to searching any
