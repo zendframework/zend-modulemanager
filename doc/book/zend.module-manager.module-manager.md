@@ -147,151 +147,33 @@ configuration key to use, the `ModuleManager` feature interface to optionally im
 interfaces specified live in the `Zend\ModuleManager\Feature` namespace) , and the module method to
 optionally define to provide configuration.
 
-<table>
-<colgroup>
-<col width="33%" />
-<col width="17%" />
-<col width="27%" />
-<col width="21%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="left">Plugin Manager</th>
-<th align="left">Config Key</th>
-<th align="left">Interface</th>
-<th align="left">Module Method</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left"><code>Zend\Mvc\Controller\ControllerManager</code></td>
-<td align="left"><code>controllers</code></td>
-<td align="left"><code>ControllerProviderInterface</code></td>
-<td align="left"><code>getControllerConfig</code></td>
-</tr>
-<tr class="even">
-<td align="left"><code>Zend\Mvc\Controller\PluginManager</code></td>
-<td align="left"><code>controller_plugins</code></td>
-<td align="left"><code>ControllerPluginProviderInterface</code></td>
-<td align="left"><code>getControllerPluginConfig</code></td>
-</tr>
-<tr class="odd">
-<td align="left"><code>Zend\Filter\FilterPluginManager</code></td>
-<td align="left"><code>filters</code></td>
-<td align="left"><code>FilterProviderInterface</code></td>
-<td align="left"><code>getFilterConfig</code></td>
-</tr>
-<tr class="even">
-<td align="left"><code>Zend\Form\FormElementManager</code></td>
-<td align="left"><code>form_elements</code></td>
-<td align="left"><code>FormElementProviderInterface</code></td>
-<td align="left"><code>getFormElementConfig</code></td>
-</tr>
-<tr class="odd">
-<td align="left"><code>Zend\Stdlib\Hydrator\HydratorPluginManager</code></td>
-<td align="left"><code>hydrators</code></td>
-<td align="left"><code>HydratorProviderInterface</code></td>
-<td align="left"><code>getHydratorConfig</code></td>
-</tr>
-<tr class="even">
-<td align="left"><code>Zend\InputFilter\InputFilterPluginManager</code></td>
-<td align="left"><code>input_filters</code></td>
-<td align="left"><code>InputFilterProviderInterface</code></td>
-<td align="left"><code>getInputFilterConfig</code></td>
-</tr>
-<tr class="odd">
-<td align="left"><code>Zend\Mvc\Router\RoutePluginManager</code></td>
-<td align="left"><code>route_manager</code></td>
-<td align="left"><code>RouteProviderInterface</code></td>
-<td align="left"><code>getRouteConfig</code></td>
-</tr>
-<tr class="even">
-<td align="left"><code>Zend\Serializer\AdapterPluginManager</code></td>
-<td align="left"><code>serializers</code></td>
-<td align="left"><code>SerializerProviderInterface</code></td>
-<td align="left"><code>getSerializerConfig</code></td>
-</tr>
-<tr class="odd">
-<td align="left"><code>Zend\ServiceManager\ServiceManager</code></td>
-<td align="left"><code>service_manager</code></td>
-<td align="left"><code>ServiceProviderInterface</code></td>
-<td align="left"><code>getServiceConfig</code></td>
-</tr>
-<tr class="even">
-<td align="left"><code>Zend\Validator\ValidatorPluginManager</code></td>
-<td align="left"><code>validators</code></td>
-<td align="left"><code>ValidatorProviderInterface</code></td>
-<td align="left"><code>getValidatorConfig</code></td>
-</tr>
-<tr class="odd">
-<td align="left"><code>Zend\View\HelperPluginManager</code></td>
-<td align="left"><code>view_helpers</code></td>
-<td align="left"><code>ViewHelperProviderInterface</code></td>
-<td align="left"><code>getViewHelperConfig</code></td>
-</tr>
-<tr class="even">
-<td align="left"><code>Zend\Log\ProcessorPluginManager</code></td>
-<td align="left"><code>log_processors</code></td>
-<td align="left"><code>LogProcessorProviderInterface</code></td>
-<td align="left"><code>getLogProcessorConfig</code></td>
-</tr>
-<tr class="odd">
-<td align="left"><code>Zend\Log\WriterPluginManager</code></td>
-<td align="left"><code>log_writers</code></td>
-<td align="left"><code>LogWriterProviderInterface</code></td>
-<td align="left"><code>getLogWriterConfig</code></td>
-</tr>
-</tbody>
-</table>
+Plugin Manage | Config Key | Interface | Module Method
+--------------|------------|-----------|--------------
+`Zend\Mvc\Controller\ControllerManager` | `controllers` | `ControllerProviderInterface` | `getControllerConfig`
+`Zend\Mvc\Controller\PluginManager` | `controller_plugins` | `ControllerPluginProviderInterface` | `getControllerPluginConfig`
+`Zend\Filter\FilterPluginManager` | `filters` | `FilterProviderInterface` | `getFilterConfig`
+`Zend\Form\FormElementManager` | `form_elements` | `FormElementProviderInterface` | `getFormElementConfig`
+`Zend\Stdlib\Hydrator\HydratorPluginManager` | `hydrators` | `HydratorProviderInterface` | `getHydratorConfig`
+`Zend\InputFilter\InputFilterPluginManager` | `input_filters` | `InputFilterProviderInterface` | `getInputFilterConfig`
+`Zend\Mvc\Router\RoutePluginManager` | `route_manager` | `RouteProviderInterface` | `getRouteConfig`
+`Zend\Serializer\AdapterPluginManager` | `serializers` | `SerializerProviderInterface` | `getSerializerConfig`
+`Zend\ServiceManager\ServiceManager` | `service_manager` | `ServiceProviderInterface` | `getServiceConfig`
+`Zend\Validator\ValidatorPluginManager` | `validators` | `ValidatorProviderInterface` | `getValidatorConfig`
+`Zend\View\HelperPluginManager` | `view_helpers` | `ViewHelperProviderInterface` | `getViewHelperConfig`
+`Zend\Log\ProcessorPluginManager` | `log_processors` | `LogProcessorProviderInterface` | `getLogProcessorConfig`
+`Zend\Log\WriterPluginManager` | `log_writers` | `LogWriterProviderInterface` | `getLogWriterConfig`
 
 Configuration follows the examples in the ServiceManager configuration
 section &lt;zend.service-manager.quick-start.config&gt;. As a brief recap, the following
 configuration keys and values are allowed:
 
-<table>
-<colgroup>
-<col width="29%" />
-<col width="70%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="left">Config Key</th>
-<th align="left">Allowed values</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left"><code>services</code></td>
-<td align="left">service name/instance pairs (these should likely be defined only in
-<code>Module</code> classes)</td>
-</tr>
-<tr class="even">
-<td align="left"><code>invokables</code></td>
-<td align="left">service name/class name pairs of classes that may be invoked without constructor
-arguments</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>factories</code></td>
-<td align="left">service names pointing to factories. Factories may be any PHP callable, or a string
-class name of a class implementing <code>Zend\ServiceManager\FactoryInterface</code>, or of a class
-implementing the <code>__invoke</code> method (if a callable is used, it should be defined only in
-<code>Module</code> classes)</td>
-</tr>
-<tr class="even">
-<td align="left"><code>abstract_factories</code></td>
-<td align="left">array of either concrete instances of
-<code>Zend\ServiceManager\AbstractFactoryInterface</code>, or string class names of classes
-implementing that interface (if an instance is used, it should be defined only in
-<code>Module</code> classes)</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>initializers</code></td>
-<td align="left">array of PHP callables or string class names of classes implementing
-<code>Zend\ServiceManager\InitializerInterface</code> (if a callable is used, it should be defined
-only in <code>Module</code> classes)</td>
-</tr>
-</tbody>
-</table>
+Config Key | Allowed values
+-----------|---------------
+`services` | service name/instance pairs (these should likely be defined only in `Module` classes
+`invokables` | service name/class name pairs of classes that may be invoked without constructor arguments
+`factories` | service names pointing to factories. Factories may be any PHP callable, or a string class name of a class implementing `Zend\ServiceManager\FactoryInterface`, or of a class implementing the `__invoke` method (if a callable is used, it should be defined only in `Module` classes)
+`abstract_factories` | array of either concrete instances of `Zend\ServiceManager\AbstractFactoryInterface`, or string class names of classes implementing that interface (if an instance is used, it should be defined only in `Module` classes)
+`initializers` | array of PHP callables or string class names of classes implementing `Zend\ServiceManager\InitializerInterface` (if a callable is used, it should be defined only in `Module` classes)
 
 When working with plugin managers, you will be passed the plugin manager instance to factories,
 abstract factories, and initializers. If you need access to the application services, you can use
