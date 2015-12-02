@@ -122,14 +122,12 @@ class ServiceListenerTest extends TestCase
     {
         $this->listener->onLoadModulesPost($this->event);
         $services = $this->listener->getConfiguredServiceManager();
-        $this->assertNotSame($this->services, $services);
         $this->assertInstanceOf(ServiceManager::class, $services);
 
         $this->assertTrue($services->has(__CLASS__));
         $this->assertTrue($services->has('foo'));
         $this->assertTrue($services->has('bar'));
-        $this->assertFalse($services->has('resolved-by-abstract'));
-        $this->assertTrue($services->has('resolved-by-abstract', true));
+        $this->assertTrue($services->has('resolved-by-abstract'));
     }
 
     public function testModuleReturningArrayConfiguresServiceManager()
@@ -172,7 +170,6 @@ class ServiceListenerTest extends TestCase
         $this->listener->onLoadModulesPost($this->event);
 
         $services = $this->listener->getConfiguredServiceManager();
-        $this->assertNotSame($this->services, $services);
         $this->assertTrue($services->has('config'));
         $this->assertTrue($services->has('foo'));
         $this->assertNotSame($services->get('foo'), $services->get('bar'));
@@ -241,7 +238,7 @@ class ServiceListenerTest extends TestCase
     public function testCreatesPluginManagerBasedOnModuleImplementingSpecifiedProviderInterface()
     {
         $received = [];
-        $services = $this->services->withConfig(['factories' => [
+        $services = $this->services->configure(['factories' => [
             'CustomPluginManager' => function ($services, $name, array $options = null) use (&$received) {
                 $received = $options;
                 return new TestAsset\CustomPluginManager($services, $options);
@@ -264,7 +261,6 @@ class ServiceListenerTest extends TestCase
         $this->assertEquals($pluginConfig, $received);
 
         $configuredServices = $listener->getConfiguredServiceManager();
-        $this->assertNotSame($services, $configuredServices);
         $this->assertTrue($configuredServices->has('CustomPluginManager'));
         $plugins = $configuredServices->get('CustomPluginManager');
         $this->assertInstanceOf(TestAsset\CustomPluginManager::class, $plugins);
@@ -273,7 +269,7 @@ class ServiceListenerTest extends TestCase
     public function testCreatesPluginManagerBasedOnModuleDuckTypingSpecifiedProviderInterface()
     {
         $received = [];
-        $services = $this->services->withConfig(['factories' => [
+        $services = $this->services->configure(['factories' => [
             'CustomPluginManager' => function ($services, $name, array $options = null) use (&$received) {
                 $received = $options;
                 return new TestAsset\CustomPluginManager($services, $options);
@@ -296,7 +292,6 @@ class ServiceListenerTest extends TestCase
         $this->assertEquals($pluginConfig, $received);
 
         $configuredServices = $listener->getConfiguredServiceManager();
-        $this->assertNotSame($services, $configuredServices);
         $this->assertTrue($configuredServices->has('CustomPluginManager'));
         $plugins = $configuredServices->get('CustomPluginManager');
         $this->assertInstanceOf(TestAsset\CustomPluginManager::class, $plugins);
