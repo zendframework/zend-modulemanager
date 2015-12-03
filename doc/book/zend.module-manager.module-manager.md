@@ -138,8 +138,8 @@ injected with the current `ServiceManager` instance before being registered with
 events.
 
 Additionally, this listener manages a variety of plugin managers, including [view
-helpers](zend.view.helpers), controllers
-&lt;zend.mvc.controllers&gt;, and [controller plugins](zend.mvc.controller-plugins). In each case,
+helpers](zend.view.helpers), [controllers](zend.mvc.controllers), and
+[controller plugins](zend.mvc.controller-plugins). In each case,
 you may either specify configuration to define plugins, or provide configuration via a `Module`
 class. Configuration follows the same format as for the `ServiceManager`. The following table
 outlines the plugin managers that may be configured this way (including the `ServiceManager`), the
@@ -163,8 +163,8 @@ Plugin Manage | Config Key | Interface | Module Method
 `Zend\Log\ProcessorPluginManager` | `log_processors` | `LogProcessorProviderInterface` | `getLogProcessorConfig`
 `Zend\Log\WriterPluginManager` | `log_writers` | `LogWriterProviderInterface` | `getLogWriterConfig`
 
-Configuration follows the examples in the ServiceManager configuration
-section &lt;zend.service-manager.quick-start.config&gt;. As a brief recap, the following
+Configuration follows the examples in the ServiceManager [configuration
+section](zend.service-manager.quick-start.md#config). As a brief recap, the following
 configuration keys and values are allowed:
 
 Config Key | Allowed values
