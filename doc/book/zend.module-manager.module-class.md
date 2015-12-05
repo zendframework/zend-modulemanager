@@ -14,8 +14,10 @@ find and include the `MyModule\Module` class if it isn't already available.
 
 The directory structure of a module named "MyModule" might start out looking something like this:
 
-    MyModule/
-        Module.php
+```
+MyModule/
+    Module.php
+```
 
 Within `Module.php`, you define your `MyModule\Module` class:
 

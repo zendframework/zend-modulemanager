@@ -30,29 +30,31 @@ namespace](http://php.net/namespaces) and must follow all of the same rules for 
 
 The recommended structure of a typical MVC-oriented ZF2 module is as follows:
 
-    module_root/
-        Module.php
-        autoload_classmap.php
-        autoload_function.php
-        autoload_register.php
-        config/
-            module.config.php
-        public/
-            images/
-            css/
-            js/
-        src/
-            <module_namespace>/
-                <code files>
-        test/
-            phpunit.xml
-            bootstrap.php
-            <module_namespace>/
-                <test code files>
-        view/
-            <dir-named-after-module-namespace>/
-                <dir-named-after-a-controller>/
-                    <.phtml files>
+```
+module_root/
+    Module.php
+    autoload_classmap.php
+    autoload_function.php
+    autoload_register.php
+    config/
+        module.config.php
+    public/
+        images/
+        css/
+        js/
+    src/
+        <module_namespace>/
+            <code files>
+    test/
+        phpunit.xml
+        bootstrap.php
+        <module_namespace>/
+            <test code files>
+    view/
+        <dir-named-after-module-namespace>/
+            <dir-named-after-a-controller>/
+                <.phtml files>
+```
 
 ## The autoload\_\*.php Files
 
