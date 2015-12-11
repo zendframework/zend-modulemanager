@@ -14,8 +14,10 @@ find and include the `MyModule\Module` class if it isn't already available.
 
 The directory structure of a module named "MyModule" might start out looking something like this:
 
-    MyModule/
-        Module.php
+```
+MyModule/
+    Module.php
+```
 
 Within `Module.php`, you define your `MyModule\Module` class:
 
@@ -66,11 +68,9 @@ class Module
 ```
 
 For a list of the provided module manager listeners and the interfaces and methods that `Module`
-classes may implement in order to interact with the module manager and application, see the module
-manager
-listeners &lt;zend.module-manager.module-manager.module-manager-listeners&gt; and the module
-mananger
-events &lt;zend.module-manager.module-manager.module-manager-events&gt; documentations.
+classes may implement in order to interact with the module manager and application, see the [module
+manager listeners](zend.module-manager.module-manager.md#module-manager-listeners) and the [module
+mananger events](zend.module-manager.module-manager.md#module-manager-events) documentations.
 
 ## The "loadModules.post" Event
 
@@ -79,9 +79,8 @@ It is not safe for a module to assume that any other modules have already been l
 been loaded, the module manager's "loadModules.post" event makes this easy.
 
 > ## Note
-For more information on methods like `init()` and `getConfig()`, refer to the module manager
-listeners
-documentation &lt;zend.module-manager.module-manager.module-manager-listeners&gt;.
+For more information on methods like `init()` and `getConfig()`, refer to the [module
+manager listeners documentation](zend.module-manager.module-manager.md#module-manager-listeners).
 
 ### Sample Usage of "loadModules.post" Event
 
