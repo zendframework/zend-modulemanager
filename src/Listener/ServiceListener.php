@@ -258,7 +258,7 @@ class ServiceListener implements ServiceListenerInterface
 
         // Register plugin managers as services in the application service manager
         if (! empty($pluginManagers)) {
-            $serviceManager = $serviceManager->withConfig(['services' => $pluginManagers]);
+            $serviceManager->configure(['services' => $pluginManagers]);
         }
 
         // Set the configured application service manager instance
@@ -306,7 +306,7 @@ class ServiceListener implements ServiceListenerInterface
     private function configureServiceManager(array $config)
     {
         if (! isset($this->serviceManagers[self::IS_APP_MANAGER])) {
-            return $this->defaultServiceManager->withConfig(['services' => [
+            return $this->defaultServiceManager->configure(['services' => [
                 'config' => $config,
             ]]);
         }
@@ -317,7 +317,7 @@ class ServiceListener implements ServiceListenerInterface
         $serviceConfig = $this->mergeServiceConfiguration(self::IS_APP_MANAGER, $metadata, $config);
         $serviceConfig['services']['config'] = $config;
 
-        return $services->withConfig($serviceConfig);
+        return $services->configure($serviceConfig);
     }
 
     /**
