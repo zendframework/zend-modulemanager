@@ -15,7 +15,7 @@ use Zend\ServiceManager\Factory\AbstractFactoryInterface;
 
 class SampleAbstractFactory implements AbstractFactoryInterface
 {
-    public function canCreateServiceWithName(ContainerInterface $container, $name)
+    public function canCreate(ContainerInterface $container, $name)
     {
         return true;
     }
