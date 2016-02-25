@@ -9,10 +9,10 @@
 
 namespace ZendTest\ModuleManager\Listener;
 
+use Zend\EventManager\Test\EventListenerIntrospectionTrait;
 use Zend\ModuleManager\Listener\ListenerOptions;
 use Zend\ModuleManager\Listener\DefaultListenerAggregate;
 use Zend\ModuleManager\ModuleManager;
-use ZendTest\ModuleManager\EventManagerIntrospectionTrait;
 
 /**
  * @covers Zend\ModuleManager\Listener\AbstractListener
@@ -20,7 +20,7 @@ use ZendTest\ModuleManager\EventManagerIntrospectionTrait;
  */
 class DefaultListenerAggregateTest extends AbstractListenerTestCase
 {
-    use EventManagerIntrospectionTrait;
+    use EventListenerIntrospectionTrait;
 
     /**
      * @var DefaultListenerAggregate

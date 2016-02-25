@@ -11,12 +11,12 @@ namespace ZendTest\ModuleManager\Listener;
 
 use ArrayObject;
 use InvalidArgumentException;
+use Zend\EventManager\Test\EventListenerIntrospectionTrait;
 use Zend\ModuleManager\Listener\ConfigListener;
 use Zend\ModuleManager\Listener\ModuleResolverListener;
 use Zend\ModuleManager\Listener\ListenerOptions;
 use Zend\ModuleManager\ModuleManager;
 use Zend\ModuleManager\ModuleEvent;
-use ZendTest\ModuleManager\EventManagerIntrospectionTrait;
 use ZendTest\ModuleManager\SetUpCacheDirTrait;
 
 /**
@@ -25,7 +25,7 @@ use ZendTest\ModuleManager\SetUpCacheDirTrait;
  */
 class ConfigListenerTest extends AbstractListenerTestCase
 {
-    use EventManagerIntrospectionTrait;
+    use EventListenerIntrospectionTrait;
     use SetUpCacheDirTrait;
 
     /**
@@ -174,10 +174,10 @@ class ConfigListenerTest extends AbstractListenerTestCase
     {
         $configListener = new ConfigListener;
         $configListener->addConfigStaticPaths([
-                __DIR__ . '/_files/good/config.ini',
-                __DIR__ . '/_files/good/config.php',
-                __DIR__ . '/_files/good/config.xml']
-                );
+            __DIR__ . '/_files/good/config.ini',
+            __DIR__ . '/_files/good/config.php',
+            __DIR__ . '/_files/good/config.xml'
+        ]);
 
         $moduleManager = $this->moduleManager;
         $moduleManager->setModules(['SomeModule']);
@@ -244,10 +244,10 @@ class ConfigListenerTest extends AbstractListenerTestCase
         ]);
         $configListener = new ConfigListener($options);
         $configListener->addConfigStaticPaths([
-                __DIR__ . '/_files/good/config.ini',
-                __DIR__ . '/_files/good/config.php',
-                __DIR__ . '/_files/good/config.xml']
-                );
+            __DIR__ . '/_files/good/config.ini',
+            __DIR__ . '/_files/good/config.php',
+            __DIR__ . '/_files/good/config.xml'
+        ]);
 
         $moduleManager = $this->moduleManager;
         $moduleManager->setModules(['SomeModule']);

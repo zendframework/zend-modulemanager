@@ -11,11 +11,17 @@ namespace ZendTest\ModuleManager\Listener\TestAsset;
 
 use Interop\Container\ContainerInterface;
 use stdClass;
-use Zend\ServiceManager\Factory\AbstractFactoryInterface;
+use Zend\ServiceManager\AbstractFactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 class SampleAbstractFactory implements AbstractFactoryInterface
 {
-    public function canCreateServiceWithName(ContainerInterface $container, $name)
+    public function canCreate(ContainerInterface $container, $name)
+    {
+        return true;
+    }
+
+    public function canCreateServiceWithName(ServiceLocatorInterface $container, $name, $requestedName)
     {
         return true;
     }
@@ -23,5 +29,10 @@ class SampleAbstractFactory implements AbstractFactoryInterface
     public function __invoke(ContainerInterface $container, $name, array $options = [])
     {
         return new stdClass;
+    }
+
+    public function createServiceWithName(ServiceLocatorInterface $container, $name, $requestedName)
+    {
+        return $this($container, '');
     }
 }
