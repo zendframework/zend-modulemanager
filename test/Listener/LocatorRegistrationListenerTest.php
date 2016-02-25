@@ -16,11 +16,8 @@ use Zend\ModuleManager\Listener\ModuleResolverListener;
 use Zend\ModuleManager\ModuleManager;
 use Zend\ModuleManager\ModuleEvent;
 use Zend\Mvc\Application;
-use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\ServiceManager;
 use ZendTest\ModuleManager\TestAsset\MockApplication;
-
-require_once dirname(__DIR__) . '/TestAsset/ListenerTestModule/src/Foo/Bar.php';
 
 /**
  * @covers Zend\ModuleManager\Listener\AbstractListener
@@ -50,6 +47,14 @@ class LocatorRegistrationListenerTest extends AbstractListenerTestCase
 
     public function setUp()
     {
+        if (! class_exists(Application::class)) {
+            $this->markTestSkipped(
+                'Skipping tests that rely on zend-mvc until that component is '
+                . 'updated to be forwards-compatible with zend-eventmanager and '
+                . 'zend-servicemanager v3 releases'
+            );
+        }
+
         $this->sharedEvents = new SharedEventManager();
 
         $this->moduleManager = new ModuleManager(['ListenerTestModule']);
@@ -68,9 +73,9 @@ class LocatorRegistrationListenerTest extends AbstractListenerTestCase
 
     public function testModuleClassIsRegisteredWithDiAndInjectedWithSharedInstances()
     {
-        $module = null;
-        $locator         = $this->serviceManager;
-        $locator->setFactory('Foo\Bar', function (ServiceLocatorInterface $s) {
+        $module  = null;
+        $locator = $this->serviceManager;
+        $locator->setFactory('Foo\Bar', function ($s) {
             $module   = $s->get('ListenerTestModule\Module');
             $manager  = $s->get('Zend\ModuleManager\ModuleManager');
             $instance = new \Foo\Bar($module, $manager);
@@ -78,15 +83,16 @@ class LocatorRegistrationListenerTest extends AbstractListenerTestCase
         });
 
         $locatorRegistrationListener = new LocatorRegistrationListener;
-        $this->moduleManager->getEventManager()->attachAggregate($locatorRegistrationListener);
-        $this->moduleManager->getEventManager()->attach(ModuleEvent::EVENT_LOAD_MODULE, function (ModuleEvent $e) use (&$module) {
+        $events = $this->moduleManager->getEventManager();
+        $locatorRegistrationListener->attach($events);
+        $events->attach(ModuleEvent::EVENT_LOAD_MODULE, function (ModuleEvent $e) use (&$module) {
             $module = $e->getModule();
         }, -1000);
         $this->moduleManager->loadModules();
 
         $this->application->bootstrap();
         $sharedInstance1 = $locator->get('ListenerTestModule\Module');
-        $sharedInstance2 = $locator->get('Zend\ModuleManager\ModuleManager');
+        $sharedInstance2 = $locator->get(ModuleManager::class);
 
         $this->assertInstanceOf('ListenerTestModule\Module', $sharedInstance1);
         $foo     = false;
@@ -104,14 +110,15 @@ class LocatorRegistrationListenerTest extends AbstractListenerTestCase
         }
         $this->assertSame($module, $foo->module);
 
-        $this->assertInstanceOf('Zend\ModuleManager\ModuleManager', $sharedInstance2);
+        $this->assertInstanceOf(ModuleManager::class, $sharedInstance2);
         $this->assertSame($this->moduleManager, $locator->get('Foo\Bar')->moduleManager);
     }
 
     public function testNoDuplicateServicesAreDefinedForModuleManager()
     {
         $locatorRegistrationListener = new LocatorRegistrationListener;
-        $this->moduleManager->getEventManager()->attachAggregate($locatorRegistrationListener);
+        $events = $this->moduleManager->getEventManager();
+        $locatorRegistrationListener->attach($events);
 
         $this->moduleManager->loadModules();
         $this->application->bootstrap();

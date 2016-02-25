@@ -32,9 +32,9 @@ trait ResetAutoloadFunctionsTrait
     protected function preserveAutoloadFunctions()
     {
         $this->loaders = spl_autoload_functions();
-        if (!is_array($this->loaders)) {
-            // spl_autoload_functions does not return empty array when no
-            // autoloaders registered...
+        if (! is_array($this->loaders)) {
+            // spl_autoload_functions does not return an empty array when no
+            // autoloaders are registered...
             $this->loaders = [];
         }
     }
@@ -56,12 +56,10 @@ trait ResetAutoloadFunctionsTrait
         $loaders = spl_autoload_functions();
         if (is_array($loaders)) {
             foreach ($loaders as $loader) {
-                spl_autoload_unregister($loader);
+                if (! in_array($loader, $this->loaders, true)) {
+                    spl_autoload_unregister($loader);
+                }
             }
-        }
-
-        foreach ($this->loaders as $loader) {
-            spl_autoload_register($loader);
         }
     }
 
