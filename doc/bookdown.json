@@ -1,0 +1,11 @@
+{
+    "title": "Zend\\Module-manager",
+    "target": "html/",
+    "content": [
+        "book/zend.module-manager.intro.md",
+        "book/zend.module-manager.module-manager.md",
+        "book/zend.module-manager.module-class.md",
+        "book/zend.module-manager.module-autoloader.md",
+        "book/zend.module-manager.best-practices.md"
+    ]
+}

@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 2.7.0 - TBD
+## 2.7.0 - 2016-02-25
 
 ### Added
 
@@ -36,24 +36,6 @@ All notable changes to this project will be documented in this file, in reverse 
     signature instead of the `$events->attachAggregate($aggregate)` signature.
   - Using zend-eventmanager's `EventListenerIntrospectionTrait` to test that
     listeners are attached at expected priorities.
-
-## 2.6.2 - TBD
-
-### Added
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
-### Fixed
-
-- Nothing.
 
 ## 2.6.1 - 2015-09-22
 
