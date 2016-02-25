@@ -9,12 +9,12 @@
 
 namespace ZendTest\ModuleManager\Listener;
 
+use Zend\EventManager\Test\EventListenerIntrospectionTrait;
 use Zend\ModuleManager\Listener\ModuleResolverListener;
 use Zend\ModuleManager\Listener\ModuleLoaderListener;
 use Zend\ModuleManager\Listener\ListenerOptions;
 use Zend\ModuleManager\ModuleManager;
 use Zend\ModuleManager\ModuleEvent;
-use ZendTest\ModuleManager\EventManagerIntrospectionTrait;
 use ZendTest\ModuleManager\SetUpCacheDirTrait;
 
 /**
@@ -23,7 +23,7 @@ use ZendTest\ModuleManager\SetUpCacheDirTrait;
  */
 class ModuleLoaderListenerTest extends AbstractListenerTestCase
 {
-    use EventManagerIntrospectionTrait;
+    use EventListenerIntrospectionTrait;
     use SetUpCacheDirTrait;
 
     /**

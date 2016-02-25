@@ -45,10 +45,14 @@ class OnBootstrapListenerTest extends AbstractListenerTestCase
         $events->attach(ModuleEvent::EVENT_LOAD_MODULE, new OnBootstrapListener, 1000);
 
         $this->application = new MockApplication;
-        $appEvents         = new EventManager(
-            $sharedEvents,
-            ['Zend\Mvc\Application', 'ZendTest\Module\TestAsset\MockApplication', 'application']
-        );
+        $appEvents         = new EventManager();
+        $appEvents->setSharedManager($sharedEvents);
+        $appEvents->setIdentifiers([
+            'Zend\Mvc\Application',
+            'ZendTest\Module\TestAsset\MockApplication',
+            'application',
+        ]);
+            
         $this->application->setEventManager($appEvents);
     }
 

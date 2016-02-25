@@ -29,27 +29,8 @@ interface ServiceListenerInterface extends ListenerAggregateInterface
     public function addServiceManager($serviceManager, $key, $moduleInterface, $method);
 
     /**
-     * Provide metadata describing how to aggregate configuration for the application service manager.
-     *
-     * Sets the same metadata as used by addServiceManager(), using the key
-     * IS_APP_MANAGER for the service_manager value.
-     *
-     * @param  string $key             Configuration key
-     * @param  string $moduleInterface FQCN as string
-     * @param  string $method          Method name
-     */
-    public function setApplicationServiceManager($key, $moduleInterface, $method);
-
-    /**
-     * Retrieve the application service manager instance post-configuration.
-     *
-     * @return ServiceManager
-     */
-    public function getConfiguredServiceManager();
-
-    /**
      * @param  array $configuration
      * @return ServiceListenerInterface
      */
-    public function setDefaultServiceConfig(array $configuration);
+    public function setDefaultServiceConfig($configuration);
 }

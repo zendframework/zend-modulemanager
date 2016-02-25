@@ -11,11 +11,13 @@ namespace ListenerTestModule;
 
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\BootstrapListenerInterface;
+use Zend\ModuleManager\Feature\LocatorRegisteredInterface;
 use Zend\EventManager\EventInterface;
 
 class Module implements
     AutoloaderProviderInterface,
-    BootstrapListenerInterface
+    BootstrapListenerInterface,
+    LocatorRegisteredInterface
 {
     public $initCalled = false;
     public $getConfigCalled = false;
