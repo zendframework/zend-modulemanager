@@ -11,6 +11,7 @@ namespace Zend\ModuleManager\Listener;
 
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
+use Zend\EventManager\ListenerAggregateTrait;
 use Zend\ModuleManager\Feature\LocatorRegisteredInterface;
 use Zend\ModuleManager\ModuleEvent;
 use Zend\ModuleManager\ModuleManager;
@@ -22,15 +23,12 @@ use Zend\Mvc\MvcEvent;
 class LocatorRegistrationListener extends AbstractListener implements
     ListenerAggregateInterface
 {
-    /**
-     * @var array
-     */
-    protected $modules = [];
+    use ListenerAggregateTrait;
 
     /**
      * @var array
      */
-    protected $callbacks = [];
+    protected $modules = [];
 
     /**
      * loadModule
@@ -113,22 +111,10 @@ class LocatorRegistrationListener extends AbstractListener implements
     /**
      * {@inheritDoc}
      */
-    public function attach(EventManagerInterface $events)
+    public function attach(EventManagerInterface $events, $priority = 1)
     {
-        $this->callbacks[] = $events->attach(ModuleEvent::EVENT_LOAD_MODULE, [$this, 'onLoadModule']);
-        $this->callbacks[] = $events->attach(ModuleEvent::EVENT_LOAD_MODULES, [$this, 'onLoadModules'], -1000);
+        $this->listeners[] = $events->attach(ModuleEvent::EVENT_LOAD_MODULE, [$this, 'onLoadModule']);
+        $this->listeners[] = $events->attach(ModuleEvent::EVENT_LOAD_MODULES, [$this, 'onLoadModules'], -1000);
         return $this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function detach(EventManagerInterface $events)
-    {
-        foreach ($this->callbacks as $index => $callback) {
-            if ($events->detach($callback)) {
-                unset($this->callbacks[$index]);
-            }
-        }
     }
 }

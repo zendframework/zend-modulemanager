@@ -40,6 +40,7 @@ class DefaultListenerAggregate extends AbstractListener implements
     {
         $options                     = $this->getOptions();
         $configListener              = $this->getConfigListener();
+        $locatorRegistrationListener = new LocatorRegistrationListener($options);
         $moduleLoaderListener        = new ModuleLoaderListener($options);
 
         // High priority, we assume module autoloading (for FooNamespace\Module
@@ -59,7 +60,9 @@ class DefaultListenerAggregate extends AbstractListener implements
         $this->listeners[] = $events->attach(ModuleEvent::EVENT_LOAD_MODULE, new InitTrigger($options));
         $this->listeners[] = $events->attach(ModuleEvent::EVENT_LOAD_MODULE, new OnBootstrapListener($options));
 
+        $locatorRegistrationListener->attach($events);
         $configListener->attach($events);
+        $this->listeners[] = $locatorRegistrationListener;
         $this->listeners[] = $configListener;
         return $this;
     }
