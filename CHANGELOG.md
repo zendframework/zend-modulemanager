@@ -25,8 +25,9 @@ All notable changes to this project will be documented in this file, in reverse 
   `ServiceListener` (as v3 has a dedicated method in the
   `Zend\ServiceManager\ConfigInterface` for retrieving it).
 
-- [#12](https://github.com/zendframework/zend-modulemanager/pull/12) and
-  [#28](https://github.com/zendframework/zend-modulemanager/pull/28) update the
+- [#12](https://github.com/zendframework/zend-modulemanager/pull/12),
+  [#28](https://github.com/zendframework/zend-modulemanager/pull/28), and
+  [#29](https://github.com/zendframework/zend-modulemanager/pull/29) update the
   component to be forwards-compatible with zend-eventmanager v3. Primarily, this
   involves:
   - Changing trigger calls to `triggerEvent()` and/or `triggerEventUntil()`, and
