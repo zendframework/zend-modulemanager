@@ -60,7 +60,7 @@ class OnBootstrapListenerTest extends AbstractListenerTestCase
             'ZendTest\Module\TestAsset\MockApplication',
             'application',
         ]);
-            
+
         $this->application->setEventManager($appEvents);
     }
 

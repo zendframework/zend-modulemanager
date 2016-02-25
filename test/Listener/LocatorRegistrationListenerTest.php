@@ -16,7 +16,6 @@ use Zend\ModuleManager\Listener\ModuleResolverListener;
 use Zend\ModuleManager\ModuleManager;
 use Zend\ModuleManager\ModuleEvent;
 use Zend\Mvc\Application;
-use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\ServiceManager;
 use ZendTest\ModuleManager\TestAsset\MockApplication;
 
