@@ -264,7 +264,8 @@ class ServiceListenerTest extends TestCase
 
     public function testCreatesPluginManagerBasedOnModuleImplementingSpecifiedProviderInterface()
     {
-        $services = $this->services->setFactory('CustomPluginManager', TestAsset\CustomPluginManagerFactory::class);
+        $services = $this->services;
+        $services->setFactory('CustomPluginManager', TestAsset\CustomPluginManagerFactory::class);
         $listener = new ServiceListener($services);
 
         $listener->addServiceManager(
@@ -291,7 +292,8 @@ class ServiceListenerTest extends TestCase
 
     public function testCreatesPluginManagerBasedOnModuleDuckTypingSpecifiedProviderInterface()
     {
-        $services = $this->services->setFactory('CustomPluginManager', TestAsset\CustomPluginManagerFactory::class);
+        $services = $this->services;
+        $services->setFactory('CustomPluginManager', TestAsset\CustomPluginManagerFactory::class);
         $listener = new ServiceListener($services);
 
         $listener->addServiceManager(

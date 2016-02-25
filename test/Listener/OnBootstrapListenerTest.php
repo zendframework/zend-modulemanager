@@ -36,6 +36,14 @@ class OnBootstrapListenerTest extends AbstractListenerTestCase
 
     public function setUp()
     {
+        if (! class_exists(Application::class)) {
+            $this->markTestSkipped(
+                'Skipping tests that rely on zend-mvc until that component is '
+                . 'updated to be forwards-compatible with zend-eventmanager and '
+                . 'zend-servicemanager v3 releases'
+            );
+        }
+
         $sharedEvents = new SharedEventManager();
         $events       = new EventManager($sharedEvents);
         $this->moduleManager = new ModuleManager([]);
