@@ -18,31 +18,23 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- [#13](https://github.com/zendframework/zend-modulemanager/pull/13) updates the
-  code base to work with the v3.0 version of zend-servicemanager. Primarily, this
-  involved:
-  - Removing the LocatorRegistered feature and related listener since DI was
-    removed from the zend-servicemanager already.
-  - Adds the setApplicationServiceManager() and getServiceManagerConfig()
-    methods. The former is used to set the metadata for collecting application
-    service manager configuration; the latter returns the merged configuration.
-    These methods were added to both the interface and the implementation.
-  - Aggregated plugins are instantiated, and added as "services" configuration
-    for the service manager. When "pulled" from the service manager, the code
-    uses build() to ensure the service is not cached, and to allow passing
-    the configuration options.
+- [#13](https://github.com/zendframework/zend-modulemanager/pull/13) and
+  [#28](https://github.com/zendframework/zend-modulemanager/pull/28) update the
+  component to be forwards-compatible with zend-servicemanager v3. This
+  primarily affects how configuration is aggregated within the
+  `ServiceListener` (as v3 has a dedicated method in the
+  `Zend\ServiceManager\ConfigInterface` for retrieving it).
 
-- [#12](https://github.com/zendframework/zend-modulemanager/pull/12) updates the
-  code base to work with the v3.0 version of zend-eventmanager. Primarily, this
-  involved:
-  - Changing trigger calls to `triggerEvent()` and ensuring the event instance
-    is injected with the event name prior to trigger.
+- [#12](https://github.com/zendframework/zend-modulemanager/pull/12) and
+  [#28](https://github.com/zendframework/zend-modulemanager/pull/28) update the
+  component to be forwards-compatible with zend-eventmanager v3. Primarily, this
+  involves:
+  - Changing trigger calls to `triggerEvent()` and/or `triggerEventUntil()`, and
+    ensuring the event instance is injected with the new event name prior.
   - Ensuring aggregates are attached using the `$aggregate->attach($events)`
     signature instead of the `$events->attachAggregate($aggregate)` signature.
-  - Fixing tests to inject the event manager instance with the shared event
-    manager instance at instantiation, and remove calls to `setSharedManager()`.
-  - Adding test facilities to abstract obsolete `getEvent()` and
-    `getListeners()` calls on event manager instances.
+  - Using zend-eventmanager's `EventListenerIntrospectionTrait` to test that
+    listeners are attached at expected priorities.
 
 ## 2.6.2 - TBD
 
