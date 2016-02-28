@@ -358,4 +358,44 @@ class ServiceListenerTest extends TestCase
         $listeners = $this->getArrayOfListenersForEvent(ModuleEvent::EVENT_LOAD_MODULES_POST, $events);
         $this->assertCount(0, $listeners);
     }
+
+    public function testListenerCanOverrideServicesInServiceManagers()
+    {
+        $services = new ServiceManager();
+        $services->setService('config', []);
+        $services->setFactory('foo', function ($services) {
+            return $services;
+        });
+        $listener = new ServiceListener($services);
+        $listener->addServiceManager(
+            $services,
+            'service_manager',
+            ServiceProviderInterface::class,
+            'getServiceConfig'
+        );
+
+        $module = new TestAsset\ServiceProviderModule([
+            'services' => [
+                'config' => [ 'foo' => 'bar'],
+            ],
+            'factories' => [
+                'foo' => function ($services) {
+                    return new stdClass();
+                },
+            ],
+        ]);
+
+        $event          = new ModuleEvent();
+        $configListener = new ConfigListener();
+        $event->setConfigListener($configListener);
+
+        $event->setModule($module);
+        $listener->onLoadModule($event);
+        $listener->onLoadModulesPost($event);
+
+        $this->assertTrue($services->has('config'));
+        $this->assertTrue($services->has('foo'));
+        $this->assertEquals(['foo' => 'bar'], $services->get('config'), 'Config service was not overridden');
+        $this->assertInstanceOf(stdClass::class, $services->get('foo'), 'Foo service was not overridden');
+    }
 }
