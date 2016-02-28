@@ -9,8 +9,6 @@
 
 namespace ZendTest\ModuleManager;
 
-use Zend\Loader\AutoloaderFactory;
-
 /**
  * Offer common setUp/tearDown methods for preserve current autoload functions and include paths.
  */
@@ -52,7 +50,6 @@ trait ResetAutoloadFunctionsTrait
      */
     protected function restoreAutoloadFunctions()
     {
-        AutoloaderFactory::unregisterAutoloaders();
         $loaders = spl_autoload_functions();
         if (is_array($loaders)) {
             foreach ($loaders as $loader) {
