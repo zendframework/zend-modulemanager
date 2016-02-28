@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 2.7.1 - TBD
+## 2.7.1 - 2016-02-27
 
 ### Added
 
@@ -18,7 +18,10 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#31](https://github.com/zendframework/zend-modulemanager/pull/31) updates the
+  `ServiceListener:onLoadModulesPost()` workflow to override existing services
+  on a given service/plugin manager instance when configuring it. Since the
+  listener operates as part of bootstrapping, this is a requirement.
 
 ## 2.7.0 - 2016-02-25
 

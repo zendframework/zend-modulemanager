@@ -217,7 +217,15 @@ class ServiceListener implements ServiceListenerInterface
             }
 
             $serviceConfig = new ServiceConfig($smConfig);
+
+            // The service listener is meant to operate during bootstrap, and, as such,
+            // needs to be able to override existing configuration.
+            $allowOverride = $sm['service_manager']->getAllowOverride();
+            $sm['service_manager']->setAllowOverride(true);
+
             $serviceConfig->configureServiceManager($sm['service_manager']);
+
+            $sm['service_manager']->setAllowOverride($allowOverride);
         }
     }
 
