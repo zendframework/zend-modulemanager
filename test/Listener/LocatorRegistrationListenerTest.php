@@ -9,6 +9,8 @@
 
 namespace ZendTest\ModuleManager\Listener;
 
+use ReflectionClass;
+use ReflectionProperty;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\SharedEventManager;
 use Zend\ModuleManager\Listener\LocatorRegistrationListener;
@@ -47,28 +49,57 @@ class LocatorRegistrationListenerTest extends AbstractListenerTestCase
 
     public function setUp()
     {
-        if (! class_exists(Application::class)) {
-            $this->markTestSkipped(
-                'Skipping tests that rely on zend-mvc until that component is '
-                . 'updated to be forwards-compatible with zend-eventmanager and '
-                . 'zend-servicemanager v3 releases'
-            );
-        }
-
         $this->sharedEvents = new SharedEventManager();
 
         $this->moduleManager = new ModuleManager(['ListenerTestModule']);
-        $this->moduleManager->getEventManager()->setSharedManager($this->sharedEvents);
+        $this->moduleManager->setEventManager($this->createEventManager($this->sharedEvents));
         $this->moduleManager->getEventManager()->attach(ModuleEvent::EVENT_LOAD_MODULE_RESOLVE, new ModuleResolverListener, 1000);
 
         $this->application = new MockApplication;
-        $events            = new EventManager(['Zend\Mvc\Application', 'ZendTest\Module\TestAsset\MockApplication', 'application']);
-        $events->setSharedManager($this->sharedEvents);
+        $events = $this->createEventManager($this->sharedEvents);
+        $events->setIdentifiers(['Zend\Mvc\Application', 'ZendTest\Module\TestAsset\MockApplication', 'application']);
         $this->application->setEventManager($events);
 
         $this->serviceManager = new ServiceManager();
         $this->serviceManager->setService('ModuleManager', $this->moduleManager);
         $this->application->setServiceManager($this->serviceManager);
+    }
+
+    public function createEventManager(SharedEventManager $sharedEvents)
+    {
+        $r = new ReflectionClass(EventManager::class);
+        if ($r->hasMethod('setSharedManager')) {
+            $events = new EventManager();
+            $events->setSharedManager($sharedEvents);
+            return $events;
+        }
+
+        return new EventManager($sharedEvents);
+    }
+
+    public function getRegisteredServices(ServiceManager $container)
+    {
+        if (method_exists($container, 'getRegisteredServices')) {
+            return $container->getRegisteredServices();
+        }
+
+        $services = [];
+        foreach (['aliases', 'factories', 'services'] as $type) {
+            $r = new ReflectionProperty($container, $type);
+            $r->setAccessible(true);
+            $services[($type === 'services') ? 'instances' : $type] = array_keys($r->getValue($container));
+        }
+
+        return $services;
+    }
+
+    public function normalizeServiceNameForContainer($name, $container)
+    {
+        if (method_exists($container, 'configure')) {
+            return $name;
+        }
+
+        return strtolower(str_replace(['_', '-', '\\', '.', ' '], '', $name));
     }
 
     public function testModuleClassIsRegisteredWithDiAndInjectedWithSharedInstances()
@@ -122,15 +153,16 @@ class LocatorRegistrationListenerTest extends AbstractListenerTestCase
 
         $this->moduleManager->loadModules();
         $this->application->bootstrap();
-        $registeredServices = $this->application->getServiceManager()->getRegisteredServices();
+        $container = $this->application->getServiceManager();
+        $registeredServices = $this->getRegisteredServices($container);
 
         $aliases = $registeredServices['aliases'];
         $instances = $registeredServices['instances'];
 
-        $this->assertContains('zendmodulemanagermodulemanager', $aliases);
-        $this->assertNotContains('modulemanager', $aliases);
+        $this->assertContains($this->normalizeServiceNameForContainer(ModuleManager::class, $container), $aliases);
+        $this->assertNotContains($this->normalizeServiceNameForContainer('ModuleManager', $container), $aliases);
 
-        $this->assertContains('modulemanager', $instances);
-        $this->assertNotContains('zendmodulemanagermodulemanager', $instances);
+        $this->assertContains($this->normalizeServiceNameForContainer('ModuleManager', $container), $instances);
+        $this->assertNotContains($this->normalizeServiceNameForContainer(ModuleManager::class, $container), $instances);
     }
 }
