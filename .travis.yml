@@ -15,7 +15,6 @@ env:
   global:
     - EVENT_MANAGER_VERSION="^3.0"
     - SERVICE_MANAGER_VERSION="^3.0.3"
-    - REMOVE_DEPS="zendframework/zend-mvc"
 
 matrix:
   fast_finish: true
@@ -27,7 +26,6 @@ matrix:
       env:
         - EVENT_MANAGER_VERSION="^2.6.2"
         - SERVICE_MANAGER_VERSION="^2.7.5"
-        - REMOVE_DEPS=""
     - php: 5.6
       env:
         - EXECUTE_TEST_COVERALLS=true
@@ -35,19 +33,16 @@ matrix:
       env:
         - EVENT_MANAGER_VERSION="^2.6.2"
         - SERVICE_MANAGER_VERSION="^2.7.5"
-        - REMOVE_DEPS=""
     - php: 7
     - php: 7
       env:
         - EVENT_MANAGER_VERSION="^2.6.2"
         - SERVICE_MANAGER_VERSION="^2.7.5"
-        - REMOVE_DEPS=""
     - php: hhvm 
     - php: hhvm 
       env:
         - EVENT_MANAGER_VERSION="^2.6.2"
         - SERVICE_MANAGER_VERSION="^2.7.5"
-        - REMOVE_DEPS=""
   allow_failures:
     - php: hhvm
 
@@ -61,7 +56,6 @@ before_install:
   - if [[ $EXECUTE_TEST_COVERALLS == 'true' ]]; then composer require --dev --no-update satooshi/php-coveralls ; fi
   - composer require --no-update "zendframework/zend-eventmanager:$EVENT_MANAGER_VERSION"
   - composer require --dev --no-update "zendframework/zend-servicemanager:$SERVICE_MANAGER_VERSION"
-  - if [[ $REMOVE_DEPS != '' ]]; then composer remove --dev --no-update $REMOVE_DEPS ; fi
 
 install:
   - travis_retry composer install --no-interaction --ignore-platform-reqs

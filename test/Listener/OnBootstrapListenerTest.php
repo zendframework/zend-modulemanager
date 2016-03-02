@@ -9,6 +9,7 @@
 
 namespace ZendTest\ModuleManager\Listener;
 
+use ReflectionClass;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\SharedEventManager;
 use Zend\ModuleManager\Listener\ModuleResolverListener;
@@ -36,14 +37,6 @@ class OnBootstrapListenerTest extends AbstractListenerTestCase
 
     public function setUp()
     {
-        if (! class_exists(Application::class)) {
-            $this->markTestSkipped(
-                'Skipping tests that rely on zend-mvc until that component is '
-                . 'updated to be forwards-compatible with zend-eventmanager and '
-                . 'zend-servicemanager v3 releases'
-            );
-        }
-
         $sharedEvents = new SharedEventManager();
         $events       = new EventManager($sharedEvents);
         $this->moduleManager = new ModuleManager([]);
@@ -53,8 +46,7 @@ class OnBootstrapListenerTest extends AbstractListenerTestCase
         $events->attach(ModuleEvent::EVENT_LOAD_MODULE, new OnBootstrapListener, 1000);
 
         $this->application = new MockApplication;
-        $appEvents         = new EventManager();
-        $appEvents->setSharedManager($sharedEvents);
+        $appEvents         = $this->createEventManager($sharedEvents);
         $appEvents->setIdentifiers([
             'Zend\Mvc\Application',
             'ZendTest\Module\TestAsset\MockApplication',
@@ -62,6 +54,18 @@ class OnBootstrapListenerTest extends AbstractListenerTestCase
         ]);
 
         $this->application->setEventManager($appEvents);
+    }
+
+    public function createEventManager(SharedEventManager $sharedEvents)
+    {
+        $r = new ReflectionClass(EventManager::class);
+        if ($r->hasMethod('setSharedManager')) {
+            $events = new EventManager();
+            $events->setSharedManager($sharedEvents);
+            return $events;
+        }
+
+        return new EventManager($sharedEvents);
     }
 
     public function testOnBootstrapMethodCalledByOnBootstrapListener()
