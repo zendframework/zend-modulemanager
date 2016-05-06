@@ -5,7 +5,7 @@ designed with flexibility, simplicity, and re-usability in mind. A module may co
 anything: PHP code, including MVC functionality; library code; view scripts; and/or public assets
 such as images, CSS, and JavaScript. The possibilities are endless.
 
-> ## Note
+> ### Note
 The module system in ZF2 has been designed to be a generic and powerful foundation from which
 developers and other projects can build their own module or plugin systems.
 For a better understanding of the event-driven concepts behind the ZF2 module system, it may be
@@ -24,7 +24,7 @@ module manager.
 events. These listeners can do everything from resolving and loading modules to performing complex
 initialization tasks and introspection into each returned module object.
 
-> ## Note
+> ### Note
 The name of a module in a typical Zend Framework 2 application is simply a [PHP
 namespace](http://php.net/namespaces) and must follow all of the same rules for naming.
 

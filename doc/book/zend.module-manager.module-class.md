@@ -78,7 +78,7 @@ It is not safe for a module to assume that any other modules have already been l
 `init()` method is called. If your module needs to perform any actions after all other modules have
 been loaded, the module manager's "loadModules.post" event makes this easy.
 
-> ## Note
+> ### Note
 For more information on methods like `init()` and `getConfig()`, refer to the [module
 manager listeners documentation](zend.module-manager.module-manager.md#module-manager-listeners).
 
@@ -108,7 +108,7 @@ class Module
 }
 ```
 
-> ## Note
+> ### Note
 The `init()` method is called for **every** module implementing this feature, on **every** page
 request, and should **only** be used for performing **lightweight** tasks such as registering event
 listeners.
@@ -137,7 +137,7 @@ class Module
 }
 ```
 
-> ## Note
+> ### Note
 The `onBootstrap()` method is called for **every** module implementing this feature, on **every**
 page request, and should **only** be used for performing **lightweight** tasks such as registering
 event listeners.

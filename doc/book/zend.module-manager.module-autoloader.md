@@ -12,7 +12,7 @@ or relative to the application's root, for the `ModuleAutoloader` to check when 
 `DefaultListenerAggregate` will take care of instantiating and registering the `ModuleAutoloader`
 for you.
 
-> ## Note
+> ### Note
 In order for paths relative to your application directory to work, you must have the directive
 `chdir(dirname(__DIR__));` in your `public/index.php` file.
 
@@ -50,7 +50,7 @@ $moduleManager->getEventManager()->attachAggregate($defaultListeners);
 $moduleManager->loadModules();
 ```
 
-> ## Note
+> ### Note
 Module paths behave very similar to PHP's `include_path` and are searched in the order they are
 defined. If you have modules with the same name in more than one registered module path, the module
 autoloader will return the first one it finds.
@@ -122,6 +122,6 @@ The easiest way to package your module is to simply tar the module directory. Yo
 the `MyModule/` directory with `MyModule.tar`, and it should still be autoloaded without any
 additional changes!
 
-> ## Note
+> ### Note
 If possible, avoid using any type of compression (bz2, gz, zip) on your phar archives, as it
 introduces unnecessary CPU overhead to each request.
