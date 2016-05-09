@@ -12,3 +12,4 @@ site_name: zend-modulemanager
 site_description: zend-modulemanager
 repo_url: 'https://github.com/zendframework/zend-modulemanager'
 copyright: 'Copyright (c) 2016 <a href="http://www.zend.com/">Zend Technologies USA Inc.</a>'
+
