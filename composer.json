@@ -14,11 +14,11 @@
     },
     "require": {
         "php": "^5.5 || ^7.0",
+        "zendframework/zend-config": "^2.6",
         "zendframework/zend-eventmanager": "^2.6.2 || ^3.0",
         "zendframework/zend-stdlib": "^2.7 || ^3.0"
     },
     "require-dev": {
-        "zendframework/zend-config": "^2.6",
         "zendframework/zend-console": "^2.6",
         "zendframework/zend-di": "^2.6",
         "zendframework/zend-loader": "^2.5",

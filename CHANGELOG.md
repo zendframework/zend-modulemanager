@@ -2,12 +2,16 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 2.7.2 - TBD
+## 2.7.2 - 2016-05-16
 
 ### Added
 
 - [#38](https://github.com/zendframework/zend-modulemanager/pull/38) prepares
   and publishes the documentation to https://zendframework.github.io/zend-modulemanager/
+- [#40](https://github.com/zendframework/zend-modulemanager/pull/40) adds a
+  requirement on zend-config. Since the default use case centers around config
+  merging and requires the component, it should be required by
+  zend-modulemanager.
 
 ### Deprecated
 
