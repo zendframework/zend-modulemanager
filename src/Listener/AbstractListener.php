@@ -61,8 +61,11 @@ abstract class AbstractListener
      */
     protected function writeArrayToFile($filePath, $array)
     {
-        $content = "<?php\nreturn " . var_export($array, 1) . ';';
-        file_put_contents($filePath, $content);
+        if (is_writable(dirname($filePath))) {
+            $content = "<?php\nreturn " . var_export($array, 1) . ';';
+            file_put_contents($filePath, $content);
+        }
+
         return $this;
     }
 }
