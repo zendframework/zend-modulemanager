@@ -233,4 +233,21 @@ class ModuleManagerTest extends TestCase
         $this->assertInstanceOf(ModuleEvent::class, $event);
         $this->assertSame($moduleManager, $event->getTarget());
     }
+
+    public function testLoadChildsModules()
+    {
+        $moduleManager  = new ModuleManager(['LoadChildsModule'], $this->events);
+        $this->defaultListeners->attach($this->events);
+        $moduleManager->loadModules();
+
+        $this->assertSame(
+            ['LoadChildsModule', 'LoadChildsModule2', 'BarModule', 'SomeModule'],
+            array_keys($moduleManager->getLoadedModules())
+        );
+
+        $this->assertArraySubset(
+            ['bar' => 'foo', 'some' => 'thing'],
+            $this->defaultListeners->getConfigListener()->getMergedConfig(false)
+        );
+    }
 }

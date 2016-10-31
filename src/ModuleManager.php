@@ -40,9 +40,9 @@ class ModuleManager implements ModuleManagerInterface
     protected $event;
 
     /**
-     * @var bool
+     * @var int
      */
-    protected $loadFinished;
+    protected $loadFinished = 0;
 
     /**
      * modules
@@ -50,6 +50,18 @@ class ModuleManager implements ModuleManagerInterface
      * @var array|Traversable
      */
     protected $modules = [];
+
+    /**
+     * Childs dependency modules
+     *
+     * @var array
+     */
+    protected $childsModules = [];
+
+    /**
+     * @var string
+     */
+    protected $parentModule;
 
     /**
      * True if modules have already been loaded
@@ -101,6 +113,24 @@ class ModuleManager implements ModuleManagerInterface
     }
 
     /**
+     * Load childs dependency modules
+     *
+     * @param ModuleEvent $e
+     * @return void
+     */
+    public function onLoadChildsModules(ModuleEvent $e)
+    {
+        if (!$this->parentModule || !isset($this->childsModules[$this->parentModule])) {
+            return;
+        }
+
+        foreach ($this->childsModules[$this->parentModule] as $module) {
+            $this->loadModule($module);
+        }
+        unset($this->childsModules[$this->parentModule]);
+    }
+
+    /**
      * Load the provided modules.
      *
      * @triggers loadModules
@@ -140,7 +170,7 @@ class ModuleManager implements ModuleManagerInterface
      * @triggers loadModule
      * @return mixed Module's Module class
      */
-    public function loadModule($module)
+    public function loadModule($module, $afterCurrent = false)
     {
         $moduleName = $module;
         if (is_array($module)) {
@@ -162,8 +192,12 @@ class ModuleManager implements ModuleManagerInterface
          * To load a module, we clone the event if we are inside a nested
          * loadModule() call, and use the original event otherwise.
          */
-        if (!isset($this->loadFinished)) {
-            $this->loadFinished = 0;
+        if ($this->loadFinished > 0 && $this->parentModule && $afterCurrent) {
+            $childModule = is_object($module)
+                    ? [$moduleName=>$module]
+                    : $moduleName;
+            $this->childsModules[$this->parentModule][] = $childModule;
+            return;
         }
 
         $event = ($this->loadFinished > 0) ? clone $this->getEvent() : $this->getEvent();
@@ -178,6 +212,7 @@ class ModuleManager implements ModuleManagerInterface
         $event->setName(ModuleEvent::EVENT_LOAD_MODULE);
 
         $this->loadedModules[$moduleName] = $module;
+        $this->parentModule = $event->getModuleName();
         $this->getEventManager()->triggerEvent($event);
 
         $this->loadFinished--;
@@ -339,5 +374,6 @@ class ModuleManager implements ModuleManagerInterface
     protected function attachDefaultListeners($events)
     {
         $events->attach(ModuleEvent::EVENT_LOAD_MODULES, [$this, 'onLoadModules']);
+        $events->attach(ModuleEvent::EVENT_LOAD_MODULE, [$this, 'onLoadChildsModules'], -100);
     }
 }
