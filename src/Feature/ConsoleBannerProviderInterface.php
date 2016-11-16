@@ -19,8 +19,7 @@ interface ConsoleBannerProviderInterface
      * the application with no parameters.
      *
      * The method is called with active Zend\Console\Adapter\AdapterInterface that can be used to directly access
-     * Console and send
-     * output.
+     * Console and send output.
      *
      * @param AdapterInterface $console
      * @return string|null
