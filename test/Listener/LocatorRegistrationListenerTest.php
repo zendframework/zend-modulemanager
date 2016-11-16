@@ -53,7 +53,11 @@ class LocatorRegistrationListenerTest extends AbstractListenerTestCase
 
         $this->moduleManager = new ModuleManager(['ListenerTestModule']);
         $this->moduleManager->setEventManager($this->createEventManager($this->sharedEvents));
-        $this->moduleManager->getEventManager()->attach(ModuleEvent::EVENT_LOAD_MODULE_RESOLVE, new ModuleResolverListener, 1000);
+        $this->moduleManager->getEventManager()->attach(
+            ModuleEvent::EVENT_LOAD_MODULE_RESOLVE,
+            new ModuleResolverListener,
+            1000
+        );
 
         $this->application = new MockApplication;
         $events = $this->createEventManager($this->sharedEvents);
@@ -136,7 +140,7 @@ class LocatorRegistrationListenerTest extends AbstractListenerTestCase
                 $message .= "\n" . $e->getMessage();
             }
         }
-        if (!$foo) {
+        if (! $foo) {
             $this->fail($message);
         }
         $this->assertSame($module, $foo->module);

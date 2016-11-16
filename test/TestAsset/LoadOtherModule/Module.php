@@ -9,7 +9,6 @@
 
 namespace LoadOtherModule;
 
-
 use Zend\ModuleManager\ModuleManager;
 
 class Module
@@ -22,6 +21,6 @@ class Module
 
     public function getConfig()
     {
-        return array('loaded' => 'oh, yeah baby!');
+        return ['loaded' => 'oh, yeah baby!'];
     }
 }

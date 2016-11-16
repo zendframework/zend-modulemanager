@@ -34,7 +34,11 @@ class ModuleLoaderListenerTest extends AbstractListenerTestCase
     public function setUp()
     {
         $this->moduleManager = new ModuleManager([]);
-        $this->moduleManager->getEventManager()->attach(ModuleEvent::EVENT_LOAD_MODULE_RESOLVE, new ModuleResolverListener, 1000);
+        $this->moduleManager->getEventManager()->attach(
+            ModuleEvent::EVENT_LOAD_MODULE_RESOLVE,
+            new ModuleResolverListener,
+            1000
+        );
     }
 
     public function testModuleLoaderListenerFunctionsAsAggregateListenerEnabledCache()
