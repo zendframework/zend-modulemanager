@@ -54,7 +54,11 @@ class DefaultListenerAggregate extends AbstractListener implements
         $this->listeners[] = $events->attach(ModuleEvent::EVENT_LOAD_MODULE, new AutoloaderListener($options), 9000);
 
         if ($options->getCheckDependencies()) {
-            $this->listeners[] = $events->attach(ModuleEvent::EVENT_LOAD_MODULE, new ModuleDependencyCheckerListener, 8000);
+            $this->listeners[] = $events->attach(
+                ModuleEvent::EVENT_LOAD_MODULE,
+                new ModuleDependencyCheckerListener,
+                8000
+            );
         }
 
         $this->listeners[] = $events->attach(ModuleEvent::EVENT_LOAD_MODULE, new InitTrigger($options));
@@ -94,7 +98,7 @@ class DefaultListenerAggregate extends AbstractListener implements
      */
     public function getConfigListener()
     {
-        if (!$this->configListener instanceof ConfigMergerInterface) {
+        if (! $this->configListener instanceof ConfigMergerInterface) {
             $this->setConfigListener(new ConfigListener($this->getOptions()));
         }
         return $this->configListener;
