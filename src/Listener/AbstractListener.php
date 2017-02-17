@@ -62,7 +62,7 @@ abstract class AbstractListener
     protected function writeArrayToFile($filePath, $array)
     {
         $content = "<?php\nreturn " . var_export($array, 1) . ';';
-        file_put_contents($filePath, $content);
+        file_put_contents($filePath, $content, LOCK_EX);
         return $this;
     }
 }
