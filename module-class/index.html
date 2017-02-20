@@ -199,17 +199,15 @@ of <code>{moduleName}\Module</code> for each enabled module.</p>
 <code>MyModule\Module</code> class if it isn't already available.</p>
 <p>The directory structure of a module named "MyModule" might start out looking
 something like this:</p>
-<pre class="codehilite"><code class="language-text">MyModule/
+<pre class="codehilite"><code class="language-text linenums">MyModule/
     Module.php</code></pre>
 
-
 <p>Within <code>Module.php</code>, you define your <code>MyModule\Module</code> class:</p>
-<pre class="codehilite"><code class="language-php">namespace MyModule;
+<pre class="codehilite"><code class="language-php linenums">namespace MyModule;
 
 class Module
 {
 }</code></pre>
-
 
 <p>Though it will not serve any purpose at this point, this "MyModule" module now
 has everything required to be considered a valid module and to be loaded by the
@@ -221,7 +219,7 @@ tasks such as registering autoloader(s), services and event listeners, declaring
 dependencies, and much more.</p>
 <h2 id="a-typical-module-class">A Typical Module Class</h2>
 <p>The following example shows a more typical usage of the <code>Module</code> class:</p>
-<pre class="codehilite"><code class="language-php">namespace MyModule;
+<pre class="codehilite"><code class="language-php linenums">namespace MyModule;
 
 class Module
 {
@@ -245,7 +243,6 @@ class Module
     }
 }</code></pre>
 
-
 <p>For a list of the provided module manager listeners and the interfaces and methods that <code>Module</code>
 classes may implement in order to interact with the module manager and application, see the
 <a href="../module-manager/#module-manager-listeners">module manager listeners</a> and the
@@ -261,7 +258,7 @@ any actions after all other modules have been loaded, use the module manager's
 <a href="../module-manager/#module-manager-listeners">module manager listeners documentation</a>.</p>
 </blockquote>
 <h3 id="sample-usage-of-loadmodulespost-event">Sample Usage of "loadModules.post" Event</h3>
-<pre class="codehilite"><code class="language-php">use Zend\EventManager\EventInterface as Event;
+<pre class="codehilite"><code class="language-php linenums">use Zend\EventManager\EventInterface as Event;
 use Zend\ModuleManager\ModuleManager;
 
 class Module
@@ -284,7 +281,6 @@ class Module
     }
 }</code></pre>
 
-
 <blockquote>
 <h3 id="use-init-sparingly">Use init() sparingly</h3>
 <p>The <code>init()</code> method is called for <strong>every</strong> module implementing this feature,
@@ -298,7 +294,7 @@ parts of the application in your <code>Module</code> class such as the instance 
 you may utilize the MVC <code>bootstrap</code> event. The bootstrap event is triggered
 after the <code>loadModule.post</code> event, once <code>$application-&gt;bootstrap()</code> is called.</p>
 <h3 id="sample-usage-of-the-mvc-bootstrap-event">Sample Usage of the MVC "bootstrap" Event</h3>
-<pre class="codehilite"><code class="language-php">use Zend\EventManager\EventInterface as Event;
+<pre class="codehilite"><code class="language-php linenums">use Zend\EventManager\EventInterface as Event;
 
 class Module
 {
@@ -309,7 +305,6 @@ class Module
         $services    = $application-&gt;getServiceManager();
     }
 }</code></pre>
-
 
 <blockquote>
 <h3 id="use-onbootstrap-sparingly">Use onBootstrap() sparingly</h3>

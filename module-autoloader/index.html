@@ -204,7 +204,7 @@ have the directive <code>chdir(dirname(__DIR__));</code> in your <code>public/in
 <p>The following example will search for modules in three different <code>module_paths</code>.
 Two are local directories of this application and the third is a system-wide
 shared directory.</p>
-<pre class="codehilite"><code class="language-php">// public/index.php
+<pre class="codehilite"><code class="language-php linenums">// public/index.php
 use Zend\ModuleManager\Listener;
 use Zend\ModuleManager\ModuleManager;
 
@@ -231,7 +231,6 @@ $moduleManager = new ModuleManager([
 $moduleManager-&gt;getEventManager()-&gt;attachAggregate($defaultListeners);
 $moduleManager-&gt;loadModules();</code></pre>
 
-
 <blockquote>
 <h3 id="module-paths-are-fifo">Module paths are FIFO</h3>
 <p>Module paths behave very similar to PHP's <code>include_path</code> and are searched in
@@ -246,7 +245,7 @@ one it finds.</p>
 <p>In this example, the autoloader will first check for <code>MyModule\Module</code> in
 <code>/path/to/mymoduledir-v1.2/Module.php</code>. If it's not found, then it will fall
 back to searching any other registered module paths.</p>
-<pre class="codehilite"><code class="language-php">// ./public/index.php
+<pre class="codehilite"><code class="language-php linenums">// ./public/index.php
 use Zend\Loader\ModuleAutoloader;
 use Zend\ModuleManager\Listener;
 use Zend\ModuleManager\ModuleManager;
@@ -287,7 +286,6 @@ $moduleManager = new ModuleManager([
 // Attach the default listener aggregate and load the modules
 $moduleManager-&gt;getEventManager()-&gt;attachAggregate($defaultListeners);
 $moduleManager-&gt;loadModules();</code></pre>
-
 
 <p>This same method works if you provide the path to a phar archive.</p>
 <h2 id="packaging-modules-with-phar">Packaging Modules with Phar</h2>
