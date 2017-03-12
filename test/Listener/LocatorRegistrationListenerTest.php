@@ -14,7 +14,7 @@ use ReflectionProperty;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\SharedEventManager;
 use Zend\ModuleManager\Listener\LocatorRegistrationListener;
-use Zend\ModuleManager\Listener\ModuleResolverListener;
+use Zend\ModuleManager\Listener\DefaultListenerAggregate;
 use Zend\ModuleManager\ModuleManager;
 use Zend\ModuleManager\ModuleEvent;
 use Zend\Mvc\Application;
@@ -53,11 +53,8 @@ class LocatorRegistrationListenerTest extends AbstractListenerTestCase
 
         $this->moduleManager = new ModuleManager(['ListenerTestModule']);
         $this->moduleManager->setEventManager($this->createEventManager($this->sharedEvents));
-        $this->moduleManager->getEventManager()->attach(
-            ModuleEvent::EVENT_LOAD_MODULE_RESOLVE,
-            new ModuleResolverListener,
-            1000
-        );
+        (new DefaultListenerAggregate)
+            ->attach($this->moduleManager->getEventManager());
 
         $this->application = new MockApplication;
         $events = $this->createEventManager($this->sharedEvents);
