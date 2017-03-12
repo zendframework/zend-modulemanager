@@ -115,8 +115,8 @@ class ConfigListener extends AbstractListener implements
     {
         $module = $e->getModule();
 
-        if (!$module instanceof ConfigProviderInterface
-            && !is_callable([$module, 'getConfig'])
+        if (! $module instanceof ConfigProviderInterface
+            && ! is_callable([$module, 'getConfig'])
         ) {
             return $this;
         }
@@ -274,7 +274,7 @@ class ConfigListener extends AbstractListener implements
             $paths = ArrayUtils::iteratorToArray($paths);
         }
 
-        if (!is_array($paths)) {
+        if (! is_array($paths)) {
             throw new Exception\InvalidArgumentException(
                 sprintf(
                     'Argument passed to %::%s() must be an array, '
@@ -302,7 +302,7 @@ class ConfigListener extends AbstractListener implements
      */
     protected function addConfigPath($path, $type)
     {
-        if (!is_string($path)) {
+        if (! is_string($path)) {
             throw new Exception\InvalidArgumentException(
                 sprintf(
                     'Parameter to %s::%s() must be a string; %s given.',
@@ -328,7 +328,7 @@ class ConfigListener extends AbstractListener implements
             $config = ArrayUtils::iteratorToArray($config);
         }
 
-        if (!is_array($config)) {
+        if (! is_array($config)) {
             throw new Exception\InvalidArgumentException(
                 sprintf(
                     'Config being merged must be an array, '

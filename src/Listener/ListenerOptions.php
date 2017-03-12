@@ -86,7 +86,7 @@ class ListenerOptions extends AbstractOptions
      */
     public function setModulePaths($modulePaths)
     {
-        if (!is_array($modulePaths) && !$modulePaths instanceof Traversable) {
+        if (! is_array($modulePaths) && ! $modulePaths instanceof Traversable) {
             throw new Exception\InvalidArgumentException(
                 sprintf(
                     'Argument passed to %s::%s() must be an array, '
@@ -132,7 +132,7 @@ class ListenerOptions extends AbstractOptions
      */
     public function setConfigGlobPaths($configGlobPaths)
     {
-        if (!is_array($configGlobPaths) && !$configGlobPaths instanceof Traversable) {
+        if (! is_array($configGlobPaths) && ! $configGlobPaths instanceof Traversable) {
             throw new Exception\InvalidArgumentException(
                 sprintf(
                     'Argument passed to %s::%s() must be an array, '
@@ -158,7 +158,7 @@ class ListenerOptions extends AbstractOptions
      */
     public function setConfigStaticPaths($configStaticPaths)
     {
-        if (!is_array($configStaticPaths) && !$configStaticPaths instanceof Traversable) {
+        if (! is_array($configStaticPaths) && ! $configStaticPaths instanceof Traversable) {
             throw new Exception\InvalidArgumentException(
                 sprintf(
                     'Argument passed to %s::%s() must be an array, '
@@ -195,7 +195,7 @@ class ListenerOptions extends AbstractOptions
      */
     public function setExtraConfig($extraConfig)
     {
-        if (!is_array($extraConfig) && !$extraConfig instanceof Traversable) {
+        if (! is_array($extraConfig) && ! $extraConfig instanceof Traversable) {
             throw new Exception\InvalidArgumentException(
                 sprintf(
                     'Argument passed to %s::%s() must be an array, '

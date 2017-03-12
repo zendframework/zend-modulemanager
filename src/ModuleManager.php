@@ -162,7 +162,7 @@ class ModuleManager implements ModuleManagerInterface
          * To load a module, we clone the event if we are inside a nested
          * loadModule() call, and use the original event otherwise.
          */
-        if (!isset($this->loadFinished)) {
+        if (! isset($this->loadFinished)) {
             $this->loadFinished = 0;
         }
 
@@ -171,7 +171,7 @@ class ModuleManager implements ModuleManagerInterface
 
         $this->loadFinished++;
 
-        if (!is_object($module)) {
+        if (! is_object($module)) {
             $module = $this->loadModuleByName($event);
         }
         $event->setModule($module);
@@ -199,7 +199,7 @@ class ModuleManager implements ModuleManagerInterface
         }, $event);
 
         $module = $result->last();
-        if (!is_object($module)) {
+        if (! is_object($module)) {
             throw new Exception\RuntimeException(sprintf(
                 'Module (%s) could not be initialized.',
                 $event->getModuleName()
@@ -232,7 +232,7 @@ class ModuleManager implements ModuleManagerInterface
      */
     public function getModule($moduleName)
     {
-        if (!isset($this->loadedModules[$moduleName])) {
+        if (! isset($this->loadedModules[$moduleName])) {
             return;
         }
         return $this->loadedModules[$moduleName];
@@ -278,7 +278,7 @@ class ModuleManager implements ModuleManagerInterface
      */
     public function getEvent()
     {
-        if (!$this->event instanceof ModuleEvent) {
+        if (! $this->event instanceof ModuleEvent) {
             $this->setEvent(new ModuleEvent());
         }
         return $this->event;
@@ -324,7 +324,7 @@ class ModuleManager implements ModuleManagerInterface
      */
     public function getEventManager()
     {
-        if (!$this->events instanceof EventManagerInterface) {
+        if (! $this->events instanceof EventManagerInterface) {
             $this->setEventManager(new EventManager());
         }
         return $this->events;

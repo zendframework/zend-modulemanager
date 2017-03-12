@@ -49,7 +49,7 @@ class ListenerOptionsTest extends TestCase
            'module_paths'            => ['module', 'paths'],
            'config_glob_paths'       => ['glob', 'paths'],
            'config_static_paths'     => ['static', 'custom_paths'],
-       ]);
+        ]);
 
         $this->assertEquals(__DIR__ . '/module-config-cache.php', $options->getConfigCacheFile());
         $options->setConfigCacheKey('foo');
@@ -67,7 +67,7 @@ class ListenerOptionsTest extends TestCase
            'module_paths'             => ['module', 'paths'],
            'config_glob_paths'        => ['glob', 'paths'],
            'config_static_paths'      => ['static', 'custom_paths'],
-       ]);
+        ]);
 
         $this->assertEquals(__DIR__ . '/module-classmap-cache.php', $options->getModuleMapCacheFile());
         $options->setModuleMapCacheKey('foo');
