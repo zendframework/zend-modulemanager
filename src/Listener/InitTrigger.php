@@ -24,8 +24,8 @@ class InitTrigger extends AbstractListener
     public function __invoke(ModuleEvent $e)
     {
         $module = $e->getModule();
-        if (!$module instanceof InitProviderInterface
-            && !method_exists($module, 'init')
+        if (! $module instanceof InitProviderInterface
+            && ! method_exists($module, 'init')
         ) {
             return;
         }

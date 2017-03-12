@@ -36,7 +36,7 @@ class ModuleDependencyCheckerListener
             $dependencies = $module->getModuleDependencies();
 
             foreach ($dependencies as $dependencyModule) {
-                if (!isset($this->loaded[$dependencyModule])) {
+                if (! isset($this->loaded[$dependencyModule])) {
                     throw new Exception\MissingDependencyModuleException(
                         sprintf(
                             'Module "%s" depends on module "%s", which was not initialized before it',

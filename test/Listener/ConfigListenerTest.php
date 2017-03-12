@@ -36,7 +36,11 @@ class ConfigListenerTest extends AbstractListenerTestCase
     public function setUp()
     {
         $this->moduleManager = new ModuleManager([]);
-        $this->moduleManager->getEventManager()->attach(ModuleEvent::EVENT_LOAD_MODULE_RESOLVE, new ModuleResolverListener, 1000);
+        $this->moduleManager->getEventManager()->attach(
+            ModuleEvent::EVENT_LOAD_MODULE_RESOLVE,
+            new ModuleResolverListener,
+            1000
+        );
     }
 
     public function testMultipleConfigsAreMerged()
@@ -75,7 +79,11 @@ class ConfigListenerTest extends AbstractListenerTestCase
         // Now we check to make sure it uses the config and doesn't hit
         // the module objects getConfig() method(s)
         $moduleManager = new ModuleManager(['SomeModule', 'ListenerTestModule']);
-        $moduleManager->getEventManager()->attach(ModuleEvent::EVENT_LOAD_MODULE_RESOLVE, new ModuleResolverListener, 1000);
+        $moduleManager->getEventManager()->attach(
+            ModuleEvent::EVENT_LOAD_MODULE_RESOLVE,
+            new ModuleResolverListener,
+            1000
+        );
         $configListener = new ConfigListener($options);
         $configListener->attach($moduleManager->getEventManager());
         $moduleManager->loadModules();
@@ -220,7 +228,11 @@ class ConfigListenerTest extends AbstractListenerTestCase
         // This time, don't add the glob path
         $configListener = new ConfigListener($options);
         $moduleManager = new ModuleManager(['SomeModule']);
-        $moduleManager->getEventManager()->attach(ModuleEvent::EVENT_LOAD_MODULE_RESOLVE, new ModuleResolverListener, 1000);
+        $moduleManager->getEventManager()->attach(
+            ModuleEvent::EVENT_LOAD_MODULE_RESOLVE,
+            new ModuleResolverListener,
+            1000
+        );
 
         $configListener->attach($moduleManager->getEventManager());
 
@@ -260,7 +272,11 @@ class ConfigListenerTest extends AbstractListenerTestCase
         // This time, don't add the glob path
         $configListener = new ConfigListener($options);
         $moduleManager = new ModuleManager(['SomeModule']);
-        $moduleManager->getEventManager()->attach(ModuleEvent::EVENT_LOAD_MODULE_RESOLVE, new ModuleResolverListener, 1000);
+        $moduleManager->getEventManager()->attach(
+            ModuleEvent::EVENT_LOAD_MODULE_RESOLVE,
+            new ModuleResolverListener,
+            1000
+        );
 
         $configListener->attach($moduleManager->getEventManager());
 

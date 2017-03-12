@@ -298,7 +298,7 @@ class ServiceListener implements ServiceListenerInterface
     {
         if (isset($config[$metadata['config_key']])
             && is_array($config[$metadata['config_key']])
-            && !empty($config[$metadata['config_key']])
+            && ! empty($config[$metadata['config_key']])
         ) {
             $this->serviceManagers[$key]['configuration']['merged_config'] = $config[$metadata['config_key']];
         }
