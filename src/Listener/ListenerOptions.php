@@ -19,11 +19,6 @@ class ListenerOptions extends AbstractOptions
     /**
      * @var array
      */
-    protected $modulePaths = [];
-
-    /**
-     * @var array
-     */
     protected $configGlobPaths = [];
 
     /**
@@ -65,47 +60,6 @@ class ListenerOptions extends AbstractOptions
      * @var string
      */
     protected $moduleMapCacheKey;
-
-    /**
-     * @var bool
-     */
-    protected $useZendLoader = true;
-
-    /**
-     * Get an array of paths where modules reside
-     *
-     * @return array
-     */
-    public function getModulePaths()
-    {
-        return $this->modulePaths;
-    }
-
-    /**
-     * Set an array of paths where modules reside
-     *
-     * @param  array|Traversable $modulePaths
-     * @throws Exception\InvalidArgumentException
-     * @return ListenerOptions Provides fluent interface
-     */
-    public function setModulePaths($modulePaths)
-    {
-        if (! is_array($modulePaths) && ! $modulePaths instanceof Traversable) {
-            throw new Exception\InvalidArgumentException(
-                sprintf(
-                    'Argument passed to %s::%s() must be an array, '
-                    . 'implement the Traversable interface, or be an '
-                    . 'instance of Zend\Config\Config. %s given.',
-                    __CLASS__,
-                    __METHOD__,
-                    gettype($modulePaths)
-                )
-            );
-        }
-
-        $this->modulePaths = $modulePaths;
-        return $this;
-    }
 
     /**
      * Get the glob patterns to load additional config files
@@ -379,33 +333,6 @@ class ListenerOptions extends AbstractOptions
     {
         $this->checkDependencies = (bool) $checkDependencies;
 
-        return $this;
-    }
-
-    /**
-     * Whether or not to use zend-loader to autoload modules.
-     *
-     * @return bool
-     */
-    public function useZendLoader()
-    {
-        return $this->useZendLoader;
-    }
-
-    /**
-     * Set a flag indicating if the module manager should use zend-loader
-     *
-     * Setting this option to false will disable ModuleAutoloader, requiring
-     * other means of autoloading to be used (e.g., Composer).
-     *
-     * If disabled, the AutoloaderProvider feature will be disabled as well
-     *
-     * @param  bool $flag
-     * @return ListenerOptions
-     */
-    public function setUseZendLoader($flag)
-    {
-        $this->useZendLoader = (bool) $flag;
         return $this;
     }
 
