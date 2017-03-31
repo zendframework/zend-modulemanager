@@ -28,7 +28,6 @@
         "zendframework/zend-coding-standard": "~1.0.0"
     },
     "suggest": {
-        "zendframework/zend-config": "Zend\\Config component",
         "zendframework/zend-console": "Zend\\Console component",
         "zendframework/zend-loader": "Zend\\Loader component",
         "zendframework/zend-mvc": "Zend\\Mvc component",
