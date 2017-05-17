@@ -81,7 +81,7 @@ abstract class AbstractListener
             foreach ($var as $key => $value) {
                 $toImplode[] = var_export($key, true) . '=>' . $this->varExportMin($value, true);
             }
-            return '['.implode(',', $toImplode).']';
+            return '[' . implode(',', $toImplode) . ']';
         }
 
         return var_export($var, true);
