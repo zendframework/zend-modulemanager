@@ -61,7 +61,7 @@ abstract class AbstractListener
      */
     protected function writeArrayToFile($filePath, array $array)
     {
-        $content = "<?php\nreturn " . $this->var_export_min($array) . ';';
+        $content = "<?php\nreturn " . $this->varExportMin($array) . ';';
         file_put_contents($filePath, $content, LOCK_EX);
         return $this;
     }
@@ -74,12 +74,12 @@ abstract class AbstractListener
      * @param  string|array $var
      * @return string
      */
-    private function var_export_min($var)
+    private function varExportMin($var)
     {
         if (is_array($var)) {
             $toImplode = [];
             foreach ($var as $key => $value) {
-                $toImplode[] = var_export($key, true) . '=>' . $this->var_export_min($value, true);
+                $toImplode[] = var_export($key, true) . '=>' . $this->varExportMin($value, true);
             }
             return '['.implode(',', $toImplode).']';
         }
