@@ -199,10 +199,8 @@ class ServiceListener implements ServiceListenerInterface
 
             if (! $sm['service_manager'] instanceof ServiceManager) {
                 if (! $this->defaultServiceManager->has($sm['service_manager'])) {
-                    throw new Exception\RuntimeException(sprintf(
-                        'Could not find a valid ServiceManager for %s',
-                        $sm['service_manager']
-                    ));
+                    // No plugin manager registered by that name; nothing to configure.
+                    continue;
                 }
 
                 $instance = $this->defaultServiceManager->get($sm['service_manager']);
