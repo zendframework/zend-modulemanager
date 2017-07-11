@@ -41,17 +41,27 @@ class DefaultListenerAggregate extends AbstractListener implements
         $options                     = $this->getOptions();
         $configListener              = $this->getConfigListener();
         $locatorRegistrationListener = new LocatorRegistrationListener($options);
-        $moduleLoaderListener        = new ModuleLoaderListener($options);
+        // when zend-modulemanager-autoloader installed
+        if (class_exists(ModuleLoaderListener::class)) {
+            $moduleLoaderListener        = new ModuleLoaderListener($options);
 
-        // High priority, we assume module autoloading (for FooNamespace\Module
-        // classes) should be available before anything else
-        $moduleLoaderListener->attach($events);
-        $this->listeners[] = $moduleLoaderListener;
+            // High priority, we assume module autoloading (for FooNamespace\Module
+            // classes) should be available before anything else
+            $moduleLoaderListener->attach($events);
+            $this->listeners[] = $moduleLoaderListener;
+        }
         $this->listeners[] = $events->attach(ModuleEvent::EVENT_LOAD_MODULE_RESOLVE, new ModuleResolverListener);
 
-        // High priority, because most other loadModule listeners will assume
-        // the module's classes are available via autoloading
-        $this->listeners[] = $events->attach(ModuleEvent::EVENT_LOAD_MODULE, new AutoloaderListener($options), 9000);
+        // when zend-modulemanager-autoloader installed
+        if (class_exists(AutoloaderListener::class)) {
+            // High priority, because most other loadModule listeners will assume
+            // the module's classes are available via autoloading
+            $this->listeners[] = $events->attach(
+                ModuleEvent::EVENT_LOAD_MODULE,
+                new AutoloaderListener($options),
+                9000
+            );
+        }
 
         if ($options->getCheckDependencies()) {
             $this->listeners[] = $events->attach(

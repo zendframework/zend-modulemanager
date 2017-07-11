@@ -12,6 +12,13 @@
             "Zend\\ModuleManager\\": "src/"
         }
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/Xerkus/zend-modulemanager-autoloader"
+        }
+    ],
+    "version": "2.8.0-dev",
     "require": {
         "php": "^5.5 || ^7.0",
         "zendframework/zend-config": "^2.6 || ^3.1",
@@ -21,7 +28,7 @@
     "require-dev": {
         "zendframework/zend-console": "^2.6",
         "zendframework/zend-di": "^2.6",
-        "zendframework/zend-loader": "^2.5",
+        "zendframework/zend-modulemanager-autoloader": "^1.0@dev",
         "zendframework/zend-mvc": "^2.7",
         "zendframework/zend-servicemanager": "^2.7.5 || ^3.0.3",
         "phpunit/PHPUnit": "~4.0",
@@ -30,6 +37,7 @@
     "suggest": {
         "zendframework/zend-console": "Zend\\Console component",
         "zendframework/zend-loader": "Zend\\Loader component",
+        "zendframework/zend-modulemanager-autoloader": "For autoloader features",
         "zendframework/zend-mvc": "Zend\\Mvc component",
         "zendframework/zend-servicemanager": "Zend\\ServiceManager component"
     },
