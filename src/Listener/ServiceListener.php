@@ -19,6 +19,7 @@ use Zend\Stdlib\ArrayUtils;
 
 class ServiceListener implements ServiceListenerInterface
 {
+
     /**
      * Service manager post-configuration.
      *
@@ -27,7 +28,7 @@ class ServiceListener implements ServiceListenerInterface
     protected $configuredServiceManager;
 
     /**
-     * @var \Zend\Stdlib\CallbackHandler[]
+     * @var callable[]
      */
     protected $listeners = [];
 
