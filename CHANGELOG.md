@@ -54,6 +54,8 @@ All notable changes to this project will be documented in this file, in reverse 
   Doing so allows plugin managers to be registered after configuration is fully
   merged, instead of requiring they be defined early. This change allows
   components to define their plugin managers via their `Module` classes.
+- [#58](https://github.com/zendframework/zend-modulemanager/pull/58) corrects
+  the typehint for the `ServiceListener::$listeners` property.
 
 ## 2.7.2 - 2016-05-16
 
