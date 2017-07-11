@@ -9,7 +9,7 @@
 
 namespace ZendTest\ModuleManager\Listener;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase as TestCase;
 use Zend\Loader\ModuleAutoloader;
 use ZendTest\ModuleManager\ResetAutoloadFunctionsTrait;
 

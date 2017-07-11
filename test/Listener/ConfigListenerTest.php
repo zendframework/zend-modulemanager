@@ -93,7 +93,7 @@ class ConfigListenerTest extends AbstractListenerTestCase
 
     public function testBadConfigValueThrowsInvalidArgumentException()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(InvalidArgumentException::class);
 
         $configListener = new ConfigListener;
 
@@ -105,21 +105,21 @@ class ConfigListenerTest extends AbstractListenerTestCase
 
     public function testBadGlobPathTrowsInvalidArgumentException()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(InvalidArgumentException::class);
         $configListener = new ConfigListener;
         $configListener->addConfigGlobPath(['asd']);
     }
 
     public function testBadGlobPathArrayTrowsInvalidArgumentException()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(InvalidArgumentException::class);
         $configListener = new ConfigListener;
         $configListener->addConfigGlobPaths('asd');
     }
 
     public function testBadStaticPathArrayTrowsInvalidArgumentException()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(InvalidArgumentException::class);
         $configListener = new ConfigListener;
         $configListener->addConfigStaticPaths('asd');
     }

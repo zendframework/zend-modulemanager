@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 2.8.0 - TBD
+## 2.8.0 - 2017-07-11
 
 ### Added
 
@@ -22,7 +22,8 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Removed
 
-- Nothing.
+- [#62](https://github.com/zendframework/zend-modulemanager/pull/62) removes
+  support for PHP 5.5 and HHVM.
 
 ### Fixed
 

@@ -10,7 +10,7 @@
 namespace ZendTest\ModuleManager\Listener;
 
 use ArrayObject;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase as TestCase;
 use ReflectionProperty;
 use stdClass;
 use Zend\EventManager\EventManager;
@@ -253,7 +253,8 @@ class ServiceListenerTest extends TestCase
      */
     public function testUsingNonStringServiceManagerWithAddServiceManagerRaisesException($serviceManager)
     {
-        $this->setExpectedException(Exception\RuntimeException::class, 'expected ServiceManager or string');
+        $this->expectException(Exception\RuntimeException::class);
+        $this->expectExceptionMessage('expected ServiceManager or string');
         $this->listener->addServiceManager(
             $serviceManager,
             'service_manager',

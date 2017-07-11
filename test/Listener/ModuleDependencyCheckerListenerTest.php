@@ -9,7 +9,10 @@
 
 namespace ZendTest\ModuleManager\Listener;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase as TestCase;
+use stdClass;
+use Zend\ModuleManager\Exception;
+use Zend\ModuleManager\Feature;
 use Zend\ModuleManager\Listener\ModuleDependencyCheckerListener;
 use Zend\ModuleManager\ModuleManager;
 use Zend\ModuleManager\ModuleEvent;
@@ -31,10 +34,10 @@ class ModuleDependencyCheckerListenerTest extends TestCase
             2000
         ); */
 
-        $module = $this->getMock('Zend\ModuleManager\Feature\DependencyIndicatorInterface');
+        $module = $this->getMockBuilder(Feature\DependencyIndicatorInterface::class)->getMock();
         $module->expects($this->once())->method('getModuleDependencies')->will($this->returnValue([]));
 
-        $event = $this->getMock('Zend\ModuleManager\ModuleEvent');
+        $event = $this->getMockBuilder(ModuleEvent::class)->getMock();
         $event->expects($this->any())->method('getModule')->will($this->returnValue($module));
 
         $listener = new ModuleDependencyCheckerListener();
@@ -46,10 +49,10 @@ class ModuleDependencyCheckerListenerTest extends TestCase
      */
     public function testCallsGetModuleDependenciesOnModuleNotImplementingInterface()
     {
-        $module = $this->getMock('stdClass', ['getModuleDependencies']);
+        $module = $this->getMockBuilder(stdClass::class)->setMethods(['getModuleDependencies'])->getMock();
         $module->expects($this->once())->method('getModuleDependencies')->will($this->returnValue([]));
 
-        $event = $this->getMock('Zend\ModuleManager\ModuleEvent');
+        $event = $this->getMockBuilder(ModuleEvent::class)->getMock();
         $event->expects($this->any())->method('getModule')->will($this->returnValue($module));
 
         $listener = new ModuleDependencyCheckerListener();
@@ -61,14 +64,14 @@ class ModuleDependencyCheckerListenerTest extends TestCase
      */
     public function testNotFulfilledDependencyThrowsException()
     {
-        $module = $this->getMock('stdClass', ['getModuleDependencies']);
+        $module = $this->getMockBuilder(stdClass::class)->setMethods(['getModuleDependencies'])->getMock();
         $module->expects($this->once())->method('getModuleDependencies')->will($this->returnValue(['OtherModule']));
 
-        $event = $this->getMock('Zend\ModuleManager\ModuleEvent');
+        $event = $this->getMockBuilder(ModuleEvent::class)->getMock();
         $event->expects($this->any())->method('getModule')->will($this->returnValue($module));
 
         $listener = new ModuleDependencyCheckerListener();
-        $this->setExpectedException('Zend\ModuleManager\Exception\MissingDependencyModuleException');
+        $this->expectException(Exception\MissingDependencyModuleException::class);
         $listener->__invoke($event);
     }
 }

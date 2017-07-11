@@ -9,8 +9,9 @@
 
 namespace ZendTest\ModuleManager;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase as TestCase;
 use stdClass;
+use Zend\ModuleManager\Exception;
 use Zend\ModuleManager\Listener\ConfigListener;
 use Zend\ModuleManager\ModuleEvent;
 
@@ -39,7 +40,7 @@ class ModuleEventTest extends TestCase
 
     public function testPassingNonObjectToSetModuleRaisesException()
     {
-        $this->setExpectedException('Zend\ModuleManager\Exception\InvalidArgumentException');
+        $this->expectException(Exception\InvalidArgumentException::class);
         $this->event->setModule('foo');
     }
 
@@ -53,7 +54,7 @@ class ModuleEventTest extends TestCase
 
     public function testPassingNonStringToSetModuleNameRaisesException()
     {
-        $this->setExpectedException('Zend\ModuleManager\Exception\InvalidArgumentException');
+        $this->expectException(Exception\InvalidArgumentException::class);
         $this->event->setModuleName(new stdClass);
     }
 
