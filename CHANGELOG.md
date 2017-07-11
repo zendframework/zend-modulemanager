@@ -18,8 +18,9 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- [#53](https://github.com/zendframework/zend-modulemanager/pull/53) preventing race conditions
-  when writing cache files (merged configuration)
+- [#39](https://github.com/zendframework/zend-modulemanager/pull/39) and
+  [#53](https://github.com/zendframework/zend-modulemanager/pull/53) prevent
+  race conditions when writing cache files (merged configuration).
 - [#36](https://github.com/zendframework/zend-modulemanager/pull/36) removes a
   throw from `ServiceListener::onLoadModulesPost()` that was previously emitted
   when a named plugin manager did not have an associated service present yet.
