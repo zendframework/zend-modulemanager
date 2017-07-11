@@ -29,7 +29,7 @@
     },
     "suggest": {
         "zendframework/zend-console": "Zend\\Console component",
-        "zendframework/zend-loader": "Zend\\Loader component",
+        "zendframework/zend-loader": "Zend\\Loader component if you are not using Composer autoloading for your modules",
         "zendframework/zend-mvc": "Zend\\Mvc component",
         "zendframework/zend-servicemanager": "Zend\\ServiceManager component"
     },
@@ -43,6 +43,7 @@
     },
     "autoload-dev": {
         "psr-4": {
+            "ListenerTestModule\\": "test/TestAsset/ListenerTestModule/",
             "ZendTest\\ModuleManager\\": "test/"
         }
     },

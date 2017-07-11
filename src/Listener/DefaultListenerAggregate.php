@@ -41,17 +41,27 @@ class DefaultListenerAggregate extends AbstractListener implements
         $options                     = $this->getOptions();
         $configListener              = $this->getConfigListener();
         $locatorRegistrationListener = new LocatorRegistrationListener($options);
-        $moduleLoaderListener        = new ModuleLoaderListener($options);
 
         // High priority, we assume module autoloading (for FooNamespace\Module
-        // classes) should be available before anything else
-        $moduleLoaderListener->attach($events);
-        $this->listeners[] = $moduleLoaderListener;
+        // classes) should be available before anything else.
+        // Register it only if use_zend_loader config is true, however.
+        if ($options->useZendLoader()) {
+            $moduleLoaderListener = new ModuleLoaderListener($options);
+            $moduleLoaderListener->attach($events);
+            $this->listeners[] = $moduleLoaderListener;
+        }
         $this->listeners[] = $events->attach(ModuleEvent::EVENT_LOAD_MODULE_RESOLVE, new ModuleResolverListener);
 
-        // High priority, because most other loadModule listeners will assume
-        // the module's classes are available via autoloading
-        $this->listeners[] = $events->attach(ModuleEvent::EVENT_LOAD_MODULE, new AutoloaderListener($options), 9000);
+        if ($options->useZendLoader()) {
+            // High priority, because most other loadModule listeners will assume
+            // the module's classes are available via autoloading
+            // Register it only if use_zend_loader config is true, however.
+            $this->listeners[] = $events->attach(
+                ModuleEvent::EVENT_LOAD_MODULE,
+                new AutoloaderListener($options),
+                9000
+            );
+        }
 
         if ($options->getCheckDependencies()) {
             $this->listeners[] = $events->attach(

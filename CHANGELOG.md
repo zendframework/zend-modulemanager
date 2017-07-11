@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 2.8.0 - TBD
+
+### Added
+
+- [#4](https://github.com/zendframework/zend-modulemanager/pull/4) adds a new
+  `ListenerOptions` option, `use_zend_loader`. The option defaults to `true`,
+  which keeps the current behavior of registering the `ModuleAutoloader` and
+  `AutoloaderProvider`. If you disable it, these features will no longer be
+  loaded, allowing `ModuleManager` to be used without zend-loader.
+- [#5](https://github.com/zendframework/zend-modulemanager/pull/5) adds the
+  ability to use a class of any name for a module, so long as you provide the
+  fully qualified class name when registering the module with the module
+  manager.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- [#53](https://github.com/zendframework/zend-modulemanager/pull/53) preventing race conditions
+  when writing cache files (merged configuration)
+
 ## 2.7.3 - 2017-07-11
 
 ### Added

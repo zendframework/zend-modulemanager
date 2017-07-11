@@ -9,6 +9,7 @@
 
 namespace ZendTest\ModuleManager\Listener;
 
+use ListenerTestModule;
 use Zend\ModuleManager\Listener\ModuleResolverListener;
 use Zend\ModuleManager\ModuleEvent;
 
@@ -18,13 +19,32 @@ use Zend\ModuleManager\ModuleEvent;
  */
 class ModuleResolverListenerTest extends AbstractListenerTestCase
 {
-    public function testModuleResolverListenerCanResolveModuleClasses()
+    /**
+     * @dataProvider validModuleNameProvider
+     */
+    public function testModuleResolverListenerCanResolveModuleClasses($moduleName, $expectedInstanceOf)
     {
         $moduleResolver = new ModuleResolverListener;
         $e = new ModuleEvent;
 
-        $e->setModuleName('ListenerTestModule');
-        $this->assertInstanceOf('ListenerTestModule\Module', $moduleResolver($e));
+        $e->setModuleName($moduleName);
+        $this->assertInstanceOf($expectedInstanceOf, $moduleResolver($e));
+    }
+
+    public function validModuleNameProvider()
+    {
+        return [
+            // Description => [module name, expectedInstanceOf]
+            'Append Module'  => ['ListenerTestModule', ListenerTestModule\Module::class],
+            'FQCN Module'    => [ListenerTestModule\Module::class, ListenerTestModule\Module::class],
+            'FQCN Arbitrary' => [ListenerTestModule\FooModule::class, ListenerTestModule\FooModule::class],
+        ];
+    }
+
+    public function testModuleResolverListenerReturnFalseIfCannotResolveModuleClasses()
+    {
+        $moduleResolver = new ModuleResolverListener;
+        $e = new ModuleEvent;
 
         $e->setModuleName('DoesNotExist');
         $this->assertFalse($moduleResolver($e));

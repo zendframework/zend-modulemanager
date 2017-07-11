@@ -117,6 +117,9 @@ retrieve the module class from the `ServiceManager`.
 This is the default module resolver. It attaches to the `loadModule.resolve`
 event and returns an instance of `{moduleName}\Module`.
 
+Since 2.8.0, if the module name provided resolves to a fully qualified class
+name, it returns that verbatim.
+
 ### OnBootstrapListener
 
 If a module class implements
