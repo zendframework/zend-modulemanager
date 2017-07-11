@@ -56,7 +56,11 @@ class DefaultListenerAggregate extends AbstractListener implements
             // High priority, because most other loadModule listeners will assume
             // the module's classes are available via autoloading
             // Register it only if use_zend_loader config is true, however.
-            $this->listeners[] = $events->attach(ModuleEvent::EVENT_LOAD_MODULE, new AutoloaderListener($options), 9000);
+            $this->listeners[] = $events->attach(
+                ModuleEvent::EVENT_LOAD_MODULE,
+                new AutoloaderListener($options),
+                9000
+            );
         }
 
         if ($options->getCheckDependencies()) {
