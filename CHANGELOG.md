@@ -29,7 +29,7 @@ All notable changes to this project will be documented in this file, in reverse 
 - [#53](https://github.com/zendframework/zend-modulemanager/pull/53) preventing race conditions
   when writing cache files (merged configuration)
 
-## 2.7.3 - TBD
+## 2.7.3 - 2017-07-11
 
 ### Added
 
