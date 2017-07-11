@@ -270,6 +270,8 @@ retrieve the module class from the <code>ServiceManager</code>.</p>
 <h3 id="moduleresolverlistener">ModuleResolverListener</h3>
 <p>This is the default module resolver. It attaches to the <code>loadModule.resolve</code>
 event and returns an instance of <code>{moduleName}\Module</code>.</p>
+<p>Since 2.8.0, if the module name provided resolves to a fully qualified class
+name, it returns that verbatim.</p>
 <h3 id="onbootstraplistener">OnBootstrapListener</h3>
 <p>If a module class implements
 <code>Zend\ModuleManager\Feature\BootstrapListenerInterface</code>, or defines an
@@ -431,7 +433,7 @@ As a brief recap, the following configuration keys and values are allowed:</p>
 <p>When working with plugin managers, you will be passed the plugin manager instance to factories,
 abstract factories, and initializers. If you need access to the application services, you can use
 the <code>getServiceLocator()</code> method, as in the following example:</p>
-<pre class="codehilite"><code class="language-php linenums">public function getViewHelperConfig()
+<pre class="codehilite"><code class="language-php">public function getViewHelperConfig()
 {
     return ['factories' =&gt; [
         'foo' =&gt; function ($helpers) {
@@ -444,6 +446,7 @@ the <code>getServiceLocator()</code> method, as in the following example:</p>
     ]];
 }</code></pre>
 
+
 <p>This is a powerful technique, as it allows your various plugins to remain
 agnostic with regards to where and how dependencies are injected, and thus
 allows you to use Inversion of Control principals even with plugins.</p>
@@ -453,7 +456,7 @@ allows you to use Inversion of Control principals even with plugins.</p>
 plugin managers now receive the <em>parent</em> container, and not the plugin manager
 itself. You can write your factories under v2, and prepare them for v3, by
 testing the incoming argument to see if it is a plugin manager:</p>
-<pre class="codehilite"><code class="language-php linenums">use Zend\SserviceManager\AbstractPluginManager;
+<pre class="codehilite"><code class="language-php">use Zend\SserviceManager\AbstractPluginManager;
 
 function ($container) {
     $container = $container instanceof AbstractPluginManager
@@ -462,6 +465,7 @@ function ($container) {
 
     // create instance with dependencies pulled from app container...
 }</code></pre>
+
 
 </blockquote>
 

@@ -205,7 +205,7 @@ have the directive <code>chdir(dirname(__DIR__));</code> in your <code>public/in
 <p>The following example will search for modules in three different <code>module_paths</code>.
 Two are local directories of this application and the third is a system-wide
 shared directory.</p>
-<pre class="codehilite"><code class="language-php linenums">// public/index.php
+<pre class="codehilite"><code class="language-php">// public/index.php
 use Zend\ModuleManager\Listener;
 use Zend\ModuleManager\ModuleManager;
 
@@ -232,12 +232,36 @@ $moduleManager = new ModuleManager([
 $moduleManager-&gt;getEventManager()-&gt;attachAggregate($defaultListeners);
 $moduleManager-&gt;loadModules();</code></pre>
 
+
 <blockquote>
 <h3 id="module-paths-are-fifo">Module paths are FIFO</h3>
 <p>Module paths behave very similar to PHP's <code>include_path</code> and are searched in
 the order they are defined. If you have modules with the same name in more
 than one registered module path, the module autoloader will return the first
 one it finds.</p>
+<h3 id="disabling-the-moduleautoloader">Disabling the ModuleAutoloader</h3>
+<ul>
+<li>Since 2.8.0</li>
+</ul>
+<p>If you are using Composer to autoload, you may not need to use the
+<code>ModuleAutolaoder</code>. As such, you can disable it by passing the following
+option to the <code>ListenerOptions</code> class:</p>
+<pre class="codehilite"><code class="language-php">'use_zend_loader' =&gt; false,</code></pre>
+
+
+<p>If your project was begun from the <a href="https://github.com/zendframework/ZendSkeletonApplication">skeleton application</a>,
+place the above within the <code>module_listener_options</code> configuration of your
+<code>config/application.config.php</code> file:</p>
+<pre class="codehilite"><code class="language-php">return [
+    /* ... */
+    'module_listener_options' =&gt; [
+        'use_zend_loader' =&gt; false,
+        /* ... */
+    ],
+    /* ... */
+];</code></pre>
+
+
 </blockquote>
 <h2 id="non-standard-explicit-module-paths">Non-Standard / Explicit Module Paths</h2>
 <p>Sometimes you may want to specify exactly where a module is instead of having
@@ -246,7 +270,7 @@ one it finds.</p>
 <p>In this example, the autoloader will first check for <code>MyModule\Module</code> in
 <code>/path/to/mymoduledir-v1.2/Module.php</code>. If it's not found, then it will fall
 back to searching any other registered module paths.</p>
-<pre class="codehilite"><code class="language-php linenums">// ./public/index.php
+<pre class="codehilite"><code class="language-php">// ./public/index.php
 use Zend\Loader\ModuleAutoloader;
 use Zend\ModuleManager\Listener;
 use Zend\ModuleManager\ModuleManager;
@@ -287,6 +311,7 @@ $moduleManager = new ModuleManager([
 // Attach the default listener aggregate and load the modules
 $moduleManager-&gt;getEventManager()-&gt;attachAggregate($defaultListeners);
 $moduleManager-&gt;loadModules();</code></pre>
+
 
 <p>This same method works if you provide the path to a phar archive.</p>
 <h2 id="packaging-modules-with-phar">Packaging Modules with Phar</h2>

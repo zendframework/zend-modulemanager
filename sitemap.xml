@@ -3,16 +3,16 @@
 
     
     <url>
-     <loc>/</loc>
-     <lastmod>2017-03-31</lastmod>
+     <loc>None/</loc>
+     <lastmod>2017-07-11</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
 
     
     <url>
-     <loc>/intro/</loc>
-     <lastmod>2017-03-31</lastmod>
+     <loc>None/intro/</loc>
+     <lastmod>2017-07-11</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -20,26 +20,26 @@
     
         
     <url>
-     <loc>/module-manager/</loc>
-     <lastmod>2017-03-31</lastmod>
+     <loc>None/module-manager/</loc>
+     <lastmod>2017-07-11</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
-     <loc>/module-class/</loc>
-     <lastmod>2017-03-31</lastmod>
+     <loc>None/module-class/</loc>
+     <lastmod>2017-07-11</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
-     <loc>/module-autoloader/</loc>
-     <lastmod>2017-03-31</lastmod>
+     <loc>None/module-autoloader/</loc>
+     <lastmod>2017-07-11</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
-     <loc>/best-practices/</loc>
-     <lastmod>2017-03-31</lastmod>
+     <loc>None/best-practices/</loc>
+     <lastmod>2017-07-11</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
