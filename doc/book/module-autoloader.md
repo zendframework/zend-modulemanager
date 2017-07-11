@@ -60,6 +60,33 @@ $moduleManager->loadModules();
 > than one registered module path, the module autoloader will return the first
 > one it finds.
 
+> ### Disabling the ModuleAutoloader
+>
+> - Since 2.8.0
+>
+> If you are using Composer to autoload, you may not need to use the
+> `ModuleAutolaoder`. As such, you can disable it by passing the following
+> option to the `ListenerOptions` class:
+>
+> ```php
+> 'use_zend_loader' => false,
+> ```
+>
+> If your project was begun from the [skeleton application](https://github.com/zendframework/ZendSkeletonApplication),
+> place the above within the `module_listener_options` configuration of your
+> `config/application.config.php` file:
+>
+> ```php
+> return [
+>     /* ... */
+>     'module_listener_options' => [
+>         'use_zend_loader' => false,
+>         /* ... */
+>     ],
+>     /* ... */
+> ];
+> ```
+
 ## Non-Standard / Explicit Module Paths
 
 Sometimes you may want to specify exactly where a module is instead of having
