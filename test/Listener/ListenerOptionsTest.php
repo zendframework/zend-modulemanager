@@ -9,7 +9,8 @@
 
 namespace ZendTest\ModuleManager\Listener;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use InvalidArgumentException;
+use PHPUnit\Framework\TestCase as TestCase;
 use Zend\Config\Config;
 use Zend\ModuleManager\Listener\ListenerOptions;
 
@@ -110,7 +111,7 @@ class ListenerOptionsTest extends TestCase
 
     public function testSetModulePathsThrowsInvalidArgumentException()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(InvalidArgumentException::class);
         $options = new ListenerOptions;
         $options->setModulePaths('asd');
     }
@@ -125,14 +126,14 @@ class ListenerOptionsTest extends TestCase
 
     public function testSetConfigGlobPathsThrowsInvalidArgumentException()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(InvalidArgumentException::class);
         $options = new ListenerOptions;
         $options->setConfigGlobPaths('asd');
     }
 
     public function testSetConfigStaticPathsThrowsInvalidArgumentException()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(InvalidArgumentException::class);
         $options = new ListenerOptions;
         $options->setConfigStaticPaths('asd');
     }
@@ -152,7 +153,7 @@ class ListenerOptionsTest extends TestCase
 
     public function testSetExtraConfigThrowsInvalidArgumentException()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(InvalidArgumentException::class);
         $options = new ListenerOptions;
         $options->setExtraConfig('asd');
     }

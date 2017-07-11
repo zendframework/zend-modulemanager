@@ -9,15 +9,17 @@
 
 namespace ZendTest\ModuleManager;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use InvalidArgumentException;
+use PHPUnit\Framework\TestCase as TestCase;
+use RuntimeException;
 use stdClass;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\SharedEventManager;
+use Zend\ModuleManager\Exception;
 use Zend\ModuleManager\Listener\ListenerOptions;
 use Zend\ModuleManager\Listener\DefaultListenerAggregate;
 use Zend\ModuleManager\ModuleEvent;
 use Zend\ModuleManager\ModuleManager;
-use InvalidArgumentException;
 
 /**
  * @covers Zend\ModuleManager\ModuleManager
@@ -100,13 +102,13 @@ class ModuleManagerTest extends TestCase
 
     public function testConstructorThrowsInvalidArgumentException()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(InvalidArgumentException::class);
         $moduleManager = new ModuleManager('stringShouldBeArray', $this->events);
     }
 
     public function testNotFoundModuleThrowsRuntimeException()
     {
-        $this->setExpectedException('RuntimeException');
+        $this->expectException(RuntimeException::class);
         $moduleManager = new ModuleManager(['NotFoundModule'], $this->events);
         $moduleManager->loadModules();
     }
@@ -211,7 +213,7 @@ class ModuleManagerTest extends TestCase
         $configListener = $this->defaultListeners->getConfigListener();
         $moduleManager  = new ModuleManager([new \SomeModule\Module()], $this->events);
         $this->defaultListeners->attach($this->events);
-        $this->setExpectedException('Zend\ModuleManager\Exception\RuntimeException');
+        $this->expectException(Exception\RuntimeException::class);
         $moduleManager->loadModules();
     }
 
