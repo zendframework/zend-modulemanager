@@ -15,8 +15,9 @@ cache:
 
 env:
   global:
-    - EVENT_MANAGER_VERSION="^3.0"
-    - SERVICE_MANAGER_VERSION="^3.0.3"
+    - COMPOSER_ARGS="--no-interaction"
+    - COVERAGE_DEPS="satooshi/php-coveralls"
+    - LEGACY_DEPS="phpunit/phpunit"
     - SITE_URL: https://zendframework.github.io/zend-modulemanager
     - GH_USER_NAME: "Matthew Weier O'Phinney"
     - GH_USER_EMAIL: matthew@weierophinney.net
@@ -25,49 +26,49 @@ env:
 
 matrix:
   include:
-    - php: 5.5
-      env:
-        - CS_CHECK=true
-    - php: 5.5
-      env:
-        - EVENT_MANAGER_VERSION="^2.6.2"
-        - SERVICE_MANAGER_VERSION="^2.7.5"
     - php: 5.6
       env:
+        - DEPS=lowest
+    - php: 5.6
+      env:
+        - DEPS=locked
         - TEST_COVERAGE=true
         - DEPLOY_DOCS="$(if [[ $TRAVIS_BRANCH == 'master' && $TRAVIS_PULL_REQUEST == 'false' ]]; then echo -n 'true' ; else echo -n 'false' ; fi)"
         - PATH="$HOME/.local/bin:$PATH"
     - php: 5.6
       env:
-        - EVENT_MANAGER_VERSION="^2.6.2"
-        - SERVICE_MANAGER_VERSION="^2.7.5"
-    - php: 7
+        - DEPS=latest
     - php: 7
       env:
-        - EVENT_MANAGER_VERSION="^2.6.2"
-        - SERVICE_MANAGER_VERSION="^2.7.5"
-    - php: 7.1
+        - DEPS=lowest
+    - php: 7
+      env:
+        - DEPS=locked
+        - CS_CHECK=true
+    - php: 7
+      env:
+        - DEPS=latest
     - php: 7.1
       env:
-        - EVENT_MANAGER_VERSION="^2.6.2"
-        - SERVICE_MANAGER_VERSION="^2.7.5"
-    - php: hhvm
-    - php: hhvm
+        - DEPS=lowest
+    - php: 7.1
       env:
-        - EVENT_MANAGER_VERSION="^2.6.2"
-        - SERVICE_MANAGER_VERSION="^2.7.5"
-  allow_failures:
-    - php: hhvm
+        - DEPS=locked
+    - php: 7.1
+      env:
+        - DEPS=latest
 
 before_install:
   - if [[ $TEST_COVERAGE != 'true' ]]; then phpenv config-rm xdebug.ini || return 0 ; fi
-  - composer self-update
-  - if [[ $TEST_COVERAGE == 'true' ]]; then composer require --dev --no-update satooshi/php-coveralls ; fi
-  - composer require --no-update "zendframework/zend-eventmanager:$EVENT_MANAGER_VERSION"
-  - composer require --dev --no-update "zendframework/zend-servicemanager:$SERVICE_MANAGER_VERSION"
+  - travis_retry composer self-update
 
 install:
-  - travis_retry composer install --no-interaction --ignore-platform-reqs
+  - travis_retry composer install $COMPOSER_ARGS --ignore-platform-reqs
+  - if [[ $TRAVIS_PHP_VERSION =~ ^5.6 ]]; then travis_retry composer update $COMPOSER_ARGS --with-dependencies $LEGACY_DEPS ; fi
+  - if [[ $DEPS == 'latest' ]]; then travis_retry composer update $COMPOSER_ARGS ; fi
+  - if [[ $DEPS == 'lowest' ]]; then travis_retry composer update --prefer-lowest --prefer-stable $COMPOSER_ARGS ; fi
+  - if [[ $TEST_COVERAGE == 'true' ]]; then travis_retry composer require --dev $COMPOSER_ARGS $COVERAGE_DEPS ; fi
+  - composer show
 
 script:
   - if [[ $TEST_COVERAGE == 'true' ]]; then composer test-coverage ; else composer test ; fi
@@ -82,13 +83,3 @@ after_script:
 
 notifications:
   email: false
-  irc:
-    channels:
-      - "irc.freenode.org#zftalk.dev"
-    on_success: change
-    on_failure: always
-  slack:
-    rooms:
-      - secure: "FAFyl1egzrcsOB+9cDBWivXdbFzMfE6kN97vLQme4g935bAD+Mgt/PXQoKtAvVm2Sq0kxdXTzXulBfmYh+S+qK4LJbAWF5nsl/QEqdHIsQjvujbuHcvqOVljkHQhvHT9JLZicxQgEfux9Mi+OFkiylakpTro4XtFvT86xGbW8AMeHyLUH1bTGNHvY4og2UJD1LLUdEZQPoxKXxUV0/rC4KK2woaEMTgbhwRoglLv68n5nHHd9s2pSK8p74MIbRF5DpFVtKpHJmruoNgCwSmrtNlKMtrqMPhzNEbvc1IV2id09itaN2+QojSR3yUoUANQ9zORDAIy4BdlIyD+5T4emn+0ONMg9JQVnozOluxWqHZ4VfyCQfBbAA2B1zpdKKzhT1ZAOLWi2aSRw04gknTtM+fnpNOAbMBF9kx2Y4B2U1vMaUdPR92wsVzjuHg9hRpAeBgfrzPfq47cGi0kfVXkO+c/hrLu6AZbtdE6f6OMh7uwNIvs8TqnoDiPLGgutMrl6Ww0znDsL6rtOrzId2FeuzZ7O8LUVtcR6P/NDqRE6TJy/g1c2q1xXni7w/l0SYs+jjtwFvZ++ksQywkNb9C+iZ6xZKxqKDzn3GlpgOg/1oHECd6n4AmssOwWhFDGNrLPiYGhD8z4oYJgLYU36UoUk7TM6jXy/2ASUnGAaY9iqWA="
-    on_success: change
-    on_failure: always
