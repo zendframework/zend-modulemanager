@@ -398,4 +398,33 @@ class ServiceListenerTest extends TestCase
         $this->assertEquals(['foo' => 'bar'], $services->get('config'), 'Config service was not overridden');
         $this->assertInstanceOf(stdClass::class, $services->get('foo'), 'Foo service was not overridden');
     }
+
+    public function testOnLoadModulesPostShouldNotRaiseExceptionIfNamedServiceManagerDoesNotExist()
+    {
+        $services = new ServiceManager();
+        $services->setService('config', []);
+        $listener = new ServiceListener($services);
+        $listener->addServiceManager(
+            'UndefinedPluginManager',
+            'undefined',
+            TestAsset\UndefinedProviderInterface::class,
+            'getUndefinedConfig'
+        );
+
+        $module = new TestAsset\ServiceProviderModule([]);
+
+        $event          = new ModuleEvent();
+        $configListener = new ConfigListener();
+        $event->setConfigListener($configListener);
+
+        $event->setModule($module);
+        $listener->onLoadModule($event);
+
+        try {
+            $listener->onLoadModulesPost($event);
+            $this->assertFalse($services->has('UndefinedPluginManager'));
+        } catch (\Exception $e) {
+            $this->fail('Exception should not be raised when encountering unknown plugin manager services');
+        }
+    }
 }
