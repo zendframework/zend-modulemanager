@@ -13,6 +13,14 @@ As an example, provided the module name "MyModule",
 (typically `Zend\Loader\ModuleAutoloader`) to find and include the
 `MyModule\Module` class if it isn't already available.
 
+> ### Module classes
+> 
+> - Since 2.8.0
+> 
+> Module classes can now be named anything, so long as they are autoloadable, and
+> you use the fully qualified class name when registering it with the
+> `ModuleManager`.
+
 The directory structure of a module named "MyModule" might start out looking
 something like this:
 
