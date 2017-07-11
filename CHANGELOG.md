@@ -6,7 +6,11 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- Nothing.
+- [#44](https://github.com/zendframework/zend-modulemanager/pull/44) adds a new
+  `ListenerOptions` option, `use_zend_loader`. The option defaults to `true`,
+  which keeps the current behavior of registering the `ModuleAutoloader` and
+  `AutoloaderProvider`. If you disable it, these features will no longer be
+  loaded, allowing `ModuleManager` to be used without zend-loader.
 
 ### Deprecated
 
