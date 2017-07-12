@@ -59,10 +59,31 @@ abstract class AbstractListener
      * @param  array $array
      * @return AbstractListener
      */
-    protected function writeArrayToFile($filePath, $array)
+    protected function writeArrayToFile($filePath, array $array)
     {
-        $content = "<?php\nreturn " . var_export($array, 1) . ';';
+        $content = "<?php\nreturn " . $this->varExportMin($array) . ';';
         file_put_contents($filePath, $content, LOCK_EX);
         return $this;
+    }
+
+    /**
+     * var_export with minified content
+     *
+     * From http://php.net/manual/fr/function.var-export.php#54440
+     *
+     * @param  string|array $var
+     * @return string
+     */
+    private function varExportMin($var)
+    {
+        if (is_array($var)) {
+            $toImplode = [];
+            foreach ($var as $key => $value) {
+                $toImplode[] = var_export($key, true) . '=>' . $this->varExportMin($value);
+            }
+            return '[' . implode(',', $toImplode) . ']';
+        }
+
+        return var_export($var, true);
     }
 }
