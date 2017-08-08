@@ -83,7 +83,7 @@ class LocatorRegistrationListener extends AbstractListener implements
             1000
         );
 
-        if (0 === count($this->modules)) {
+        if (! $this->modules) {
             return;
         }
 
