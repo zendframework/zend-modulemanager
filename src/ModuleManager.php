@@ -40,7 +40,7 @@ class ModuleManager implements ModuleManagerInterface
     protected $event;
 
     /**
-     * @var bool
+     * @var int
      */
     protected $loadFinished;
 
@@ -80,7 +80,7 @@ class ModuleManager implements ModuleManagerInterface
     public function onLoadModules()
     {
         if (true === $this->modulesAreLoaded) {
-            return $this;
+            return;
         }
 
         foreach ($this->getModules() as $moduleName => $module) {

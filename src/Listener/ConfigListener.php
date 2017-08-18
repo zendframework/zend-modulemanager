@@ -43,7 +43,7 @@ class ConfigListener extends AbstractListener implements
     protected $mergedConfig = [];
 
     /**
-     * @var Config
+     * @var Config|null
      */
     protected $mergedConfigObject;
 
@@ -83,13 +83,12 @@ class ConfigListener extends AbstractListener implements
 
         if ($this->skipConfig) {
             // We already have the config from cache, no need to collect or merge.
-            return $this;
+            return;
         }
 
         $this->listeners[] = $events->attach(ModuleEvent::EVENT_LOAD_MODULE, [$this, 'onLoadModule']);
         $this->listeners[] = $events->attach(ModuleEvent::EVENT_LOAD_MODULES, [$this, 'onLoadModules'], -1000);
         $this->listeners[] = $events->attach(ModuleEvent::EVENT_MERGE_CONFIG, [$this, 'onMergeConfig'], 1000);
-        return $this;
     }
 
     /**

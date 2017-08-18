@@ -16,6 +16,7 @@ use Zend\ModuleManager\Feature\LocatorRegisteredInterface;
 use Zend\ModuleManager\ModuleEvent;
 use Zend\ModuleManager\ModuleManager;
 use Zend\Mvc\MvcEvent;
+use Zend\ServiceManager\ServiceManager;
 
 /**
  * Locator registration listener
@@ -73,6 +74,7 @@ class LocatorRegistrationListener extends AbstractListener implements
                 $moduleClassNameArray = explode('\\', $moduleClassName);
                 $moduleClassNameAlias = end($moduleClassNameArray);
                 $application          = $e->getApplication();
+                /* @var $services ServiceManager */
                 $services             = $application->getServiceManager();
                 if (! $services->has($moduleClassName)) {
                         $services->setAlias($moduleClassName, $moduleClassNameAlias);
@@ -103,6 +105,7 @@ class LocatorRegistrationListener extends AbstractListener implements
     public function onBootstrap(MvcEvent $e)
     {
         $application = $e->getApplication();
+        /* @var $services ServiceManager */
         $services    = $application->getServiceManager();
 
         foreach ($this->modules as $module) {
@@ -120,6 +123,5 @@ class LocatorRegistrationListener extends AbstractListener implements
     {
         $this->listeners[] = $events->attach(ModuleEvent::EVENT_LOAD_MODULE, [$this, 'onLoadModule']);
         $this->listeners[] = $events->attach(ModuleEvent::EVENT_LOAD_MODULES, [$this, 'onLoadModules'], -1000);
-        return $this;
     }
 }
