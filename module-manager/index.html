@@ -307,7 +307,7 @@ outlines the plugin managers that may be configured this way (including the <cod
 configuration key to use, the <code>ModuleManager</code> feature interface to optionally implement (all
 interfaces specified live in the <code>Zend\ModuleManager\Feature</code> namespace) , and the module method to
 optionally define to provide configuration.</p>
-<div class="table-responsive"><div class="table-responsive"><table>
+<div class="table-responsive"><div class="table-responsive"><div class="table-responsive"><table>
 <thead>
 <tr>
 <th>Plugin Manager</th>
@@ -396,11 +396,11 @@ optionally define to provide configuration.</p>
 <td><code>getLogWriterConfig</code></td>
 </tr>
 </tbody>
-</table></div></div>
+</table></div></div></div>
 <p>Configuration follows the examples in the ServiceManager
 <a href="https://zendframework.github.io/zend-servicemanager/configuring-the-service-manager/">configuration section</a>.
 As a brief recap, the following configuration keys and values are allowed:</p>
-<div class="table-responsive"><div class="table-responsive"><table>
+<div class="table-responsive"><div class="table-responsive"><div class="table-responsive"><table>
 <thead>
 <tr>
 <th>Config Key</th>
@@ -429,7 +429,7 @@ As a brief recap, the following configuration keys and values are allowed:</p>
 <td>array of PHP callables or string class names of classes implementing <code>Zend\ServiceManager\InitializerInterface</code> (if a callable is used, it should be defined only in <code>Module</code> classes)</td>
 </tr>
 </tbody>
-</table></div></div>
+</table></div></div></div>
 <p>When working with plugin managers, you will be passed the plugin manager instance to factories,
 abstract factories, and initializers. If you need access to the application services, you can use
 the <code>getServiceLocator()</code> method, as in the following example:</p>
