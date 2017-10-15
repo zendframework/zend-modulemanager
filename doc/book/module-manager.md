@@ -222,7 +222,7 @@ allows you to use Inversion of Control principals even with plugins.
 > testing the incoming argument to see if it is a plugin manager:
 >
 > ```php
-> use Zend\SserviceManager\AbstractPluginManager;
+> use Zend\ServiceManager\AbstractPluginManager;
 >
 > function ($container) {
 >     $container = $container instanceof AbstractPluginManager
