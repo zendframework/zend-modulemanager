@@ -65,7 +65,7 @@ $moduleManager->loadModules();
 > - Since 2.8.0
 >
 > If you are using Composer to autoload, you may not need to use the
-> `ModuleAutolaoder`. As such, you can disable it by passing the following
+> `ModuleAutoloader`. As such, you can disable it by passing the following
 > option to the `ListenerOptions` class:
 >
 > ```php
