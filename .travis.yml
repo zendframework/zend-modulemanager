@@ -10,19 +10,12 @@ branches:
 cache:
   directories:
     - $HOME/.composer/cache
-    - $HOME/.local
-    - zf-mkdoc-theme
 
 env:
   global:
     - COMPOSER_ARGS="--no-interaction"
     - COVERAGE_DEPS="satooshi/php-coveralls"
     - LEGACY_DEPS="phpunit/phpunit"
-    - SITE_URL: https://zendframework.github.io/zend-modulemanager
-    - GH_USER_NAME: "Matthew Weier O'Phinney"
-    - GH_USER_EMAIL: matthew@weierophinney.net
-    - GH_REF: github.com/zendframework/zend-modulemanager.git
-    - secure: "HRR08cbsMeb8yqLPY74rM+wTu1WJ1jz/6Dzl6iBEqL7hxAhXXS5SeMkv24GkESz3gPS9HfAGR5FgIJubBN5e77hGJQ/DKyWUHkxv+xEbNifDJt1x5RY6aE9GliqDrJpfE2Xa79A4WheZMGkpZvYzd1nVC0gRIuR22Mg44ZfCYBc8PxBgeWwGcqlF27agNv9S68BhPWayOa5GxzdO39ucruA4xBtlGflPe6mPuq64MfCn8q6BUtDgXNrI2qRVigxIB2gfzbYSU9OGbXViCmRdAEb9eLWunACXlqcw5V8OHT+2ZM01soRwv8ZXTPCZhdI/uC7eDFM+vW5OrUhO3+0D6t3vOqBJXio2h7hJwzUCq4OVRoJvChGxn3bn+d5xqxKkU7pyMFekIVzAwt/wDijMRnkwfrzhqmHCibu1lI8dUswILNu+uqHTkEm4zw7NVn10lWbogQwFNP9Icg60eMIJ8JPsqeod1/z+v1va3U3jW6wpRqtW0EVwj5MZ8a5AIHF1jrhL0c/B7jAlIpURD7atPUf6ZRhERSO3ckJBQUZBhCC76RimTKx/Z7m8fM2+Ly7ZO5g8IundXGmo35oU6ycUcZcEZR+VJrPHmZN3tUFNtcBdSzVfYYh5l2pdiui/dmc9ql5Pl4pzlavHB8J7pzcBrXM1m9nSEKKxmXdJNalFPWI="
 
 matrix:
   include:
@@ -33,8 +26,6 @@ matrix:
       env:
         - DEPS=locked
         - TEST_COVERAGE=true
-        - DEPLOY_DOCS="$(if [[ $TRAVIS_BRANCH == 'master' && $TRAVIS_PULL_REQUEST == 'false' ]]; then echo -n 'true' ; else echo -n 'false' ; fi)"
-        - PATH="$HOME/.local/bin:$PATH"
     - php: 5.6
       env:
         - DEPS=latest
@@ -68,15 +59,11 @@ install:
   - if [[ $DEPS == 'latest' ]]; then travis_retry composer update $COMPOSER_ARGS ; fi
   - if [[ $DEPS == 'lowest' ]]; then travis_retry composer update --prefer-lowest --prefer-stable $COMPOSER_ARGS ; fi
   - if [[ $TEST_COVERAGE == 'true' ]]; then travis_retry composer require --dev $COMPOSER_ARGS $COVERAGE_DEPS ; fi
-  - composer show
+  - stty cols 120 && composer show
 
 script:
   - if [[ $TEST_COVERAGE == 'true' ]]; then composer test-coverage ; else composer test ; fi
   - if [[ $CS_CHECK == 'true' ]]; then composer cs-check ; fi
-  - if [[ $DEPLOY_DOCS == "true" && "$TRAVIS_TEST_RESULT" == "0" ]]; then travis_retry curl -sSL https://raw.githubusercontent.com/zendframework/zf-mkdoc-theme/master/theme-installer.sh | bash ; fi
-
-after_success:
-  - if [[ $DEPLOY_DOCS == "true" ]]; then echo "Preparing to build and deploy documentation" ; ./zf-mkdoc-theme/deploy.sh ; echo "Completed deploying documentation" ; fi
 
 after_script:
   - if [[ $TEST_COVERAGE == 'true' ]]; then composer upload-coverage ; fi
