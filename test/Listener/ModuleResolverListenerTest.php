@@ -10,6 +10,7 @@
 namespace ZendTest\ModuleManager\Listener;
 
 use ListenerTestModule;
+use ModuleAsClass;
 use Zend\ModuleManager\Listener\ModuleResolverListener;
 use Zend\ModuleManager\ModuleEvent;
 
@@ -47,6 +48,24 @@ class ModuleResolverListenerTest extends AbstractListenerTestCase
         $e = new ModuleEvent;
 
         $e->setModuleName('DoesNotExist');
+        $this->assertFalse($moduleResolver($e));
+    }
+
+    public function testModuleResolverListenerPrefersModuleClassesInModuleNamespaceOverNamedClasses()
+    {
+        $moduleResolver = new ModuleResolverListener;
+        $e = new ModuleEvent;
+
+        $e->setModuleName('ModuleAsClass');
+        $this->assertInstanceOf(ModuleAsClass\Module::class, $moduleResolver($e));
+    }
+
+    public function testModuleResolverListenerWillNotAttemptToResolveModuleAsClassNameGenerator()
+    {
+        $moduleResolver = new ModuleResolverListener;
+        $e = new ModuleEvent;
+
+        $e->setModuleName('Generator');
         $this->assertFalse($moduleResolver($e));
     }
 }

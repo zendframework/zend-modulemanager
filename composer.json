@@ -41,10 +41,12 @@
     },
     "autoload-dev": {
         "files": [
-            "test/autoload.php"
+            "test/autoload.php",
+            "test/TestAsset/ModuleAsClass.php"
         ],
         "psr-4": {
             "ListenerTestModule\\": "test/TestAsset/ListenerTestModule/",
+            "ModuleAsClass\\": "test/TestAsset/ModuleAsClass/",
             "ZendTest\\ModuleManager\\": "test/"
         }
     },

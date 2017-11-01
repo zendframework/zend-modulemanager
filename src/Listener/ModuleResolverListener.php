@@ -9,6 +9,7 @@
 
 namespace Zend\ModuleManager\Listener;
 
+use Generator;
 use Zend\ModuleManager\ModuleEvent;
 
 /**
@@ -17,6 +18,15 @@ use Zend\ModuleManager\ModuleEvent;
 class ModuleResolverListener extends AbstractListener
 {
     /**
+     * Class names that are invalid as module classes, due to inability to instantiate.
+     *
+     * @var string[]
+     */
+    protected $invalidClassNames = [
+        Generator::class,
+    ];
+
+    /**
      * @param  ModuleEvent $e
      * @return object|false False if module class does not exist
      */
@@ -24,16 +34,17 @@ class ModuleResolverListener extends AbstractListener
     {
         $moduleName = $e->getModuleName();
 
-        if (class_exists($moduleName)) {
+        $class = sprintf('%s\Module', $moduleName);
+        if (class_exists($class)) {
+            return new $class;
+        }
+
+        if (class_exists($moduleName)
+            && ! in_array($moduleName, $this->invalidClassNames, true)
+        ) {
             return new $moduleName;
         }
 
-        $class      = $moduleName . '\Module';
-
-        if (! class_exists($class)) {
-            return false;
-        }
-
-        return new $class;
+        return false;
     }
 }
