@@ -2,11 +2,26 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 2.8.1 - TBD
+## 2.8.1 - 2017-11-01
 
 ### Added
 
 - Nothing.
+
+### Changed
+
+- [#73](https://github.com/zendframework/zend-modulemanager/pull/73) modifies
+  the `ModuleResolverListener` slightly. In
+  [#5](https://github.com/zendframework/zend-modulemanager/pull/5),
+  released in 2.8.0, we added the ability to use classes named after the module
+  itself as a module class. However, in some specific cases, primarily when the
+  module is a top-level namespace, this can lead to conflicts with
+  globally-scoped classes. The patch in this release modifies the logic to first
+  check if a `Module` class exists under the module namespace, and will use
+  that; otherwise, it will then check if a class named after the namespace
+  exists. Additionally, the class now implements a blacklist of specific classes
+  known to be non-instantiable, including the `Generator` class shipped with the
+  PHP language itself.
 
 ### Deprecated
 
