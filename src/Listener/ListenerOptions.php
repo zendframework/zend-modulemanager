@@ -48,7 +48,7 @@ class ListenerOptions extends AbstractOptions
     protected $configCacheKey;
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $cacheDir;
 
@@ -58,7 +58,7 @@ class ListenerOptions extends AbstractOptions
     protected $checkDependencies = true;
 
     /**
-     * @var string
+     * @var bool
      */
     protected $moduleMapCacheEnabled = false;
 
@@ -281,7 +281,7 @@ class ListenerOptions extends AbstractOptions
     /**
      * Get the path where cache file(s) are stored
      *
-     * @return string
+     * @return string|null
      */
     public function getCacheDir()
     {
@@ -291,16 +291,13 @@ class ListenerOptions extends AbstractOptions
     /**
      * Set the path where cache files can be stored
      *
-     * @param  string $cacheDir the value to be set
+     * @param  string|null $cacheDir the value to be set
      * @return ListenerOptions
      */
     public function setCacheDir($cacheDir)
     {
-        if (null === $cacheDir) {
-            $this->cacheDir = $cacheDir;
-        } else {
-            $this->cacheDir = static::normalizePath($cacheDir);
-        }
+        $this->cacheDir = $cacheDir ? static::normalizePath($cacheDir) : null;
+
         return $this;
     }
 
@@ -365,7 +362,7 @@ class ListenerOptions extends AbstractOptions
     /**
      * Set whether to check dependencies during module loading or not
      *
-     * @return string
+     * @return bool
      */
     public function getCheckDependencies()
     {
