@@ -4,6 +4,7 @@
  * @copyright Copyright (c) 2005-2017 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   https://github.com/zendframework/zend-modulemanager/blob/master/LICENSE.md New BSD License
  */
+declare(strict_types=1);
 
 namespace Zend\ModuleManager\Listener;
 
@@ -59,7 +60,7 @@ abstract class AbstractListener
      */
     protected function writeArrayToFile($filePath, $array)
     {
-        $content = "<?php\nreturn " . var_export($array, 1) . ';';
+        $content = "<?php\nreturn " . var_export($array, true) . ';';
         file_put_contents($filePath, $content, LOCK_EX);
         return $this;
     }
