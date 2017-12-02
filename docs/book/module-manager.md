@@ -63,19 +63,11 @@ shipped listeners are in the `Zend\ModuleManager\Listener` namespace.
 
 ### DefaultListenerAggregate
 
-To address the most common use case of the module manager, ZF2 provides
+To address the most common use case of the module manager, zend-modulemanager provides
 this default aggregate listener. In most cases, this will be the only listener
 you will need to attach to use the module manager, as it will take care of
 properly attaching the requisite listeners (those listed below) for the module
 system to function properly.
-
-### AutoloaderListener
-
-This listener checks each module to see if it has implemented
-`Zend\ModuleManager\Feature\AutoloaderProviderInterface` or defined the
-`getAutoloaderConfig()` method. If so, it calls the `getAutoloaderConfig()`
-method on the module class and passes the returned array to
-`Zend\Loader\AutoloaderFactory`.
 
 ### ModuleDependencyCheckerListener
 
