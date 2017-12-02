@@ -277,7 +277,7 @@ class ConfigListener extends AbstractListener implements
         if (! is_array($paths)) {
             throw new Exception\InvalidArgumentException(
                 sprintf(
-                    'Argument passed to %::%s() must be an array, '
+                    'Argument passed to %s::%s() must be an array, '
                     . 'implement the Traversable interface, or be an '
                     . 'instance of Zend\Config\Config. %s given.',
                     __CLASS__,
