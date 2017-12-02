@@ -1,7 +1,7 @@
 # zend-modulemanager
 
 [![Build Status](https://secure.travis-ci.org/zendframework/zend-modulemanager.svg?branch=master)](https://secure.travis-ci.org/zendframework/zend-modulemanager)
-[![Coverage Status](https://coveralls.io/repos/zendframework/zend-modulemanager/badge.svg?branch=master)](https://coveralls.io/r/zendframework/zend-modulemanager?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/zendframework/zend-modulemanager/badge.svg?branch=master)](https://coveralls.io/github/zendframework/zend-modulemanager?branch=master)
 
 Zend Framework 2.0 introduces a new and powerful approach to modules. This new
 module system is designed with flexibility, simplicity, and re-usability in mind.

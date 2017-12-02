@@ -154,8 +154,8 @@ events.
 
 Additionally, this listener manages a variety of plugin managers, including
 [view helpers](https://github.com/zendframework/zend-view),
-[controllers](https://zendframework.github.io/zend-mvc/controllers/), and
-[controller plugins](https://zendframework.github.io/zend-mvc/plugins/). In each case,
+[controllers](https://docs.zendframework.com/zend-mvc/controllers/), and
+[controller plugins](https://docs.zendframework.com/zend-mvc/plugins/). In each case,
 you may either specify configuration to define plugins, or provide configuration via a `Module`
 class. Configuration follows the same format as for the `ServiceManager`. The following table
 outlines the plugin managers that may be configured this way (including the `ServiceManager`), the
@@ -180,7 +180,7 @@ Plugin Manager | Config Key | Interface | Module Method
 `Zend\Log\WriterPluginManager` | `log_writers` | `LogWriterProviderInterface` | `getLogWriterConfig`
 
 Configuration follows the examples in the ServiceManager
-[configuration section](https://zendframework.github.io/zend-servicemanager/configuring-the-service-manager/).
+[configuration section](https://docs.zendframework.com/zend-servicemanager/configuring-the-service-manager/).
 As a brief recap, the following configuration keys and values are allowed:
 
 Config Key | Allowed values

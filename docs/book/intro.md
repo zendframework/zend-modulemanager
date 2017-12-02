@@ -11,11 +11,11 @@ CSS, and JavaScript. The possibilities are endless.
 > The module system in ZF2 has been designed to be a generic and powerful foundation from which
 > developers and other projects can build their own module or plugin systems.
 > For a better understanding of the event-driven concepts behind the ZF2 module system, it may be
-> helpful to read the [EventManager documentation](https://zendframework.github.io/zend-eventmanager/).
+> helpful to read the [EventManager documentation](https://docs.zendframework.com/zend-eventmanager/).
 
 The module system is made up of the following:
 
-- [The Module Autoloader](https://zendframework.github.io/zend-loader/module-autoloader/) -
+- [The Module Autoloader](https://docs.zendframework.com/zend-loader/module-autoloader/) -
   `Zend\Loader\ModuleAutoloader` is a specialized autoloader that is responsible
   for the locating and loading of modules' `Module` classes from a variety of
   sources.

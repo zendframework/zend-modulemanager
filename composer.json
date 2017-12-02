@@ -1,16 +1,19 @@
 {
     "name": "zendframework/zend-modulemanager",
-    "description": " ",
+    "description": "Modular application system for zend-mvc applications",
     "license": "BSD-3-Clause",
     "keywords": [
-        "zf2",
+        "zendframework",
+        "zf",
         "modulemanager"
     ],
-    "homepage": "https://github.com/zendframework/zend-modulemanager",
-    "autoload": {
-        "psr-4": {
-            "Zend\\ModuleManager\\": "src/"
-        }
+    "support": {
+        "docs": "https://docs.zendframework.com/zend-modulemanager/",
+        "issues": "https://github.com/zendframework/zend-modulemanager/issues",
+        "source": "https://github.com/zendframework/zend-modulemanager",
+        "rss": "https://github.com/zendframework/zend-modulemanager/releases.atom",
+        "slack": "https://zendframework-slack.herokuapp.com",
+        "forum": "https://discourse.zendframework.com/c/questions/components"
     },
     "require": {
         "php": "^5.6 || ^7.0",
@@ -33,10 +36,9 @@
         "zendframework/zend-mvc": "Zend\\Mvc component",
         "zendframework/zend-servicemanager": "Zend\\ServiceManager component"
     },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "2.8-dev",
-            "dev-develop": "2.9-dev"
+    "autoload": {
+        "psr-4": {
+            "Zend\\ModuleManager\\": "src/"
         }
     },
     "autoload-dev": {
@@ -50,6 +52,15 @@
             "ZendTest\\ModuleManager\\": "test/"
         }
     },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.7-dev",
+            "dev-develop": "2.8-dev"
+        }
+    },
     "scripts": {
         "check": [
             "@cs-check",
@@ -60,5 +71,6 @@
         "test": "phpunit --colors=always",
         "test-coverage": "phpunit --colors=always --coverage-clover clover.xml",
         "upload-coverage": "coveralls -v"
-    }
+    },
+    "homepage": "https://github.com/zendframework/zend-modulemanager"
 }
