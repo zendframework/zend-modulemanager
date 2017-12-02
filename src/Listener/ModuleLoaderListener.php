@@ -20,7 +20,7 @@ use Zend\ModuleManager\ModuleEvent;
 class ModuleLoaderListener extends AbstractListener implements ListenerAggregateInterface
 {
     /**
-     * @var array
+     * @var ModuleAutoloader
      */
     protected $moduleLoader;
 
