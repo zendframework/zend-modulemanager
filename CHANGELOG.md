@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 2.9.0 - TBD
+## 3.0.0 - TBD
 
 ### Added
 
@@ -18,7 +18,8 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Removed
 
-- Nothing.
+- [#77](https://github.com/zendframework/zend-modulemanager/pull/77) removes
+  support for PHP 5.6 and 7.0.
 
 ### Fixed
 

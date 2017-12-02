@@ -1,11 +1,10 @@
 <?php
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @link      http://github.com/zendframework/zend-modulemanager for the canonical source repository
+ * @copyright Copyright (c) 2005-2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   https://github.com/zendframework/zend-modulemanager/blob/master/LICENSE.md New BSD License
  */
+declare(strict_types=1);
 
 namespace ZendTest\ModuleManager;
 
@@ -64,7 +63,7 @@ class ModuleManagerTest extends TestCase
         $loadedModules = $moduleManager->getLoadedModules();
         $this->assertInstanceOf('SomeModule\Module', $loadedModules['SomeModule']);
         $config = $configListener->getMergedConfig();
-        $this->assertSame($config->some, 'thing', var_export($config, 1));
+        $this->assertSame($config->some, 'thing', var_export($config, true));
     }
 
     public function testCanLoadMultipleModules()

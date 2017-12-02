@@ -16,7 +16,7 @@
         "forum": "https://discourse.zendframework.com/c/questions/components"
     },
     "require": {
-        "php": "^5.6 || ^7.0",
+        "php": "^7.1",
         "zendframework/zend-config": "^3.1 || ^2.6",
         "zendframework/zend-eventmanager": "^3.2 || ^2.6.3",
         "zendframework/zend-stdlib": "^3.1 || ^2.7"
@@ -27,7 +27,7 @@
         "zendframework/zend-loader": "^2.5",
         "zendframework/zend-mvc": "^3.0 || ^2.7",
         "zendframework/zend-servicemanager": "^3.0.3 || ^2.7.5",
-        "phpunit/phpunit": "^6.0.8 || ^5.7.15",
+        "phpunit/phpunit": "^6.5.2",
         "zendframework/zend-coding-standard": "~1.0.0"
     },
     "suggest": {
@@ -57,8 +57,8 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.7-dev",
-            "dev-develop": "2.8-dev"
+            "dev-master": "2.8-dev",
+            "dev-develop": "3.0-dev"
         }
     },
     "scripts": {

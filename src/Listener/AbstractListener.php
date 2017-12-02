@@ -1,11 +1,10 @@
 <?php
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @link      http://github.com/zendframework/zend-modulemanager for the canonical source repository
+ * @copyright Copyright (c) 2005-2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   https://github.com/zendframework/zend-modulemanager/blob/master/LICENSE.md New BSD License
  */
+declare(strict_types=1);
 
 namespace Zend\ModuleManager\Listener;
 
@@ -61,7 +60,7 @@ abstract class AbstractListener
      */
     protected function writeArrayToFile($filePath, $array)
     {
-        $content = "<?php\nreturn " . var_export($array, 1) . ';';
+        $content = "<?php\nreturn " . var_export($array, true) . ';';
         file_put_contents($filePath, $content, LOCK_EX);
         return $this;
     }
