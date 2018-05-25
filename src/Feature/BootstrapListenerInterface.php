@@ -19,7 +19,7 @@ interface BootstrapListenerInterface
      * Listen to the bootstrap event
      *
      * @param EventInterface $e
-     * @return array
+     * @return void
      */
     public function onBootstrap(EventInterface $e);
 }
