@@ -7,11 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="zend-modulemanager">  
-    <link rel="shortcut icon" href="../img/favicon.ico">
+    <link rel="shortcut icon" href="//img/favicon.ico">
 
-    <title>The Module Class - zend-modulemanager - Zend Framework Docs</title>
+    <title>zend-modulemanager - Zend Framework Docs</title>
 
-    <link rel="stylesheet" href="../css/styles-f3b53f5ceb.css">
+    <link rel="stylesheet" href="//css/styles-f3b53f5ceb.css">
 </head>
 <body id="page-top">
 
@@ -31,7 +31,7 @@
             
             <span class="navbar-brand">
                 <a class="logo-link" href="https://framework.zend.com/" data-tooltip data-placement="bottom" title="Go to the ZF homepage">
-                    <img src="../img/zend-framework-logo.svg" height="28" alt="Zend Framework">
+                    <img src="//img/zend-framework-logo.svg" height="28" alt="Zend Framework">
                 </a>
             </span>
         </div>
@@ -66,7 +66,7 @@
                     
     <div class="subnavigation hidden-print">
         <h4 class="subnavigation__title">
-            <a href="..">zend-modulemanager</a>
+            <a href="/.">zend-modulemanager</a>
         </h4>
 
         <h5 class="subnavigation__subtitle">Table of Contents</h5>
@@ -75,7 +75,7 @@
             
                 
                     <li class="subnavigation__list-item ">
-                        <a href="../intro/" class="subnavigation__link">Intro</a>
+                        <a href="/intro/" class="subnavigation__link">Intro</a>
                     </li>
                 
             
@@ -86,25 +86,25 @@
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../module-manager/" class="subnavigation__link">The Module Manager</a>
-    </li>
-
-                            
-                                
-    <li class="subnavigation__list-item subnavigation__list-item--active">
-        <a href="./" class="subnavigation__link">The Module Class</a>
+        <a href="/module-manager/" class="subnavigation__link">The Module Manager</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../module-autoloader/" class="subnavigation__link">The Module Autoloader</a>
+        <a href="/module-class/" class="subnavigation__link">The Module Class</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../best-practices/" class="subnavigation__link">Best Practices when Creating Modules</a>
+        <a href="/module-autoloader/" class="subnavigation__link">The Module Autoloader</a>
+    </li>
+
+                            
+                                
+    <li class="subnavigation__list-item ">
+        <a href="/best-practices/" class="subnavigation__link">Best Practices when Creating Modules</a>
     </li>
 
                             
@@ -181,234 +181,18 @@
             <div class="col-md-9 col-xs-12 content" role="main">
             <!-- content:begin -->
                 
-                    <ol class="breadcrumb" role="navigation" aria-label="breadcrumbs navigation">
-    <li><a href="https://framework.zend.com/">Home</a></li>
 
-    
-        <li><a href="https://docs.zendframework.com/">Documentation</a></li>
-
-        
-            <li><a href="..">zend-modulemanager</a></li>
-
-            
-                
-                    <li>Reference</li>
-                
-            
-
-            <li class="active">The Module Class</li>
-        
-    
-</ol>
-
-
-    
-        <h2 class="chapter__headline">Reference</h2>
-    
-
-    
-    
-
-    
-    
-        <div class="toc">
-            <h6 class="toc__headline">In This Article</h6>
-            <ul class="toc__list">
-                
-                    <li class="toc__entry">
-                        <a href="#a-minimal-module" class="toc__link">A Minimal Module</a>
-                    </li>
-                
-                    <li class="toc__entry">
-                        <a href="#a-typical-module-class" class="toc__link">A Typical Module Class</a>
-                    </li>
-                
-                    <li class="toc__entry">
-                        <a href="#the-loadmodulespost-event" class="toc__link">The loadModules.post Event</a>
-                    </li>
-                
-                    <li class="toc__entry">
-                        <a href="#the-mvc-bootstrap-event" class="toc__link">The MVC "bootstrap" Event</a>
-                    </li>
-                
-            </ul>
-        </div>
-    
-
-
-    <h1 id="the-module-class">The Module Class</h1>
-<p>By default, the module system expects each module name to be capable of
-resolving to an object instance. The default module resolver,
-<code>Zend\ModuleManager\Listener\ModuleResolverListener</code>, instantiates an instance
-of <code>{moduleName}\Module</code> for each enabled module.</p>
-<h2 id="a-minimal-module">A Minimal Module</h2>
-<p>As an example, provided the module name "MyModule",
-<code>Zend\ModuleManager\Listener\ModuleResolverListener</code> will expect the class
-<code>MyModule\Module</code> to be available. It relies on a registered autoloader
-(typically <code>Zend\Loader\ModuleAutoloader</code>) to find and include the
-<code>MyModule\Module</code> class if it isn't already available.</p>
+<h1 class="content__title">404</h1>
 <blockquote>
-<h3 id="module-classes">Module classes</h3>
-<ul>
-<li>Since 2.8.0</li>
-</ul>
-<p>Module classes can now be named anything, so long as they are autoloadable, and
-you use the fully qualified class name when registering it with the
-<code>ModuleManager</code>.</p>
-</blockquote>
-<p>The directory structure of a module named "MyModule" might start out looking
-something like this:</p>
-<pre class="codehilite"><code class="language-text">MyModule/
-    Module.php</code></pre>
-
-<p>Within <code>Module.php</code>, you define your <code>MyModule\Module</code> class:</p>
-<pre class="codehilite"><code class="language-php">namespace MyModule;
-
-class Module
-{
-}</code></pre>
-
-<p>Though it will not serve any purpose at this point, this "MyModule" module now
-has everything required to be considered a valid module and to be loaded by the
-module system!</p>
-<p>This <code>Module</code> class serves as the single entry point for <code>ModuleManager</code>
-listeners to interact with a module. From within this class, modules can
-override or provide additional application configuration, perform initialization
-tasks such as registering autoloader(s), services and event listeners, declaring
-dependencies, and much more.</p>
-<h2 id="a-typical-module-class">A Typical Module Class</h2>
-<p>The following example shows a more typical usage of the <code>Module</code> class:</p>
-<pre class="codehilite"><code class="language-php">namespace MyModule;
-
-class Module
-{
-    public function getAutoloaderConfig()
-    {
-        return [
-            'Zend\Loader\ClassMapAutoloader' =&gt; [
-                __DIR__ . '/autoload_classmap.php',
-            ],
-            'Zend\Loader\StandardAutoloader' =&gt; [
-                'namespaces' =&gt; [
-                    __NAMESPACE__ =&gt; __DIR__ . '/src/' . __NAMESPACE__,
-                ],
-            ],
-        ];
-    }
-
-    public function getConfig()
-    {
-        return include __DIR__ . '/config/module.config.php';
-    }
-}</code></pre>
-
-<p>For a list of the provided module manager listeners and the interfaces and methods that <code>Module</code>
-classes may implement in order to interact with the module manager and application, see the
-<a href="../module-manager/#module-manager-listeners">module manager listeners</a> and the
-<a href="../module-manager/#module-manager-events">module mananger events</a> documentation.</p>
-<h2 id="the-loadmodulespost-event">The loadModules.post Event</h2>
-<p>It is not safe for a module to assume that any other modules have already been
-loaded at the time <code>init()</code> method is called. If your module needs to perform
-any actions after all other modules have been loaded, use the module manager's
-<code>loadModules.post</code>.</p>
-<blockquote>
-<h3 id="event-information">Event information</h3>
-<p>For more information on methods like <code>init()</code> and <code>getConfig()</code>, refer to the
-<a href="../module-manager/#module-manager-listeners">module manager listeners documentation</a>.</p>
-</blockquote>
-<h3 id="sample-usage-of-loadmodulespost-event">Sample Usage of "loadModules.post" Event</h3>
-<pre class="codehilite"><code class="language-php">use Zend\EventManager\EventInterface as Event;
-use Zend\ModuleManager\ModuleManager;
-
-class Module
-{
-    public function init(ModuleManager $moduleManager)
-    {
-        // Remember to keep the init() method as lightweight as possible
-        $events = $moduleManager-&gt;getEventManager();
-        $events-&gt;attach('loadModules.post', [$this, 'modulesLoaded']);
-    }
-
-    public function modulesLoaded(Event $e)
-    {
-        // This method is called once all modules are loaded.
-        $moduleManager = $e-&gt;getTarget();
-        $loadedModules = $moduleManager-&gt;getLoadedModules();
-
-        // To get the configuration from another module named 'FooModule'
-        $config = $moduleManager-&gt;getModule('FooModule')-&gt;getConfig();
-    }
-}</code></pre>
-
-<blockquote>
-<h3 id="use-init-sparingly">Use init() sparingly</h3>
-<p>The <code>init()</code> method is called for <strong>every</strong> module implementing this feature,
-on <strong>every</strong> page request, and should <strong>only</strong> be used for performing
-<strong>lightweight</strong> tasks such as registering event listeners.</p>
-</blockquote>
-<h2 id="the-mvc-bootstrap-event">The MVC "bootstrap" Event</h2>
-<p>If you are writing an MVC-oriented module, you may need access to additional
-parts of the application in your <code>Module</code> class such as the instance of
-<code>Zend\Mvc\Application</code> or its registered <code>ServiceManager</code> instance. For this,
-you may utilize the MVC <code>bootstrap</code> event. The bootstrap event is triggered
-after the <code>loadModule.post</code> event, once <code>$application-&gt;bootstrap()</code> is called.</p>
-<h3 id="sample-usage-of-the-mvc-bootstrap-event">Sample Usage of the MVC "bootstrap" Event</h3>
-<pre class="codehilite"><code class="language-php">use Zend\EventManager\EventInterface as Event;
-
-class Module
-{
-    public function onBootstrap(Event $e)
-    {
-        // This method is called once the MVC bootstrapping is complete
-        $application = $e-&gt;getApplication();
-        $services    = $application-&gt;getServiceManager();
-    }
-}</code></pre>
-
-<blockquote>
-<h3 id="use-onbootstrap-sparingly">Use onBootstrap() sparingly</h3>
-<p>The <code>onBootstrap()</code> method is called for <strong>every</strong> module implementing this
-feature, on <strong>every</strong> page request, and should <strong>only</strong> be used for performing
-<strong>lightweight</strong> tasks such as registering event listeners.</p>
+    <h3>Something went wrong!</h3>
+    <p>
+        We're sorry, but the page you are looking for does not exist.
+    </p>
 </blockquote>
 
+<a href="/" class="btn btn-default" role="button">Go to homepage</a>
 
 
-    <nav>
-    <ul class="page-nav hidden-print">
-
-        
-        <li class="page-nav__item">
-            
-                <a rel="prev" class="page-nav__link page-nav__link--prev" href="../module-manager/">
-                    <i class="fa fa-chevron-left"></i> Previous
-                </a>
-            
-        </li>
-
-        
-        <li class="page-nav__item">
-            
-                <a rel="next" class="page-nav__link page-nav__link--next" href="../module-autoloader/">
-                    Next <i class="fa fa-chevron-right"></i>
-                </a>
-            
-        </li>
-    </ul>
-</nav>
-
-
-
-    <div class="help-wanted">
-        <p>
-            Found a mistake or want to contribute to the documentation?
-            <a href="https://github.com/zendframework/zend-modulemanager/edit/master/docs/book/module-class.md" target="_blank" class="help-wanted__link">
-                Edit this page on GitHub!
-            </a>
-        </p>
-    </div>
-
-                
             <!-- content:end -->
             </div>
             <div class="col-md-3 col-xs-12 sidebar">
@@ -424,7 +208,7 @@ feature, on <strong>every</strong> page request, and should <strong>only</strong
                     
     <div class="subnavigation hidden-print">
         <h4 class="subnavigation__title">
-            <a href="..">zend-modulemanager</a>
+            <a href="/.">zend-modulemanager</a>
         </h4>
 
         <h5 class="subnavigation__subtitle">Table of Contents</h5>
@@ -433,7 +217,7 @@ feature, on <strong>every</strong> page request, and should <strong>only</strong
             
                 
                     <li class="subnavigation__list-item ">
-                        <a href="../intro/" class="subnavigation__link">Intro</a>
+                        <a href="/intro/" class="subnavigation__link">Intro</a>
                     </li>
                 
             
@@ -444,25 +228,25 @@ feature, on <strong>every</strong> page request, and should <strong>only</strong
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../module-manager/" class="subnavigation__link">The Module Manager</a>
-    </li>
-
-                            
-                                
-    <li class="subnavigation__list-item subnavigation__list-item--active">
-        <a href="./" class="subnavigation__link">The Module Class</a>
+        <a href="/module-manager/" class="subnavigation__link">The Module Manager</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../module-autoloader/" class="subnavigation__link">The Module Autoloader</a>
+        <a href="/module-class/" class="subnavigation__link">The Module Class</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../best-practices/" class="subnavigation__link">Best Practices when Creating Modules</a>
+        <a href="/module-autoloader/" class="subnavigation__link">The Module Autoloader</a>
+    </li>
+
+                            
+                                
+    <li class="subnavigation__list-item ">
+        <a href="/best-practices/" class="subnavigation__link">Best Practices when Creating Modules</a>
     </li>
 
                             
@@ -541,11 +325,11 @@ feature, on <strong>every</strong> page request, and should <strong>only</strong
 </footer>
 
     <script>
-        var base_url = '..',
+        var base_url = '/',
             siteName = 'zend-modulemanager';
     </script>
-    <script src="../js/scripts-8d7ae56abf.js"></script>
-        <script src="../search/main.js"></script>
+    <script src="//js/scripts-8d7ae56abf.js"></script>
+        <script src="/search/main.js"></script>
 
     
     <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
