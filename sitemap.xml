@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-     <loc>None</loc>
-     <lastmod>2019-04-23</lastmod>
+     <loc>https://docs.zendframework.com/zend-modulemanager/</loc>
+     <lastmod>2019-04-29</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>None</loc>
-     <lastmod>2019-04-23</lastmod>
+     <loc>https://docs.zendframework.com/zend-modulemanager/intro/</loc>
+     <lastmod>2019-04-29</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>None</loc>
-     <lastmod>2019-04-23</lastmod>
+     <loc>https://docs.zendframework.com/zend-modulemanager/module-manager/</loc>
+     <lastmod>2019-04-29</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>None</loc>
-     <lastmod>2019-04-23</lastmod>
+     <loc>https://docs.zendframework.com/zend-modulemanager/module-class/</loc>
+     <lastmod>2019-04-29</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>None</loc>
-     <lastmod>2019-04-23</lastmod>
+     <loc>https://docs.zendframework.com/zend-modulemanager/module-autoloader/</loc>
+     <lastmod>2019-04-29</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>None</loc>
-     <lastmod>2019-04-23</lastmod>
+     <loc>https://docs.zendframework.com/zend-modulemanager/best-practices/</loc>
+     <lastmod>2019-04-29</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>
