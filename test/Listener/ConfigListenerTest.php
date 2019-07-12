@@ -370,4 +370,92 @@ class ConfigListenerTest extends AbstractListenerTestCase
         $configListener->detach($events);
         $this->assertEquals(2, count($this->getEventsFromEventManager($events)));
     }
+
+    public function datasetCachedConfigs()
+    {
+        return [
+            'valid_file' => [
+                // Test for check if cache is properly used if is valid
+                ['data' => 'any'], // expects to fall back to loading all modules
+                '<?php return [\'data\' => \'any\'];',
+            ],
+            'inexistent_file' => [
+                ['some' => 'thing', 'listener' => 'test'], // expects to fall back to loading all modules
+                null, // file won't be created
+            ],
+            'file_with_data_before_php_tag' => [
+                ['some' => 'thing', 'listener' => 'test'], // expects to fall back to loading all modules
+                'something<?php return [\'data\' => \'any\'];',
+            ],
+            'malformed_open_tag' => [
+                ['some' => 'thing', 'listener' => 'test'], // expects to fall back to loading all modules
+                '<\?php return [\'data\' => \'any\'];',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider datasetCachedConfigs
+     */
+    public function testDoesNotReturnConfigToOutputIfFileIsMalformed(
+        array $expectedConfig,
+        string $cacheContents = null
+    ) {
+        $tempDir = sys_get_temp_dir();
+        $cacheConfigFile = $tempDir . '/module-config-cache.php';
+        $staticConfigFile = $tempDir . '/module-config-static.php';
+
+        if (file_exists($cacheConfigFile)) {
+            unlink($cacheConfigFile);
+        }
+
+        if ($cacheContents !== null) {
+            $fileCreated = file_put_contents($cacheConfigFile, $cacheContents);
+            if ($fileCreated === false) {
+                $this->markTestSkipped('Running system does not allow writing to temp directory');
+                return;
+            }
+        }
+
+        // Prepare static config to check if config falled back to static autoloading when cache is malformed
+        $fileCreated = file_put_contents($staticConfigFile, '<?php return [\'static\' => true];');
+        if ($fileCreated === false) {
+            $this->markTestSkipped('Running system does not allow writing to temp directory');
+            return;
+        }
+
+        // Set cached config to be stored inside system temporary directory
+        $options = new ListenerOptions();
+        $options->setConfigCacheEnabled(true);
+        $options->setCacheDir($tempDir);
+
+        // Catch all output
+        ob_start();
+
+        try {
+            // Try to get config and check if nothing was sent to output
+            $configListener = new ConfigListener($options);
+            // Set modules and autoload them
+            $configListener->attach($this->moduleManager->getEventManager());
+            $this->moduleManager->setModules(['SomeModule', 'ListenerTestModule']);
+            $this->moduleManager->loadModules();
+            // Check expected config
+            $this->assertSame(
+                $expectedConfig,
+                $configListener->getMergedConfig(false),
+                'Read config does not match expected one'
+            );
+        } finally {
+            // Cleanup
+            if (file_exists($cacheConfigFile)) {
+                unlink($cacheConfigFile);
+            }
+            if (file_exists($staticConfigFile)) {
+                unlink($staticConfigFile);
+            }
+            $output = ob_get_clean();
+        }
+
+        $this->assertEmpty($output, 'Data was sent to output: ' . $output);
+    }
 }
