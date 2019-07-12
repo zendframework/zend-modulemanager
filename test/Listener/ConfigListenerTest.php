@@ -373,7 +373,7 @@ class ConfigListenerTest extends AbstractListenerTestCase
 
     public function datasetCachedConfigs()
     {
-        return [
+        $datasets = [
             'valid_file' => [
                 // Test for check if cache is properly used if is valid
                 ['data' => 'any'], // expects to fall back to loading all modules
@@ -391,11 +391,14 @@ class ConfigListenerTest extends AbstractListenerTestCase
                 ['some' => 'thing', 'listener' => 'test'], // expects to fall back to loading all modules
                 '<\?php return [\'data\' => \'any\'];',
             ],
-            'invalid_file_syntax' => [
+        ];
+        if (version_compare(PHP_VERSION, '7.0', '>=')) {
+            $datasets['invalid_file_syntax'] = [
                 ['some' => 'thing', 'listener' => 'test'], // expects to fall back to loading all modules
                 '<?php return (???\'data\' => \'any\');',
-            ],
-        ];
+            ];
+        }
+        return $datasets;
     }
 
     /**
