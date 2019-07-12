@@ -402,8 +402,8 @@ class ConfigListenerTest extends AbstractListenerTestCase
      * @dataProvider datasetCachedConfigs
      */
     public function testDoesNotReturnConfigToOutputIfFileIsMalformed(
-        array $expectedConfig,
-        string $cacheContents = null
+        $expectedConfig,
+        $cacheContents
     ) {
         $tempDir = sys_get_temp_dir();
         $cacheConfigFile = $tempDir . '/module-config-cache.php';
