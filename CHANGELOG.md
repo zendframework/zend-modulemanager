@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 2.8.3
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- [#87](https://github.com/zendframework/zend-modulemanager/pull/87) Fixes
+  potential config leak during high loads
+
 ## 2.8.2 - 2017-12-02
 
 ### Added
