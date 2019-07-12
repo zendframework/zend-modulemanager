@@ -10,6 +10,7 @@
 namespace Zend\ModuleManager\Listener;
 
 use Traversable;
+use Throwable;
 use Zend\Config\Config;
 use Zend\Config\Factory as ConfigFactory;
 use Zend\EventManager\EventManagerInterface;
@@ -397,7 +398,11 @@ class ConfigListener extends AbstractListener implements
     {
         // Catch output to prevent malformed config to be returned to browser
         ob_start(null, 0, PHP_OUTPUT_HANDLER_CLEANABLE | PHP_OUTPUT_HANDLER_REMOVABLE);
-        $config = include $this->getOptions()->getConfigCacheFile();
+        try {
+            $config = include $this->getOptions()->getConfigCacheFile();
+        } catch (Throwable $e) {
+            $config = null;
+        }
         $output = ob_get_clean();
 
         if (! empty($output) || ! is_array($config)) {

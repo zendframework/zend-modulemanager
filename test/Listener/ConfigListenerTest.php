@@ -391,6 +391,10 @@ class ConfigListenerTest extends AbstractListenerTestCase
                 ['some' => 'thing', 'listener' => 'test'], // expects to fall back to loading all modules
                 '<\?php return [\'data\' => \'any\'];',
             ],
+            'invalid_file_syntax' => [
+                ['some' => 'thing', 'listener' => 'test'], // expects to fall back to loading all modules
+                '<?php return (???\'data\' => \'any\');',
+            ],
         ];
     }
 
