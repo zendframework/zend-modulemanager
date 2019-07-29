@@ -402,6 +402,8 @@ class ConfigListenerTest extends AbstractListenerTestCase
     }
 
     /**
+     * @param array $expectedConfig Expected config array after load
+     * @param string|null $cacheContents Contents of cache config file, null means "no file"
      * @dataProvider datasetCachedConfigs
      */
     public function testDoesNotReturnConfigToOutputIfFileIsMalformed(
@@ -410,7 +412,6 @@ class ConfigListenerTest extends AbstractListenerTestCase
     ) {
         $tempDir = sys_get_temp_dir();
         $cacheConfigFile = $tempDir . '/module-config-cache.php';
-        $staticConfigFile = $tempDir . '/module-config-static.php';
 
         if (file_exists($cacheConfigFile)) {
             unlink($cacheConfigFile);
@@ -422,13 +423,6 @@ class ConfigListenerTest extends AbstractListenerTestCase
                 $this->markTestSkipped('Running system does not allow writing to temp directory');
                 return;
             }
-        }
-
-        // Prepare static config to check if config falled back to static autoloading when cache is malformed
-        $fileCreated = file_put_contents($staticConfigFile, '<?php return [\'static\' => true];');
-        if ($fileCreated === false) {
-            $this->markTestSkipped('Running system does not allow writing to temp directory');
-            return;
         }
 
         // Set cached config to be stored inside system temporary directory
@@ -456,9 +450,6 @@ class ConfigListenerTest extends AbstractListenerTestCase
             // Cleanup
             if (file_exists($cacheConfigFile)) {
                 unlink($cacheConfigFile);
-            }
-            if (file_exists($staticConfigFile)) {
-                unlink($staticConfigFile);
             }
             $output = ob_get_clean();
         }
