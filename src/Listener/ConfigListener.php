@@ -9,8 +9,8 @@
 
 namespace Zend\ModuleManager\Listener;
 
-use Traversable;
 use Throwable;
+use Traversable;
 use Zend\Config\Config;
 use Zend\Config\Factory as ConfigFactory;
 use Zend\EventManager\EventManagerInterface;
