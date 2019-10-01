@@ -264,14 +264,14 @@ each.  Instantiation of module classes, initialization tasks, and configuration
 are all performed by attached event listeners.</p>
 <h2 id="module-manager-events">Module Manager Events</h2>
 <p>The Module Manager events are defined in <code>Zend\ModuleManager\ModuleEvent</code>.</p>
-<h3 id="loadmodules-moduleeventevent_load_modules">loadModules (<code>ModuleEvent::EVENT_LOAD_MODULES</code>)</h3>
+<h3>loadModules (<code>ModuleEvent::EVENT_LOAD_MODULES</code>)</h3>
 <p>This event is primarily used internally to help encapsulate the work of loading
 modules in event listeners, and allows the <code>loadModules.post</code> event to be more
 user-friendly. Internal listeners will attach to this event with a negative
 priority instead of <code>loadModules.post</code> so that users can safely assume things like
 config merging have been done once <code>loadModules.post</code> is triggered, without having
 to worry about priorities.</p>
-<h3 id="loadmoduleresolve-moduleeventevent_load_module_resolve">loadModule.resolve (<code>ModuleEvent::EVENT_LOAD_MODULE_RESOLVE</code>)</h3>
+<h3>loadModule.resolve (<code>ModuleEvent::EVENT_LOAD_MODULE_RESOLVE</code>)</h3>
 <p>Triggered for each module that is to be loaded. The listener(s) to this event
 are responsible for taking a module name and resolving it to an instance of some
 class. The default module resolver looks for the class <code>{modulename}\Module</code>,
@@ -283,17 +283,17 @@ be attached to this event, and the module manager will trigger them in order of
 their priority until one returns an object. This allows you to attach additional
 listeners which have alternative methods of resolving modules from a given
 module name.</p>
-<h3 id="loadmodule-moduleeventevent_load_module">loadModule (<code>ModuleEvent::EVENT_LOAD_MODULE</code>)</h3>
+<h3>loadModule (<code>ModuleEvent::EVENT_LOAD_MODULE</code>)</h3>
 <p>Once a module resolver listener has resolved the module name to an object, the
 module manager then triggers this event, passing the newly created object to all
 listeners.</p>
-<h3 id="mergeconfig-moduleeventevent_merge_config">mergeConfig (<code>ModuleEvent::EVENT_MERGE_CONFIG</code>)</h3>
+<h3>mergeConfig (<code>ModuleEvent::EVENT_MERGE_CONFIG</code>)</h3>
 <p>After all modules have been loaded, the <code>mergeConfig</code> event is triggered. By default,
 <code>Zend\ModuleManager\Listener\ConfigLister</code> listens on this event at priority 1000, and merges all
 configuration. You may attach additional listeners to this event in order to manipulate the merged
 configuration. See <a href="http://framework.zend.com/manual/current/en/tutorials/config.advanced.html#manipulating-merged-configuration">the tutorial on manipulating merged configuration</a>
 for more information.</p>
-<h3 id="loadmodulespost-moduleeventevent_load_modules_post">loadModules.post (<code>ModuleEvent::EVENT_LOAD_MODULES_POST</code>)</h3>
+<h3>loadModules.post (<code>ModuleEvent::EVENT_LOAD_MODULES_POST</code>)</h3>
 <p>This event is triggered by the module manager to allow any listeners to perform
 work after every module has finished loading. For example, the default
 configuration listener, <code>Zend\ModuleManager\Listener\ConfigListener</code> (covered
@@ -303,19 +303,19 @@ modules.</p>
 <h2 id="module-manager-listeners">Module Manager Listeners</h2>
 <p>By default, Zend Framework provides several useful module manager listeners. All
 shipped listeners are in the <code>Zend\ModuleManager\Listener</code> namespace.</p>
-<h3 id="defaultlisteneraggregate">DefaultListenerAggregate</h3>
+<h3>DefaultListenerAggregate</h3>
 <p>To address the most common use case of the module manager, ZF2 provides
 this default aggregate listener. In most cases, this will be the only listener
 you will need to attach to use the module manager, as it will take care of
 properly attaching the requisite listeners (those listed below) for the module
 system to function properly.</p>
-<h3 id="autoloaderlistener">AutoloaderListener</h3>
+<h3>AutoloaderListener</h3>
 <p>This listener checks each module to see if it has implemented
 <code>Zend\ModuleManager\Feature\AutoloaderProviderInterface</code> or defined the
 <code>getAutoloaderConfig()</code> method. If so, it calls the <code>getAutoloaderConfig()</code>
 method on the module class and passes the returned array to
 <code>Zend\Loader\AutoloaderFactory</code>.</p>
-<h3 id="moduledependencycheckerlistener">ModuleDependencyCheckerListener</h3>
+<h3>ModuleDependencyCheckerListener</h3>
 <p>This listener checks each module to verify if all the modules it depends on were
 loaded. When a module class implements
 <code>Zend\ModuleManager\Feature\DependencyIndicatorInterface</code> or has defined the
@@ -323,12 +323,12 @@ loaded. When a module class implements
 <code>getModuleDependencies()</code>. Each of the values returned by the method is checked
 against the loaded modules list: if one of the values is not in that list, a
 <code>Zend\ModuleManager\Exception\MissingDependencyModuleException</code> is thrown.</p>
-<h3 id="configlistener">ConfigListener</h3>
+<h3>ConfigListener</h3>
 <p>If a module class has a <code>getConfig()</code> method, or implements
 <code>Zend\ModuleManager\Feature\ConfigProviderInterface</code>, this listener will call it
 and merge the returned array (or <code>Traversable</code> object) into the main application
 configuration.</p>
-<h3 id="inittrigger">InitTrigger</h3>
+<h3>InitTrigger</h3>
 <p>If a module class either implements <code>Zend\ModuleManager\Feature\InitProviderInterface</code>,
 or defines an <code>init()</code> method, this listener will call <code>init()</code> and pass the
 current instance of <code>Zend\ModuleManager\ModuleManager</code> as the sole parameter.</p>
@@ -336,17 +336,17 @@ current instance of <code>Zend\ModuleManager\ModuleManager</code> as the sole pa
 module implementing this feature, on <strong>every</strong> page request and should <strong>only</strong>
 be used for performing <strong>lightweight</strong> tasks such as registering event
 listeners.</p>
-<h3 id="locatorregistrationlistener">LocatorRegistrationListener</h3>
+<h3>LocatorRegistrationListener</h3>
 <p>If a module class implements <code>Zend\ModuleManager\Feature\LocatorRegisteredInterface</code>,
 this listener will inject the module class instance into the <code>ServiceManager</code>
 using the module class name as the service name. This allows you to later
 retrieve the module class from the <code>ServiceManager</code>.</p>
-<h3 id="moduleresolverlistener">ModuleResolverListener</h3>
+<h3>ModuleResolverListener</h3>
 <p>This is the default module resolver. It attaches to the <code>loadModule.resolve</code>
 event and returns an instance of <code>{moduleName}\Module</code>.</p>
 <p>Since 2.8.0, if the module name provided resolves to a fully qualified class
 name, it returns that verbatim.</p>
-<h3 id="onbootstraplistener">OnBootstrapListener</h3>
+<h3>OnBootstrapListener</h3>
 <p>If a module class implements
 <code>Zend\ModuleManager\Feature\BootstrapListenerInterface</code>, or defines an
 <code>onBootstrap()</code> method, this listener will register the <code>onBootstrap()</code> method
@@ -356,7 +356,7 @@ triggered during the <code>bootstrap</code> event (and passed an <code>MvcEvent<
 module implementing this feature, on <strong>every</strong> page request, and should <strong>only</strong>
 be used for performing <strong>lightweight</strong> tasks such as registering event
 listeners.</p>
-<h3 id="servicelistener">ServiceListener</h3>
+<h3>ServiceListener</h3>
 <p>If a module class implements <code>Zend\ModuleManager\Feature\ServiceProviderInterface</code>,
 or defines an <code>getServiceConfig()</code> method, this listener will call that method
 and aggregate the return values for use in configuring the <code>ServiceManager</code>.</p>
@@ -507,7 +507,7 @@ As a brief recap, the following configuration keys and values are allowed:</p>
 <p>When working with plugin managers, you will be passed the plugin manager instance to factories,
 abstract factories, and initializers. If you need access to the application services, you can use
 the <code>getServiceLocator()</code> method, as in the following example:</p>
-<pre class="codehilite"><code class="language-php">public function getViewHelperConfig()
+<p> <pre class=codehilite><code class=language-php>public function getViewHelperConfig()
 {
     return ['factories' =&gt; [
         'foo' =&gt; function ($helpers) {
@@ -518,27 +518,27 @@ the <code>getServiceLocator()</code> method, as in the following example:</p>
             return $helper;
         },
     ]];
-}</code></pre>
-
+}</code></pre></p>
 <p>This is a powerful technique, as it allows your various plugins to remain
 agnostic with regards to where and how dependencies are injected, and thus
 allows you to use Inversion of Control principals even with plugins.</p>
 <blockquote>
-<h4 id="factories-with-zend-servicemanager-v3">Factories with zend-servicemanager v3</h4>
+<h4>Factories with zend-servicemanager v3</h4>
 <p>Starting in the v3 releases of zend-servicemanager, factories invoked by
 plugin managers now receive the <em>parent</em> container, and not the plugin manager
 itself. You can write your factories under v2, and prepare them for v3, by
 testing the incoming argument to see if it is a plugin manager:</p>
-<pre class="codehilite"><code class="language-php">use Zend\ServiceManager\AbstractPluginManager;
-
-function ($container) {
+<p>```php
+use Zend\ServiceManager\AbstractPluginManager;</p>
+<p>function ($container) {
     $container = $container instanceof AbstractPluginManager
         ? $container-&gt;getServiceLocator()
-        : $container;
+        : $container;</p>
+<pre class="codehilite"><code>// create instance with dependencies pulled from app container...</code></pre>
 
-    // create instance with dependencies pulled from app container...
-}</code></pre>
 
+<p>}
+```</p>
 </blockquote>
 
 
@@ -573,7 +573,7 @@ function ($container) {
     <div class="help-wanted">
         <p>
             Found a mistake or want to contribute to the documentation?
-            <a href="https://github.com/zendframework/zend-modulemanager/edit/master/docs/module-manager.md" target="_blank" class="help-wanted__link">
+            <a href="https://github.com/zendframework/zend-modulemanager/edit/master/docs/book/module-manager.md" target="_blank" class="help-wanted__link">
                 Edit this page on GitHub!
             </a>
         </p>

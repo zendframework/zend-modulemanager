@@ -235,14 +235,6 @@
             <ul class="toc__list">
                 
                     <li class="toc__entry">
-                        <a href="#event-based-system" class="toc__link">Event-based system</a>
-                    </li>
-                
-                    <li class="toc__entry">
-                        <a href="#modules-are-php-namespaces" class="toc__link">Modules are PHP namespaces</a>
-                    </li>
-                
-                    <li class="toc__entry">
                         <a href="#the-autoload9542php-files" class="toc__link">The autoload_*.php Files</a>
                     </li>
                 
@@ -259,7 +251,7 @@ mind. A module may contain just about anything: PHP code, including MVC
 functionality; library code; view scripts; and/or public assets such as images,
 CSS, and JavaScript. The possibilities are endless.</p>
 <blockquote>
-<h3 id="event-based-system">Event-based system</h3>
+<h3>Event-based system</h3>
 <p>The module system in ZF2 has been designed to be a generic and powerful foundation from which
 developers and other projects can build their own module or plugin systems.
 For a better understanding of the event-driven concepts behind the ZF2 module system, it may be
@@ -281,13 +273,13 @@ helpful to read the <a href="https://docs.zendframework.com/zend-eventmanager/">
   into each returned module object.</li>
 </ul>
 <blockquote>
-<h3 id="modules-are-php-namespaces">Modules are PHP namespaces</h3>
+<h3>Modules are PHP namespaces</h3>
 <p>The name of a module in a Zend Framework application is a
 <a href="http://php.net/namespaces">PHP namespace</a>, and must follow all of the same
 rules for naming.</p>
 </blockquote>
 <p>The recommended structure for an MVC-oriented ZF2 module is as follows:</p>
-<pre class="codehilite"><code class="language-text">module_root/
+<p> <pre class=codehilite><code class=language-text>module_root/
     Module.php
     autoload_classmap.php
     autoload_function.php
@@ -309,8 +301,7 @@ rules for naming.</p>
     view/
         &lt;dir-named-after-module-namespace&gt;/
             &lt;dir-named-after-a-controller&gt;/
-                &lt;.phtml files&gt;</code></pre>
-
+                &lt;.phtml files&gt;</code></pre></p>
 <h2 id="the-autoload9542php-files">The autoload_*.php Files</h2>
 <p>The three <code>autoload_*.php</code> files are not required, but recommended. They provide the following:</p>
 <ul>
@@ -359,7 +350,7 @@ a ZF2 application).</p>
     <div class="help-wanted">
         <p>
             Found a mistake or want to contribute to the documentation?
-            <a href="https://github.com/zendframework/zend-modulemanager/edit/master/docs/intro.md" target="_blank" class="help-wanted__link">
+            <a href="https://github.com/zendframework/zend-modulemanager/edit/master/docs/book/intro.md" target="_blank" class="help-wanted__link">
                 Edit this page on GitHub!
             </a>
         </p>

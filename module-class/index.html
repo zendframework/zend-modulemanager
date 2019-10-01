@@ -277,7 +277,7 @@ of <code>{moduleName}\Module</code> for each enabled module.</p>
 (typically <code>Zend\Loader\ModuleAutoloader</code>) to find and include the
 <code>MyModule\Module</code> class if it isn't already available.</p>
 <blockquote>
-<h3 id="module-classes">Module classes</h3>
+<h3>Module classes</h3>
 <ul>
 <li>Since 2.8.0</li>
 </ul>
@@ -287,16 +287,14 @@ you use the fully qualified class name when registering it with the
 </blockquote>
 <p>The directory structure of a module named "MyModule" might start out looking
 something like this:</p>
-<pre class="codehilite"><code class="language-text">MyModule/
-    Module.php</code></pre>
-
+<p> <pre class=codehilite><code class=language-text>MyModule/
+    Module.php</code></pre></p>
 <p>Within <code>Module.php</code>, you define your <code>MyModule\Module</code> class:</p>
-<pre class="codehilite"><code class="language-php">namespace MyModule;
+<p> <pre class=codehilite><code class=language-php>namespace MyModule;
 
 class Module
 {
-}</code></pre>
-
+}</code></pre></p>
 <p>Though it will not serve any purpose at this point, this "MyModule" module now
 has everything required to be considered a valid module and to be loaded by the
 module system!</p>
@@ -307,7 +305,7 @@ tasks such as registering autoloader(s), services and event listeners, declaring
 dependencies, and much more.</p>
 <h2 id="a-typical-module-class">A Typical Module Class</h2>
 <p>The following example shows a more typical usage of the <code>Module</code> class:</p>
-<pre class="codehilite"><code class="language-php">namespace MyModule;
+<p> <pre class=codehilite><code class=language-php>namespace MyModule;
 
 class Module
 {
@@ -329,8 +327,7 @@ class Module
     {
         return include __DIR__ . '/config/module.config.php';
     }
-}</code></pre>
-
+}</code></pre></p>
 <p>For a list of the provided module manager listeners and the interfaces and methods that <code>Module</code>
 classes may implement in order to interact with the module manager and application, see the
 <a href="../module-manager/#module-manager-listeners">module manager listeners</a> and the
@@ -341,12 +338,12 @@ loaded at the time <code>init()</code> method is called. If your module needs to
 any actions after all other modules have been loaded, use the module manager's
 <code>loadModules.post</code>.</p>
 <blockquote>
-<h3 id="event-information">Event information</h3>
+<h3>Event information</h3>
 <p>For more information on methods like <code>init()</code> and <code>getConfig()</code>, refer to the
 <a href="../module-manager/#module-manager-listeners">module manager listeners documentation</a>.</p>
 </blockquote>
-<h3 id="sample-usage-of-loadmodulespost-event">Sample Usage of "loadModules.post" Event</h3>
-<pre class="codehilite"><code class="language-php">use Zend\EventManager\EventInterface as Event;
+<h3>Sample Usage of "loadModules.post" Event</h3>
+<p> <pre class=codehilite><code class=language-php>use Zend\EventManager\EventInterface as Event;
 use Zend\ModuleManager\ModuleManager;
 
 class Module
@@ -367,10 +364,9 @@ class Module
         // To get the configuration from another module named 'FooModule'
         $config = $moduleManager-&gt;getModule('FooModule')-&gt;getConfig();
     }
-}</code></pre>
-
+}</code></pre></p>
 <blockquote>
-<h3 id="use-init-sparingly">Use init() sparingly</h3>
+<h3>Use init() sparingly</h3>
 <p>The <code>init()</code> method is called for <strong>every</strong> module implementing this feature,
 on <strong>every</strong> page request, and should <strong>only</strong> be used for performing
 <strong>lightweight</strong> tasks such as registering event listeners.</p>
@@ -381,8 +377,8 @@ parts of the application in your <code>Module</code> class such as the instance 
 <code>Zend\Mvc\Application</code> or its registered <code>ServiceManager</code> instance. For this,
 you may utilize the MVC <code>bootstrap</code> event. The bootstrap event is triggered
 after the <code>loadModule.post</code> event, once <code>$application-&gt;bootstrap()</code> is called.</p>
-<h3 id="sample-usage-of-the-mvc-bootstrap-event">Sample Usage of the MVC "bootstrap" Event</h3>
-<pre class="codehilite"><code class="language-php">use Zend\EventManager\EventInterface as Event;
+<h3>Sample Usage of the MVC "bootstrap" Event</h3>
+<p> <pre class=codehilite><code class=language-php>use Zend\EventManager\EventInterface as Event;
 
 class Module
 {
@@ -392,10 +388,9 @@ class Module
         $application = $e-&gt;getApplication();
         $services    = $application-&gt;getServiceManager();
     }
-}</code></pre>
-
+}</code></pre></p>
 <blockquote>
-<h3 id="use-onbootstrap-sparingly">Use onBootstrap() sparingly</h3>
+<h3>Use onBootstrap() sparingly</h3>
 <p>The <code>onBootstrap()</code> method is called for <strong>every</strong> module implementing this
 feature, on <strong>every</strong> page request, and should <strong>only</strong> be used for performing
 <strong>lightweight</strong> tasks such as registering event listeners.</p>
@@ -433,7 +428,7 @@ feature, on <strong>every</strong> page request, and should <strong>only</strong
     <div class="help-wanted">
         <p>
             Found a mistake or want to contribute to the documentation?
-            <a href="https://github.com/zendframework/zend-modulemanager/edit/master/docs/module-class.md" target="_blank" class="help-wanted__link">
+            <a href="https://github.com/zendframework/zend-modulemanager/edit/master/docs/book/module-class.md" target="_blank" class="help-wanted__link">
                 Edit this page on GitHub!
             </a>
         </p>

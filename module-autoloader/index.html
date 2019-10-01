@@ -273,15 +273,15 @@ of module paths, either absolute or relative to the application's root, for the
 <code>ModuleAutoloader</code> to check when loading modules. The <code>DefaultListenerAggregate</code>
 will take care of instantiating and registering the <code>ModuleAutoloader</code> for you.</p>
 <blockquote>
-<h3 id="must-be-in-application-root">Must be in application root</h3>
+<h3>Must be in application root</h3>
 <p>In order for paths relative to your application directory to work, you must
 have the directive <code>chdir(dirname(__DIR__));</code> in your <code>public/index.php</code> file.</p>
 </blockquote>
-<h3 id="registering-module-paths-with-the-defaultlisteneraggregate">Registering module paths with the <code>DefaultListenerAggregate</code></h3>
+<h3>Registering module paths with the <code>DefaultListenerAggregate</code></h3>
 <p>The following example will search for modules in three different <code>module_paths</code>.
 Two are local directories of this application and the third is a system-wide
 shared directory.</p>
-<pre class="codehilite"><code class="language-php">// public/index.php
+<p> <pre class=codehilite><code class=language-php>// public/index.php
 use Zend\ModuleManager\Listener;
 use Zend\ModuleManager\ModuleManager;
 
@@ -306,44 +306,43 @@ $moduleManager = new ModuleManager([
 
 // Attach the default listener aggregate and load the modules
 $moduleManager-&gt;getEventManager()-&gt;attachAggregate($defaultListeners);
-$moduleManager-&gt;loadModules();</code></pre>
-
+$moduleManager-&gt;loadModules();</code></pre></p>
 <blockquote>
-<h3 id="module-paths-are-fifo">Module paths are FIFO</h3>
+<h3>Module paths are FIFO</h3>
 <p>Module paths behave very similar to PHP's <code>include_path</code> and are searched in
 the order they are defined. If you have modules with the same name in more
 than one registered module path, the module autoloader will return the first
 one it finds.</p>
-<h3 id="disabling-the-moduleautoloader">Disabling the ModuleAutoloader</h3>
+<h3>Disabling the ModuleAutoloader</h3>
 <ul>
 <li>Since 2.8.0</li>
 </ul>
 <p>If you are using Composer to autoload, you may not need to use the
 <code>ModuleAutoloader</code>. As such, you can disable it by passing the following
 option to the <code>ListenerOptions</code> class:</p>
-<pre class="codehilite"><code class="language-php">'use_zend_loader' =&gt; false,</code></pre>
-
+<p><code>php
+'use_zend_loader' =&gt; false,</code></p>
 <p>If your project was begun from the <a href="https://github.com/zendframework/ZendSkeletonApplication">skeleton application</a>,
 place the above within the <code>module_listener_options</code> configuration of your
 <code>config/application.config.php</code> file:</p>
-<pre class="codehilite"><code class="language-php">return [
+<p><code>php
+return [
     /* ... */
     'module_listener_options' =&gt; [
         'use_zend_loader' =&gt; false,
         /* ... */
     ],
     /* ... */
-];</code></pre>
-
+];</code></p>
 </blockquote>
 <h2 id="non-standard-explicit-module-paths">Non-Standard / Explicit Module Paths</h2>
 <p>Sometimes you may want to specify exactly where a module is instead of having
 <code>Zend\Loader\ModuleAutoloader</code> try to find it in the registered paths.</p>
-<h3 id="registering-a-non-standard-explicit-module-path">Registering a Non-Standard / Explicit Module Path</h3>
+<h3>Registering a Non-Standard / Explicit Module Path</h3>
 <p>In this example, the autoloader will first check for <code>MyModule\Module</code> in
 <code>/path/to/mymoduledir-v1.2/Module.php</code>. If it's not found, then it will fall
 back to searching any other registered module paths.</p>
-<pre class="codehilite"><code class="language-php">// ./public/index.php
+<p> <pre class=codehilite><code class=language-php>// ./public/index.php
 use Zend\Loader\ModuleAutoloader;
 use Zend\ModuleManager\Listener;
 use Zend\ModuleManager\ModuleManager;
@@ -383,8 +382,7 @@ $moduleManager = new ModuleManager([
 
 // Attach the default listener aggregate and load the modules
 $moduleManager-&gt;getEventManager()-&gt;attachAggregate($defaultListeners);
-$moduleManager-&gt;loadModules();</code></pre>
-
+$moduleManager-&gt;loadModules();</code></pre></p>
 <p>This same method works if you provide the path to a phar archive.</p>
 <h2 id="packaging-modules-with-phar">Packaging Modules with Phar</h2>
 <p>If you prefer, you may easily package your module as a
@@ -395,7 +393,7 @@ modules in the following archive formats: .phar, .phar.gz, .phar.bz2, .phar.tar,
 replace the <code>MyModule/</code> directory with <code>MyModule.tar</code>, and it should still be
 autoloaded without any additional changes!</p>
 <blockquote>
-<h3 id="avoid-compression">Avoid compression</h3>
+<h3>Avoid compression</h3>
 <p>If possible, avoid using any type of compression (bz2, gz, zip) on your phar
 archives, as it introduces unnecessary CPU overhead to each request.</p>
 </blockquote>
@@ -432,7 +430,7 @@ archives, as it introduces unnecessary CPU overhead to each request.</p>
     <div class="help-wanted">
         <p>
             Found a mistake or want to contribute to the documentation?
-            <a href="https://github.com/zendframework/zend-modulemanager/edit/master/docs/module-autoloader.md" target="_blank" class="help-wanted__link">
+            <a href="https://github.com/zendframework/zend-modulemanager/edit/master/docs/book/module-autoloader.md" target="_blank" class="help-wanted__link">
                 Edit this page on GitHub!
             </a>
         </p>
