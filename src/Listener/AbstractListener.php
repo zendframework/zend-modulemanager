@@ -61,8 +61,16 @@ abstract class AbstractListener
      */
     protected function writeArrayToFile($filePath, $array)
     {
+        // Write cache file to temporary file first and then rename it.
+        // We don't want cache file to be read when it is not written completely.
+        // include/require functions require additional lock, see:
+        // https://bugs.php.net/bug.php?id=52895
+        $tmp = tempnam(sys_get_temp_dir(), md5($filePath));
+
         $content = "<?php\nreturn " . var_export($array, 1) . ';';
-        file_put_contents($filePath, $content, LOCK_EX);
+        file_put_contents($tmp, $content);
+        rename($tmp, $filePath);
+
         return $this;
     }
 }
