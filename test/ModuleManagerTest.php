@@ -64,7 +64,7 @@ class ModuleManagerTest extends TestCase
         $loadedModules = $moduleManager->getLoadedModules();
         $this->assertInstanceOf('SomeModule\Module', $loadedModules['SomeModule']);
         $config = $configListener->getMergedConfig();
-        $this->assertSame($config->some, 'thing', var_export($config, 1));
+        $this->assertSame($config->some, 'thing', var_export($config, true));
     }
 
     public function testCanLoadMultipleModules()
