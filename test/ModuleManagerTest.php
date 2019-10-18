@@ -8,19 +8,19 @@
 namespace ZendTest\ModuleManager;
 
 use InvalidArgumentException;
-use PHPUnit\Framework\TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use stdClass;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\SharedEventManager;
 use Zend\ModuleManager\Exception;
-use Zend\ModuleManager\Listener\ListenerOptions;
 use Zend\ModuleManager\Listener\DefaultListenerAggregate;
+use Zend\ModuleManager\Listener\ListenerOptions;
 use Zend\ModuleManager\ModuleEvent;
 use Zend\ModuleManager\ModuleManager;
 
 /**
- * @covers Zend\ModuleManager\ModuleManager
+ * @covers \Zend\ModuleManager\ModuleManager
  */
 class ModuleManagerTest extends TestCase
 {
@@ -32,7 +32,7 @@ class ModuleManagerTest extends TestCase
      */
     protected $defaultListeners;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->sharedEvents = new SharedEventManager;
         $this->events       = new EventManager($this->sharedEvents);
