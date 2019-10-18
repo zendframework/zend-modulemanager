@@ -67,7 +67,7 @@ abstract class AbstractListener
         // https://bugs.php.net/bug.php?id=52895
         $tmp = tempnam(sys_get_temp_dir(), md5($filePath));
 
-        $content = "<?php\nreturn " . var_export($array, 1) . ';';
+        $content = "<?php\nreturn " . var_export($array, true) . ';';
         file_put_contents($tmp, $content);
         rename($tmp, $filePath);
 
