@@ -10,8 +10,22 @@ library code; view scripts; and/or public assets such as images, CSS, and
 JavaScript. The possibilities are endless.
 
 `Zend\ModuleManager` is the component that enables the design of a module
-architecture for PHP applcations.
+architecture for PHP applications.
 
+## Installation
 
-- File issues at https://github.com/zendframework/zend-modulemanager/issues
-- Documentation is at http://framework.zend.com/manual/current/en/index.html#zend-modulemanager
+Run the following to install this library:
+
+```bash
+$ composer require zendframework/zend-modulemanager
+```
+
+## Documentation
+
+Browse the documentation online at https://docs.zendframework.com/zend-modulemanager/
+
+## Support
+
+* [Issues](https://github.com/zendframework/zend-modulemanager/issues/)
+* [Chat](https://zendframework-slack.herokuapp.com/)
+* [Forum](https://discourse.zendframework.com/)
