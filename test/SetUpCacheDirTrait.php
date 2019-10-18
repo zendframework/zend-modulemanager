@@ -39,7 +39,10 @@ trait SetUpCacheDirTrait
     protected function removeTmpDir()
     {
         $file = glob($this->tmpdir . DIRECTORY_SEPARATOR . '*');
-        @unlink($file[0]); // change this if there's ever > 1 file
+        if (isset($file[0])) {
+            // change this if there's ever > 1 file
+            @unlink($file[0]);
+        }
         @rmdir($this->tmpdir);
     }
 }
