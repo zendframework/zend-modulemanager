@@ -11,10 +11,10 @@ use ArrayObject;
 use InvalidArgumentException;
 use Zend\EventManager\Test\EventListenerIntrospectionTrait;
 use Zend\ModuleManager\Listener\ConfigListener;
-use Zend\ModuleManager\Listener\ModuleResolverListener;
 use Zend\ModuleManager\Listener\ListenerOptions;
-use Zend\ModuleManager\ModuleManager;
+use Zend\ModuleManager\Listener\ModuleResolverListener;
 use Zend\ModuleManager\ModuleEvent;
+use Zend\ModuleManager\ModuleManager;
 use ZendTest\ModuleManager\SetUpCacheDirTrait;
 
 /**

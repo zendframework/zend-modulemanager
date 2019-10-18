@@ -12,7 +12,6 @@ use stdClass;
 use Zend\ModuleManager\Exception;
 use Zend\ModuleManager\Feature;
 use Zend\ModuleManager\Listener\ModuleDependencyCheckerListener;
-use Zend\ModuleManager\ModuleManager;
 use Zend\ModuleManager\ModuleEvent;
 
 /**

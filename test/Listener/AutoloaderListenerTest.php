@@ -9,8 +9,8 @@ namespace ZendTest\ModuleManager\Listener;
 
 use Zend\ModuleManager\Listener\AutoloaderListener;
 use Zend\ModuleManager\Listener\ModuleResolverListener;
-use Zend\ModuleManager\ModuleManager;
 use Zend\ModuleManager\ModuleEvent;
+use Zend\ModuleManager\ModuleManager;
 
 /**
  * @covers Zend\ModuleManager\Listener\AbstractListener

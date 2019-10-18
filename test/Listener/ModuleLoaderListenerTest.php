@@ -8,11 +8,11 @@
 namespace ZendTest\ModuleManager\Listener;
 
 use Zend\EventManager\Test\EventListenerIntrospectionTrait;
-use Zend\ModuleManager\Listener\ModuleResolverListener;
-use Zend\ModuleManager\Listener\ModuleLoaderListener;
 use Zend\ModuleManager\Listener\ListenerOptions;
-use Zend\ModuleManager\ModuleManager;
+use Zend\ModuleManager\Listener\ModuleLoaderListener;
+use Zend\ModuleManager\Listener\ModuleResolverListener;
 use Zend\ModuleManager\ModuleEvent;
+use Zend\ModuleManager\ModuleManager;
 use ZendTest\ModuleManager\SetUpCacheDirTrait;
 
 /**

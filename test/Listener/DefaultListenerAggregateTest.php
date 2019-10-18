@@ -8,8 +8,8 @@
 namespace ZendTest\ModuleManager\Listener;
 
 use Zend\EventManager\Test\EventListenerIntrospectionTrait;
-use Zend\ModuleManager\Listener\ListenerOptions;
 use Zend\ModuleManager\Listener\DefaultListenerAggregate;
+use Zend\ModuleManager\Listener\ListenerOptions;
 use Zend\ModuleManager\ModuleManager;
 
 /**
