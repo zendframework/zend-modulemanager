@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 2.8.2 - 2017-12-02
+## 2.8.3 - 2019-10-18
 
 ### Added
 
@@ -22,13 +22,33 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- [#74](https://github.com/zendframework/zend-modulemanager/pull/74) fixes
-  exception message in ConfigListener
-
 - [#88](https://github.com/zendframework/zend-modulemanager/pull/88) fixes
   how cache files are created. Temporary file is created first and when
   completed it is renamed to target file. It prevents from loading uncompleted
   files.
+
+## 2.8.2 - 2017-12-02
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- [#74](https://github.com/zendframework/zend-modulemanager/pull/74) fixes
+  exception message in ConfigListener
 
 ## 2.8.1 - 2017-11-01
 
