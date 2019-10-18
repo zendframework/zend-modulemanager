@@ -16,8 +16,8 @@ use Zend\ModuleManager\ModuleManager;
 use ZendTest\ModuleManager\SetUpCacheDirTrait;
 
 /**
- * @covers Zend\ModuleManager\Listener\AbstractListener
- * @covers Zend\ModuleManager\Listener\ModuleLoaderListener
+ * @covers \Zend\ModuleManager\Listener\AbstractListener
+ * @covers \Zend\ModuleManager\Listener\ModuleLoaderListener
  */
 class ModuleLoaderListenerTest extends AbstractListenerTestCase
 {
@@ -29,7 +29,7 @@ class ModuleLoaderListenerTest extends AbstractListenerTestCase
      */
     protected $moduleManager;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->moduleManager = new ModuleManager([]);
         $this->moduleManager->getEventManager()->attach(

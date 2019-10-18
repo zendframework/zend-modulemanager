@@ -13,8 +13,8 @@ use Zend\ModuleManager\ModuleEvent;
 use Zend\ModuleManager\ModuleManager;
 
 /**
- * @covers Zend\ModuleManager\Listener\AbstractListener
- * @covers Zend\ModuleManager\Listener\InitTrigger
+ * @covers \Zend\ModuleManager\Listener\AbstractListener
+ * @covers \Zend\ModuleManager\Listener\InitTrigger
  */
 class InitTriggerTest extends AbstractListenerTestCase
 {
@@ -23,7 +23,7 @@ class InitTriggerTest extends AbstractListenerTestCase
      */
     protected $moduleManager;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->moduleManager = new ModuleManager([]);
         $this->moduleManager->getEventManager()->attach(

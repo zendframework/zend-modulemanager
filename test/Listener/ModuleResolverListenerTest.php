@@ -13,8 +13,8 @@ use Zend\ModuleManager\Listener\ModuleResolverListener;
 use Zend\ModuleManager\ModuleEvent;
 
 /**
- * @covers Zend\ModuleManager\Listener\AbstractListener
- * @covers Zend\ModuleManager\Listener\ModuleResolverListener
+ * @covers \Zend\ModuleManager\Listener\AbstractListener
+ * @covers \Zend\ModuleManager\Listener\ModuleResolverListener
  */
 class ModuleResolverListenerTest extends AbstractListenerTestCase
 {

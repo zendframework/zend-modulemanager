@@ -13,8 +13,8 @@ use Zend\ModuleManager\ModuleEvent;
 use Zend\ModuleManager\ModuleManager;
 
 /**
- * @covers Zend\ModuleManager\Listener\AbstractListener
- * @covers Zend\ModuleManager\Listener\AutoloaderListener
+ * @covers \Zend\ModuleManager\Listener\AbstractListener
+ * @covers \Zend\ModuleManager\Listener\AutoloaderListener
  */
 class AutoloaderListenerTest extends AbstractListenerTestCase
 {
@@ -23,7 +23,7 @@ class AutoloaderListenerTest extends AbstractListenerTestCase
      */
     protected $moduleManager;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->moduleManager = new ModuleManager([]);
         $events = $this->moduleManager->getEventManager();

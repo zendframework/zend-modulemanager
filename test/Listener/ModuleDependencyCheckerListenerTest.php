@@ -7,7 +7,7 @@
 
 namespace ZendTest\ModuleManager\Listener;
 
-use PHPUnit\Framework\TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use stdClass;
 use Zend\ModuleManager\Exception;
 use Zend\ModuleManager\Feature;
@@ -15,7 +15,7 @@ use Zend\ModuleManager\Listener\ModuleDependencyCheckerListener;
 use Zend\ModuleManager\ModuleEvent;
 
 /**
- * @covers Zend\ModuleManager\Listener\ModuleDependencyCheckerListener
+ * @covers \Zend\ModuleManager\Listener\ModuleDependencyCheckerListener
  */
 class ModuleDependencyCheckerListenerTest extends TestCase
 {
