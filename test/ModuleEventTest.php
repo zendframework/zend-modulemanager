@@ -8,14 +8,14 @@ declare(strict_types=1);
 
 namespace ZendTest\ModuleManager;
 
-use PHPUnit\Framework\TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use stdClass;
 use Zend\ModuleManager\Exception;
 use Zend\ModuleManager\Listener\ConfigListener;
 use Zend\ModuleManager\ModuleEvent;
 
 /**
- * @covers Zend\ModuleManager\ModuleEvent
+ * @covers \Zend\ModuleManager\ModuleEvent
  */
 class ModuleEventTest extends TestCase
 {
@@ -24,7 +24,7 @@ class ModuleEventTest extends TestCase
      */
     protected $event;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->event = new ModuleEvent();
     }

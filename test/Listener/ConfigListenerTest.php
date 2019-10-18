@@ -12,15 +12,15 @@ use ArrayObject;
 use InvalidArgumentException;
 use Zend\EventManager\Test\EventListenerIntrospectionTrait;
 use Zend\ModuleManager\Listener\ConfigListener;
-use Zend\ModuleManager\Listener\ModuleResolverListener;
 use Zend\ModuleManager\Listener\ListenerOptions;
-use Zend\ModuleManager\ModuleManager;
+use Zend\ModuleManager\Listener\ModuleResolverListener;
 use Zend\ModuleManager\ModuleEvent;
+use Zend\ModuleManager\ModuleManager;
 use ZendTest\ModuleManager\SetUpCacheDirTrait;
 
 /**
- * @covers Zend\ModuleManager\Listener\AbstractListener
- * @covers Zend\ModuleManager\Listener\ConfigListener
+ * @covers \Zend\ModuleManager\Listener\AbstractListener
+ * @covers \Zend\ModuleManager\Listener\ConfigListener
  */
 class ConfigListenerTest extends AbstractListenerTestCase
 {
@@ -32,7 +32,7 @@ class ConfigListenerTest extends AbstractListenerTestCase
      */
     protected $moduleManager;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->moduleManager = new ModuleManager([]);
         $this->moduleManager->getEventManager()->attach(

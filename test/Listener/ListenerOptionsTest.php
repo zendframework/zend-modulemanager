@@ -9,12 +9,12 @@ declare(strict_types=1);
 namespace ZendTest\ModuleManager\Listener;
 
 use InvalidArgumentException;
-use PHPUnit\Framework\TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Zend\Config\Config;
 use Zend\ModuleManager\Listener\ListenerOptions;
 
 /**
- * @covers Zend\ModuleManager\Listener\ListenerOptions
+ * @covers \Zend\ModuleManager\Listener\ListenerOptions
  */
 class ListenerOptionsTest extends TestCase
 {

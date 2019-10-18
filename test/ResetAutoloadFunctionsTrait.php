@@ -64,6 +64,6 @@ trait ResetAutoloadFunctionsTrait
      */
     protected function restoreIncludePath()
     {
-        set_include_path((string)$this->includePath);
+        set_include_path((string) $this->includePath);
     }
 }

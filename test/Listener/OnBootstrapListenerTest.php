@@ -13,14 +13,14 @@ use Zend\EventManager\EventManager;
 use Zend\EventManager\SharedEventManager;
 use Zend\ModuleManager\Listener\ModuleResolverListener;
 use Zend\ModuleManager\Listener\OnBootstrapListener;
-use Zend\ModuleManager\ModuleManager;
 use Zend\ModuleManager\ModuleEvent;
+use Zend\ModuleManager\ModuleManager;
 use Zend\Mvc\Application;
 use ZendTest\ModuleManager\TestAsset\MockApplication;
 
 /**
- * @covers Zend\ModuleManager\Listener\AbstractListener
- * @covers Zend\ModuleManager\Listener\OnBootstrapListener
+ * @covers \Zend\ModuleManager\Listener\AbstractListener
+ * @covers \Zend\ModuleManager\Listener\OnBootstrapListener
  */
 class OnBootstrapListenerTest extends AbstractListenerTestCase
 {
@@ -34,7 +34,7 @@ class OnBootstrapListenerTest extends AbstractListenerTestCase
      */
     protected $moduleManager;
 
-    public function setUp()
+    protected function setUp()
     {
         $sharedEvents = new SharedEventManager();
         $events       = new EventManager($sharedEvents);

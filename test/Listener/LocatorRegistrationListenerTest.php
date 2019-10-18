@@ -14,15 +14,15 @@ use Zend\EventManager\EventManager;
 use Zend\EventManager\SharedEventManager;
 use Zend\ModuleManager\Listener\LocatorRegistrationListener;
 use Zend\ModuleManager\Listener\ModuleResolverListener;
-use Zend\ModuleManager\ModuleManager;
 use Zend\ModuleManager\ModuleEvent;
+use Zend\ModuleManager\ModuleManager;
 use Zend\Mvc\Application;
 use Zend\ServiceManager\ServiceManager;
 use ZendTest\ModuleManager\TestAsset\MockApplication;
 
 /**
- * @covers Zend\ModuleManager\Listener\AbstractListener
- * @covers Zend\ModuleManager\Listener\LocatorRegistrationListener
+ * @covers \Zend\ModuleManager\Listener\AbstractListener
+ * @covers \Zend\ModuleManager\Listener\LocatorRegistrationListener
  */
 class LocatorRegistrationListenerTest extends AbstractListenerTestCase
 {
@@ -46,7 +46,7 @@ class LocatorRegistrationListenerTest extends AbstractListenerTestCase
      */
     protected $sharedEvents;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->sharedEvents = new SharedEventManager();
 

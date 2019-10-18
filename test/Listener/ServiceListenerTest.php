@@ -9,7 +9,7 @@ declare(strict_types=1);
 namespace ZendTest\ModuleManager\Listener;
 
 use ArrayObject;
-use PHPUnit\Framework\TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
 use stdClass;
 use Zend\EventManager\EventManager;
@@ -23,7 +23,7 @@ use Zend\ServiceManager\Config as ServiceConfig;
 use Zend\ServiceManager\ServiceManager;
 
 /**
- * @covers Zend\ModuleManager\Listener\ServiceListener
+ * @covers \Zend\ModuleManager\Listener\ServiceListener
  */
 class ServiceListenerTest extends TestCase
 {
@@ -61,7 +61,7 @@ class ServiceListenerTest extends TestCase
      */
     protected $services;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->services = new ServiceManager();
         $this->listener = new ServiceListener($this->services);

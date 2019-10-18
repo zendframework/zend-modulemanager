@@ -9,13 +9,13 @@ declare(strict_types=1);
 namespace ZendTest\ModuleManager\Listener;
 
 use Zend\EventManager\Test\EventListenerIntrospectionTrait;
-use Zend\ModuleManager\Listener\ListenerOptions;
 use Zend\ModuleManager\Listener\DefaultListenerAggregate;
+use Zend\ModuleManager\Listener\ListenerOptions;
 use Zend\ModuleManager\ModuleManager;
 
 /**
- * @covers Zend\ModuleManager\Listener\AbstractListener
- * @covers Zend\ModuleManager\Listener\DefaultListenerAggregate
+ * @covers \Zend\ModuleManager\Listener\AbstractListener
+ * @covers \Zend\ModuleManager\Listener\DefaultListenerAggregate
  */
 class DefaultListenerAggregateTest extends AbstractListenerTestCase
 {
@@ -26,7 +26,7 @@ class DefaultListenerAggregateTest extends AbstractListenerTestCase
      */
     protected $defaultListeners;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->defaultListeners = new DefaultListenerAggregate(
             new ListenerOptions([

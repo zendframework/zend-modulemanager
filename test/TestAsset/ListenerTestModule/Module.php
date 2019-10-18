@@ -8,10 +8,10 @@ declare(strict_types=1);
 
 namespace ListenerTestModule;
 
+use Zend\EventManager\EventInterface;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\BootstrapListenerInterface;
 use Zend\ModuleManager\Feature\LocatorRegisteredInterface;
-use Zend\EventManager\EventInterface;
 
 class Module implements
     AutoloaderProviderInterface,
