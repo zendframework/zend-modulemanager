@@ -57,8 +57,8 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.7-dev",
-            "dev-develop": "2.8-dev"
+            "dev-master": "2.8.x-dev",
+            "dev-develop": "2.9.x-dev"
         }
     },
     "scripts": {
@@ -70,6 +70,5 @@
         "cs-fix": "phpcbf",
         "test": "phpunit --colors=always",
         "test-coverage": "phpunit --colors=always --coverage-clover clover.xml"
-    },
-    "homepage": "https://github.com/zendframework/zend-modulemanager"
+    }
 }
