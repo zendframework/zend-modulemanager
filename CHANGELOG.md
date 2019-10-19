@@ -18,8 +18,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Removed
 
-- [#77](https://github.com/zendframework/zend-modulemanager/pull/77) removes
-  support for PHP 5.6 and 7.0.
+- [#77](https://github.com/zendframework/zend-modulemanager/pull/77) and [#89](https://github.com/zendframework/zend-modulemanager/pull/89) removes support for PHP versions prior to 7.3.
 
 ### Fixed
 
