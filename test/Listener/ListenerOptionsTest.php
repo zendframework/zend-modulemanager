@@ -24,7 +24,6 @@ class ListenerOptionsTest extends TestCase
             'cache_dir'               => __DIR__,
             'config_cache_enabled'    => true,
             'config_cache_key'        => 'foo',
-            'module_paths'            => ['module', 'paths'],
             'config_glob_paths'       => ['glob', 'paths'],
             'config_static_paths'       => ['static', 'custom_paths'],
         ]);
@@ -33,7 +32,6 @@ class ListenerOptionsTest extends TestCase
         $this->assertNotNull(strstr($options->getConfigCacheFile(), __DIR__));
         $this->assertNotNull(strstr($options->getConfigCacheFile(), '.php'));
         $this->assertSame('foo', $options->getConfigCacheKey());
-        $this->assertSame(['module', 'paths'], $options->getModulePaths());
         $this->assertSame(['glob', 'paths'], $options->getConfigGlobPaths());
         $this->assertSame(['static', 'custom_paths'], $options->getConfigStaticPaths());
     }
@@ -46,7 +44,6 @@ class ListenerOptionsTest extends TestCase
         $options = new ListenerOptions([
            'cache_dir'               => __DIR__,
            'config_cache_enabled'    => true,
-           'module_paths'            => ['module', 'paths'],
            'config_glob_paths'       => ['glob', 'paths'],
            'config_static_paths'     => ['static', 'custom_paths'],
         ]);
@@ -64,7 +61,6 @@ class ListenerOptionsTest extends TestCase
         $options = new ListenerOptions([
            'cache_dir'                => __DIR__,
            'module_map_cache_enabled' => true,
-           'module_paths'             => ['module', 'paths'],
            'config_glob_paths'        => ['glob', 'paths'],
            'config_static_paths'      => ['static', 'custom_paths'],
         ]);
@@ -80,7 +76,6 @@ class ListenerOptionsTest extends TestCase
             'cache_dir'               => __DIR__,
             'config_cache_enabled'    => true,
             'config_cache_key'        => 'foo',
-            'module_paths'            => ['module', 'paths'],
             'config_glob_paths'       => ['glob', 'paths'],
             'config_static_paths'       => ['static', 'custom_paths'],
         ]);
@@ -95,24 +90,8 @@ class ListenerOptionsTest extends TestCase
         $options->config_cache_enabled = false;
         $this->assertFalse($options->config_cache_enabled);
         $this->assertEquals('foo', $options->config_cache_key);
-        $this->assertSame(['module', 'paths'], $options->module_paths);
         $this->assertSame(['glob', 'paths'], $options->config_glob_paths);
         $this->assertSame(['static', 'custom_paths'], $options->config_static_paths);
-    }
-
-    public function testSetModulePathsAcceptsConfigOrTraverable()
-    {
-        $config = new Config([__DIR__]);
-        $options = new ListenerOptions;
-        $options->setModulePaths($config);
-        $this->assertSame($config, $options->getModulePaths());
-    }
-
-    public function testSetModulePathsThrowsInvalidArgumentException()
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $options = new ListenerOptions;
-        $options->setModulePaths('asd');
     }
 
     public function testSetConfigGlobPathsAcceptsConfigOrTraverable()

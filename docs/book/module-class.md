@@ -9,9 +9,7 @@ of `{moduleName}\Module` for each enabled module.
 
 As an example, provided the module name "MyModule",
 `Zend\ModuleManager\Listener\ModuleResolverListener` will expect the class
-`MyModule\Module` to be available. It relies on a registered autoloader
-(typically `Zend\Loader\ModuleAutoloader`) to find and include the
-`MyModule\Module` class if it isn't already available.
+`MyModule\Module` to be available.
 
 > ### Module classes
 >
@@ -26,7 +24,8 @@ something like this:
 
 ```text
 MyModule/
-    Module.php
+    src/
+        Module.php
 ```
 
 Within `Module.php`, you define your `MyModule\Module` class:
@@ -46,7 +45,7 @@ module system!
 This `Module` class serves as the single entry point for `ModuleManager`
 listeners to interact with a module. From within this class, modules can
 override or provide additional application configuration, perform initialization
-tasks such as registering autoloader(s), services and event listeners, declaring
+tasks such as registering services and event listeners, declaring
 dependencies, and much more.
 
 ## A Typical Module Class
@@ -58,20 +57,6 @@ namespace MyModule;
 
 class Module
 {
-    public function getAutoloaderConfig()
-    {
-        return [
-            'Zend\Loader\ClassMapAutoloader' => [
-                __DIR__ . '/autoload_classmap.php',
-            ],
-            'Zend\Loader\StandardAutoloader' => [
-                'namespaces' => [
-                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
-                ],
-            ],
-        ];
-    }
-
     public function getConfig()
     {
         return include __DIR__ . '/config/module.config.php';
@@ -79,8 +64,9 @@ class Module
 }
 ```
 
-For a list of the provided module manager listeners and the interfaces and methods that `Module`
-classes may implement in order to interact with the module manager and application, see the
+For a list of the provided module manager listeners and the interfaces and
+methods that `Module` classes may implement in order to interact with the
+module manager and application, see the
 [module manager listeners](module-manager.md#module-manager-listeners) and the
 [module mananger events](module-manager.md#module-manager-events) documentation.
 
