@@ -67,6 +67,8 @@ abstract class AbstractListener
 
         $content = "<?php\nreturn " . var_export($array, true) . ';';
         file_put_contents($tmp, $content);
+        chmod($tmp, 0666 & ~umask());
+
         rename($tmp, $filePath);
 
         return $this;
