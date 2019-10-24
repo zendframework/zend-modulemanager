@@ -2,32 +2,32 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
      <loc>https://docs.zendframework.com/zend-modulemanager/</loc>
-     <lastmod>2019-10-18</lastmod>
+     <lastmod>2019-10-24</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-modulemanager/intro/</loc>
-     <lastmod>2019-10-18</lastmod>
+     <lastmod>2019-10-24</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-modulemanager/module-manager/</loc>
-     <lastmod>2019-10-18</lastmod>
+     <lastmod>2019-10-24</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-modulemanager/module-class/</loc>
-     <lastmod>2019-10-18</lastmod>
+     <lastmod>2019-10-24</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-modulemanager/module-autoloader/</loc>
-     <lastmod>2019-10-18</lastmod>
+     <lastmod>2019-10-24</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-modulemanager/best-practices/</loc>
-     <lastmod>2019-10-18</lastmod>
+     <lastmod>2019-10-24</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>

@@ -528,17 +528,17 @@ allows you to use Inversion of Control principals even with plugins.</p>
 plugin managers now receive the <em>parent</em> container, and not the plugin manager
 itself. You can write your factories under v2, and prepare them for v3, by
 testing the incoming argument to see if it is a plugin manager:</p>
-<p>```php
-use Zend\ServiceManager\AbstractPluginManager;</p>
-<p>function ($container) {
+<p><pre class=codehilite><code class=language-php>
+use Zend\ServiceManager\AbstractPluginManager;
+
+function ($container) {
     $container = $container instanceof AbstractPluginManager
         ? $container-&gt;getServiceLocator()
-        : $container;</p>
-<pre class="codehilite"><code>// create instance with dependencies pulled from app container...</code></pre>
+        : $container;
 
-
-<p>}
-```</p>
+    // create instance with dependencies pulled from app container...
+}
+</code></pre></p>
 </blockquote>
 
 

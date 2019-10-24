@@ -320,12 +320,13 @@ one it finds.</p>
 <p>If you are using Composer to autoload, you may not need to use the
 <code>ModuleAutoloader</code>. As such, you can disable it by passing the following
 option to the <code>ListenerOptions</code> class:</p>
-<p><code>php
-'use_zend_loader' =&gt; false,</code></p>
+<p><pre class=codehilite><code class=language-php>
+'use_zend_loader' =&gt; false,
+</code></pre></p>
 <p>If your project was begun from the <a href="https://github.com/zendframework/ZendSkeletonApplication">skeleton application</a>,
 place the above within the <code>module_listener_options</code> configuration of your
 <code>config/application.config.php</code> file:</p>
-<p><code>php
+<p><pre class=codehilite><code class=language-php>
 return [
     /* ... */
     'module_listener_options' =&gt; [
@@ -333,7 +334,8 @@ return [
         /* ... */
     ],
     /* ... */
-];</code></p>
+];
+</code></pre></p>
 </blockquote>
 <h2 id="non-standard-explicit-module-paths">Non-Standard / Explicit Module Paths</h2>
 <p>Sometimes you may want to specify exactly where a module is instead of having
