@@ -44,7 +44,8 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#91](https://github.com/zendframework/zend-modulemanager/pull/91) fixes permission on cache file.
+  The permission denied issue occurs on reading the cache file, when cache has been build using different user account.
 
 ## 2.8.3 - 2019-10-18
 
