@@ -7,12 +7,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Modular application system for zend-mvc applications">  
-    <link rel="canonical" href="https://docs.zendframework.com/zend-modulemanager/module-class/">
+    <link rel="canonical" href="https://docs.zendframework.com/module-class/">
     <link rel="shortcut icon" href="../img/favicon.ico">
 
     <title>The Module Class - zend-modulemanager - Zend Framework Docs</title>
 
-    <link rel="stylesheet" href="../css/styles-5cfabd53ee.css">
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body id="page-top">
 
@@ -187,9 +187,9 @@
     <div class="laminas-announcement">
     <div class="container">
         <div class="row">
-            <div class="col-xs-12">
-                Zend Framework transitions to the Linux Foundation. <a href="https://getlaminas.org">Learn More.</a>
-            </div>
+            <div class="col-xs-12"><strong>
+                This package has moved. Visit its replacement, <a href="https://docs.laminas.dev/laminas-modulemanager/">laminas/laminas-modulemanager.</a>
+            </strong></div>
         </div>
     </div>
 </div>
@@ -287,14 +287,18 @@ you use the fully qualified class name when registering it with the
 </blockquote>
 <p>The directory structure of a module named "MyModule" might start out looking
 something like this:</p>
-<p> <pre class=codehilite><code class=language-text>MyModule/
-    Module.php</code></pre></p>
+<pre><code class="language-text">MyModule/
+    Module.php
+</code></pre>
+
 <p>Within <code>Module.php</code>, you define your <code>MyModule\Module</code> class:</p>
-<p> <pre class=codehilite><code class=language-php>namespace MyModule;
+<pre><code class="language-php">namespace MyModule;
 
 class Module
 {
-}</code></pre></p>
+}
+</code></pre>
+
 <p>Though it will not serve any purpose at this point, this "MyModule" module now
 has everything required to be considered a valid module and to be loaded by the
 module system!</p>
@@ -305,7 +309,7 @@ tasks such as registering autoloader(s), services and event listeners, declaring
 dependencies, and much more.</p>
 <h2 id="a-typical-module-class">A Typical Module Class</h2>
 <p>The following example shows a more typical usage of the <code>Module</code> class:</p>
-<p> <pre class=codehilite><code class=language-php>namespace MyModule;
+<pre><code class="language-php">namespace MyModule;
 
 class Module
 {
@@ -327,7 +331,9 @@ class Module
     {
         return include __DIR__ . '/config/module.config.php';
     }
-}</code></pre></p>
+}
+</code></pre>
+
 <p>For a list of the provided module manager listeners and the interfaces and methods that <code>Module</code>
 classes may implement in order to interact with the module manager and application, see the
 <a href="../module-manager/#module-manager-listeners">module manager listeners</a> and the
@@ -343,7 +349,7 @@ any actions after all other modules have been loaded, use the module manager's
 <a href="../module-manager/#module-manager-listeners">module manager listeners documentation</a>.</p>
 </blockquote>
 <h3>Sample Usage of "loadModules.post" Event</h3>
-<p> <pre class=codehilite><code class=language-php>use Zend\EventManager\EventInterface as Event;
+<pre><code class="language-php">use Zend\EventManager\EventInterface as Event;
 use Zend\ModuleManager\ModuleManager;
 
 class Module
@@ -364,7 +370,9 @@ class Module
         // To get the configuration from another module named 'FooModule'
         $config = $moduleManager-&gt;getModule('FooModule')-&gt;getConfig();
     }
-}</code></pre></p>
+}
+</code></pre>
+
 <blockquote>
 <h3>Use init() sparingly</h3>
 <p>The <code>init()</code> method is called for <strong>every</strong> module implementing this feature,
@@ -378,7 +386,7 @@ parts of the application in your <code>Module</code> class such as the instance 
 you may utilize the MVC <code>bootstrap</code> event. The bootstrap event is triggered
 after the <code>loadModule.post</code> event, once <code>$application-&gt;bootstrap()</code> is called.</p>
 <h3>Sample Usage of the MVC "bootstrap" Event</h3>
-<p> <pre class=codehilite><code class=language-php>use Zend\EventManager\EventInterface as Event;
+<pre><code class="language-php">use Zend\EventManager\EventInterface as Event;
 
 class Module
 {
@@ -388,7 +396,9 @@ class Module
         $application = $e-&gt;getApplication();
         $services    = $application-&gt;getServiceManager();
     }
-}</code></pre></p>
+}
+</code></pre>
+
 <blockquote>
 <h3>Use onBootstrap() sparingly</h3>
 <p>The <code>onBootstrap()</code> method is called for <strong>every</strong> module implementing this
@@ -548,7 +558,7 @@ feature, on <strong>every</strong> page request, and should <strong>only</strong
             
             <div class="col-md-9">
                 <h4 class="footer__headline">Copyright</h4>
-                <p>&copy; 2006-2019 by <a href="https://www.zend.com/">Zend</a>, a <a href="https://www.roguewave.com/">Rogue Wave Company</a>.</p>
+                <p>&copy; 2006-2020 by <a href="https://www.zend.com/">Zend</a> by <a href="https://www.perforce.com/">Perforce</a>.</p>
             </div>
 
             
@@ -556,10 +566,10 @@ feature, on <strong>every</strong> page request, and should <strong>only</strong
                 <h4 class="footer__headline">Support</h4>
                 <ul class="support__list">
                     <li class="support__list-item">
-                        <a href="https://discourse.zendframework.com" class="support__link" title="Forum"><i class="fa fa-comments"></i></a>
+                        <a href="https://discourse.laminas.dev" class="support__link" title="Forum"><i class="fa fa-comments"></i></a>
                     </li>
                     <li class="support__list-item">
-                        <a href="https://zendframework-slack.herokuapp.com" class="support__link" title="Chat"><i class="fa fa-slack"></i></a>
+                        <a href="https://laminas.dev/chat/" class="support__link" title="Chat"><i class="fa fa-slack"></i></a>
                     </li>
                     <li class="support__list-item">
                         <a href="https://github.com/zendframework" class="support__link" title="Github"><i class="fa fa-github"></i></a>
@@ -567,27 +577,28 @@ feature, on <strong>every</strong> page request, and should <strong>only</strong
                     <li class="support__list-item">
                         <a href="https://twitter.com/zfdevteam" class="support__link" title="Twitter"><i class="fa fa-twitter"></i></a>
                     </li>
-                    <li class="support__list-item">
-                        <a href="https://tinyletter.com/mwopzend" class="support__link" title="Newsletter"><i class="fa fa-envelope"></i></a>
-                    </li>
-                    <li class="support__list-item">
-                        <a href="https://framework.zend.com/blog/feed-rss.xml" class="support__link" title="Blog feed"><i class="fa fa-rss"></i></a>
-                    </li>
-                    <li class="support__list-item">
-                        <a href="https://framework.zend.com/security/feed" class="support__link" title="Security feed"><i class="fa fa-rss-square"></i></a>
-                    </li>
                 </ul>
             </div>
         </div>
     </div>
 </footer>
 
+<nav class="cookie-bar navbar navbar-fixed-bottom navbar-default hidden">
+    <div class="container">
+        <p class="navbar-text">
+            We use cookies to allow you to dismiss dialogs such as the Laminas
+            Project notification.
+        </p>
+        <button type="button" class="cookie-button btn btn-default navbar-btn">Allow Cookies</button>
+    </div>
+</nav>
+
     <script>
         var base_url = '..',
             siteName = 'zend-modulemanager';
     </script>
-    <script src="../js/scripts-8d7ae56abf.js"></script>
-        <script src="../search/main.js"></script>
+    <script src="/js/scripts.js"></script>
+    <script src="../search/main.js"></script>
 
     
     <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
